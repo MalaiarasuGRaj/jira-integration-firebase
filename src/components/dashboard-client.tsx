@@ -115,10 +115,10 @@ export function DashboardClient({
                       </Avatar>
                       <div>
                         <h3 className="font-semibold text-lg">{project.name}</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <div className="text-sm text-muted-foreground">
                           <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
                           Software
-                        </p>
+                        </div>
                       </div>
                     </div>
                      <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
