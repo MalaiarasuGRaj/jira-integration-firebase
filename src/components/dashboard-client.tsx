@@ -1,65 +1,56 @@
 
 'use client';
 
-import { formatDistanceToNow } from 'date-fns';
+import { useState } from 'react';
 import {
   AlertCircle,
-  Briefcase,
-  Calendar,
-  ChevronDown,
-  Code,
+  Folder,
+  Grid,
+  List,
   LogOut,
-  User,
+  RefreshCw,
+  Search,
+  Settings,
+  ExternalLink,
+  Filter
 } from 'lucide-react';
-import Image from 'next/image';
 
 import { logout } from '@/lib/actions';
 import type { JiraProject, JiraUser } from '@/lib/types';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Badge } from './ui/badge';
+import { Input } from './ui/input';
+import { Separator } from './ui/separator';
 
-function UserNav({ user }: { user: JiraUser | null }) {
+function Header({ user }: { user: JiraUser | null }) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <Avatar className="h-10 w-10">
-            {user?.avatarUrls?.['48x48'] && <AvatarImage src={user.avatarUrls['48x48']} alt={user.displayName} />}
-            <AvatarFallback>
-              <User className="h-5 w-5" />
-            </AvatarFallback>
-          </Avatar>
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-8">
+      <div className="flex items-center gap-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-2xl font-bold">
+          J
+        </div>
+        <div>
+          <h1 className="text-xl font-bold">Jira Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
+            Welcome, {user?.emailAddress}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <Button variant="ghost" size="icon">
+          <RefreshCw className="h-5 w-5" />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user?.displayName}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user?.emailAddress}</p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <form action={logout}>
-          <DropdownMenuItem asChild>
-            <button type="submit" className="w-full">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </button>
-          </DropdownMenuItem>
+           <Button variant="ghost" type="submit">
+            <LogOut className="mr-2 h-5 w-5" />
+            <span>Logout</span>
+          </Button>
         </form>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </div>
+    </header>
   );
 }
 
@@ -72,35 +63,35 @@ export function DashboardClient({
   user: JiraUser | null;
   apiError?: string;
 }) {
-
+  const [view, setView] = useState('grid');
+  
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <div className="flex items-center gap-2">
-           <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-6 w-6 text-primary"
-            >
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path>
-            </svg>
-          <h1 className="text-xl font-semibold">JiraLink</h1>
+    <div className="flex min-h-screen w-full flex-col bg-background">
+      <Header user={user} />
+      <main className="flex-1 p-8">
+        <div className="mb-6">
+            <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
+            <p className="text-muted-foreground">{projects.length} of {projects.length} projects</p>
         </div>
-        <div className="ml-auto flex items-center gap-4">
-          <UserNav user={user} />
-        </div>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className='flex items-center justify-between'>
-            <h2 className="text-2xl font-semibold leading-none tracking-tight">Your Projects</h2>
+        <div className="mb-6 flex items-center justify-between gap-4">
+            <div className='relative w-full max-w-sm'>
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input placeholder="Search projects..." className="pl-10 bg-card" />
+            </div>
+            <div className='flex items-center gap-2'>
+              <Button variant="outline" className="bg-card">
+                <Filter className="mr-2 h-4 w-4" />
+                All Types
+              </Button>
+              <div className='flex items-center rounded-md border bg-card p-0.5'>
+                 <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')}>
+                    <Grid className='h-5 w-5' />
+                 </Button>
+                 <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('list')}>
+                    <List className='h-5 w-5' />
+                 </Button>
+              </div>
+            </div>
         </div>
 
         {apiError && (
@@ -114,51 +105,55 @@ export function DashboardClient({
         {projects.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-              <Card key={project.id} className="flex flex-col">
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <Avatar className="mt-1">
-                      <img src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} className="aspect-square h-full w-full" />
-                      <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <CardTitle>{project.name}</CardTitle>
-                      <CardDescription>{project.key}</CardDescription>
+              <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6 flex-grow space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="h-12 w-12 rounded-lg">
+                        <img src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} className="aspect-square h-full w-full rounded-lg" />
+                        <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-semibold text-lg">{project.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
+                          Software
+                        </p>
+                      </div>
                     </div>
+                     <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
+                       <ExternalLink className='h-4 w-4 text-muted-foreground' />
+                     </Button>
                   </div>
-                </CardHeader>
-                <CardContent className="flex-grow space-y-4">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Briefcase className="h-4 w-4" />
-                        <span className="capitalize">{project.projectTypeKey} project</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                        <User className="h-4 w-4 text-muted-foreground" />
+                  <div className='flex justify-between items-center text-sm'>
+                      <div className='space-y-3'>
                         <div className="flex items-center gap-2">
-                           <Avatar className='h-6 w-6'>
-                             <img src={project.lead.avatarUrls['48x48']} alt={project.lead.displayName} className="aspect-square h-full w-full"/>
-                             <AvatarFallback>{project.lead.displayName.charAt(0)}</AvatarFallback>
-                           </Avatar>
-                           <span>{project.lead.displayName}</span>
+                          <Folder className="h-4 w-4 text-muted-foreground" />
+                          <span>Style</span>
                         </div>
-                    </div>
-                 
-                </CardContent>
-                <CardFooter>
-                  <div className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
-                    Updated{' '}
-                    {project.insight?.lastIssueUpdateTime
-                      ? formatDistanceToNow(new Date(project.insight.lastIssueUpdateTime), { addSuffix: true })
-                      : 'N/A'}
+                        <div className="flex items-center gap-2">
+                          <Settings className="h-4 w-4 text-muted-foreground" />
+                          <span>Access</span>
+                        </div>
+                      </div>
+                      <div className='text-right'>
+                        <p>Next-Gen</p>
+                        <Badge className='bg-green-100 text-green-800 hover:bg-green-100/80 rounded-full mt-1'>Public</Badge>
+                      </div>
                   </div>
+                </CardContent>
+                <Separator />
+                <CardFooter className="p-4 text-xs text-muted-foreground justify-between">
+                    <span>Components: 0</span>
+                    <span>Issue Types: 0</span>
+                    <span>Versions: 0</span>
                 </CardFooter>
               </Card>
             ))}
           </div>
         ) : (
           !apiError && (
-            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm min-h-[400px]">
               <div className="flex flex-col items-center gap-1 text-center">
                 <h3 className="text-2xl font-bold tracking-tight">
                   No projects found
