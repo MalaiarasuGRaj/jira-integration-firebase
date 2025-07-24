@@ -64,6 +64,12 @@ export function DashboardClient({
   apiError?: string;
 }) {
   const [view, setView] = useState('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProjects = projects.filter(project =>
+    project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.key.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -71,12 +77,17 @@ export function DashboardClient({
       <main className="flex-1 p-8">
         <div className="mb-6">
             <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
-            <p className="text-muted-foreground">{projects.length} of {projects.length} projects</p>
+            <p className="text-muted-foreground">{filteredProjects.length} of {projects.length} projects</p>
         </div>
         <div className="mb-6 flex items-center justify-between gap-4">
             <div className='relative w-full max-w-sm'>
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input placeholder="Search projects..." className="pl-10 bg-card" />
+              <Input 
+                placeholder="Search projects..." 
+                className="pl-10 bg-card" 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <div className='flex items-center gap-2'>
               <Button variant="outline" className="bg-card">
@@ -102,9 +113,9 @@ export function DashboardClient({
            </Alert>
         )}
         
-        {projects.length > 0 ? (
+        {filteredProjects.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow">
                 <CardContent className="p-6 flex-grow space-y-4">
                   <div className="flex items-start justify-between">
@@ -161,7 +172,7 @@ export function DashboardClient({
                   No projects found
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  You don&apos;t have any Jira projects yet.
+                  Your search for "{searchTerm}" did not return any results.
                 </p>
               </div>
             </div>
