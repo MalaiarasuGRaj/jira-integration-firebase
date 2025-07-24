@@ -9,7 +9,6 @@ import {
   Grid,
   List,
   LogOut,
-  RefreshCw,
   Search,
   Settings,
   ExternalLink,
@@ -35,15 +34,7 @@ import {
 import { cn } from '@/lib/utils';
 
 
-function Header({ user, onRefresh }: { user: JiraUser | null, onRefresh: () => void }) {
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    onRefresh();
-    // Simulate a delay for visual feedback
-    setTimeout(() => setIsRefreshing(false), 1000);
-  };
+function Header({ user }: { user: JiraUser | null }) {
   
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-8">
@@ -59,9 +50,6 @@ function Header({ user, onRefresh }: { user: JiraUser | null, onRefresh: () => v
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={handleRefresh} disabled={isRefreshing}>
-          <RefreshCw className={cn("h-5 w-5", isRefreshing && "animate-spin")} />
-        </Button>
         <form action={logout}>
            <Button variant="ghost" type="submit">
             <LogOut className="mr-2 h-5 w-5" />
@@ -188,7 +176,7 @@ export function DashboardClient({
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-      <Header user={user} onRefresh={() => router.refresh()} />
+      <Header user={user} />
       <main className="flex-1 p-8">
         <div className="mb-6">
             <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
