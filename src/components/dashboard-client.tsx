@@ -12,7 +12,8 @@ import {
   Search,
   Settings,
   ExternalLink,
-  Filter
+  Filter,
+  ChevronDown
 } from 'lucide-react';
 
 import { logout } from '@/lib/actions';
@@ -24,6 +25,13 @@ import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Badge } from './ui/badge';
 import { Input } from './ui/input';
 import { Separator } from './ui/separator';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+} from '@/components/ui/dropdown-menu';
+
 
 function Header({ user }: { user: JiraUser | null }) {
   return (
@@ -65,11 +73,16 @@ export function DashboardClient({
 }) {
   const [view, setView] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
 
-  const filteredProjects = projects.filter(project =>
-    project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.key.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
+
+  const filteredProjects = projects.filter(project => {
+    const searchMatch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        project.key.toLowerCase().includes(searchTerm.toLowerCase());
+    const typeMatch = selectedType === 'all' || project.projectTypeKey === selectedType;
+    return searchMatch && typeMatch;
+  });
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -90,10 +103,28 @@ export function DashboardClient({
               />
             </div>
             <div className='flex items-center gap-2'>
-              <Button variant="outline" className="bg-card">
-                <Filter className="mr-2 h-4 w-4" />
-                All Types
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="bg-card">
+                    <Filter className="mr-2 h-4 w-4" />
+                    {selectedType === 'all' ? 'All Types' : selectedType.charAt(0).toUpperCase() + selectedType.slice(1)}
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {projectTypes.map(type => (
+                     <DropdownMenuCheckboxItem
+                        key={type}
+                        checked={selectedType === type}
+                        onCheckedChange={() => setSelectedType(type)}
+                        className="capitalize"
+                      >
+                        {type === 'all' ? 'All Types' : type}
+                      </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <div className='flex items-center rounded-md border bg-card p-0.5'>
                  <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')}>
                     <Grid className='h-5 w-5' />
@@ -126,9 +157,9 @@ export function DashboardClient({
                       </Avatar>
                       <div>
                         <h3 className="font-semibold text-lg">{project.name}</h3>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-muted-foreground flex items-center">
                           <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
-                          Software
+                          <span className='capitalize'>{project.projectTypeKey}</span>
                         </div>
                       </div>
                     </div>
