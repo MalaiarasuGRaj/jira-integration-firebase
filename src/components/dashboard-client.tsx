@@ -18,9 +18,9 @@ import {
 
 import { logout } from '@/lib/actions';
 import type { JiraProject, JiraUser } from '@/lib/types';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Badge } from './ui/badge';
 import { Input } from './ui/input';
@@ -31,6 +31,7 @@ import {
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 
 function Header({ user }: { user: JiraUser | null }) {
@@ -43,7 +44,7 @@ function Header({ user }: { user: JiraUser | null }) {
         <div>
           <h1 className="text-xl font-bold">Jira Dashboard</h1>
           <p className="text-sm text-muted-foreground">
-            Welcome, {user?.emailAddress}
+            Welcome, {user?.displayName}
           </p>
         </div>
       </div>
@@ -62,6 +63,97 @@ function Header({ user }: { user: JiraUser | null }) {
   );
 }
 
+const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | 'list' }) => {
+  if (view === 'list') {
+    return (
+      <Card key={project.id} className="rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-10 w-10 rounded-lg">
+              <AvatarImage src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} />
+              <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className='w-48'>
+              <p className="font-semibold truncate">{project.name}</p>
+              <p className="text-sm text-muted-foreground">{project.key}</p>
+            </div>
+          </div>
+          <div className='w-32'>
+            <p className='capitalize text-muted-foreground'>{project.projectTypeKey}</p>
+          </div>
+          <div className="flex items-center gap-2 w-48">
+              <Avatar className="h-6 w-6">
+                <AvatarImage src={project.lead.avatarUrls['48x48']} alt={`${project.lead.displayName} avatar`} />
+                <AvatarFallback>{project.lead.displayName.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <span className='text-sm text-muted-foreground'>{project.lead.displayName}</span>
+          </div>
+          <div className='w-24'>
+             <Badge variant="outline" className='capitalize'>{project.insight ? 'Active' : 'Inactive'}</Badge>
+          </div>
+          <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="icon">
+              <ExternalLink className='h-4 w-4 text-muted-foreground' />
+            </Button>
+          </a>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader>
+        <div className="flex items-start justify-between">
+            <div className="flex items-start gap-4">
+              <Avatar className="h-12 w-12 rounded-lg">
+                <AvatarImage src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} />
+                <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h3 className="font-semibold text-lg">{project.name}</h3>
+                <div className="text-sm text-muted-foreground flex items-center">
+                  <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
+                  <span className='capitalize'>{project.projectTypeKey}</span>
+                </div>
+              </div>
+            </div>
+            <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
+                <ExternalLink className='h-4 w-4 text-muted-foreground' />
+              </Button>
+            </a>
+          </div>
+      </CardHeader>
+      <CardContent className="flex-grow space-y-4">
+        <div className='flex justify-between items-center text-sm'>
+            <div className='space-y-3'>
+              <div className="flex items-center gap-2">
+                <Folder className="h-4 w-4 text-muted-foreground" />
+                <span>Style</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Settings className="h-4 w-4 text-muted-foreground" />
+                <span>Access</span>
+              </div>
+            </div>
+            <div className='text-right'>
+              <p>Next-Gen</p>
+              <Badge className='bg-green-100 text-green-800 hover:bg-green-100/80 rounded-full mt-1'>Public</Badge>
+            </div>
+        </div>
+      </CardContent>
+      <Separator />
+      <CardFooter className="p-4 text-xs text-muted-foreground justify-between">
+          <span>Components: 0</span>
+          <span>Issue Types: 0</span>
+          <span>Versions: 0</span>
+      </CardFooter>
+    </Card>
+  )
+}
+
+
 export function DashboardClient({
   projects,
   user,
@@ -71,7 +163,7 @@ export function DashboardClient({
   user: JiraUser | null;
   apiError?: string;
 }) {
-  const [view, setView] = useState('grid');
+  const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
 
@@ -145,54 +237,21 @@ export function DashboardClient({
         )}
         
         {filteredProjects.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+           <div className={cn({
+            "grid gap-6 md:grid-cols-2 lg:grid-cols-3": view === 'grid',
+            "flex flex-col gap-4": view === 'list'
+          })}>
+            {view === 'list' && (
+              <div className="flex items-center justify-between px-4 py-2 text-sm font-medium text-muted-foreground bg-muted rounded-lg">
+                <div className='w-60'>Project</div>
+                <div className='w-32'>Type</div>
+                <div className='w-48'>Lead</div>
+                <div className='w-24'>Status</div>
+                <div className='w-8'></div>
+              </div>
+            )}
             {filteredProjects.map((project) => (
-              <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6 flex-grow space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <Avatar className="h-12 w-12 rounded-lg">
-                        <img src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} className="aspect-square h-full w-full rounded-lg" />
-                        <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h3 className="font-semibold text-lg">{project.name}</h3>
-                        <div className="text-sm text-muted-foreground flex items-center">
-                          <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
-                          <span className='capitalize'>{project.projectTypeKey}</span>
-                        </div>
-                      </div>
-                    </div>
-                     <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
-                       <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
-                         <ExternalLink className='h-4 w-4 text-muted-foreground' />
-                       </Button>
-                     </a>
-                  </div>
-                  <div className='flex justify-between items-center text-sm'>
-                      <div className='space-y-3'>
-                        <div className="flex items-center gap-2">
-                          <Folder className="h-4 w-4 text-muted-foreground" />
-                          <span>Style</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Settings className="h-4 w-4 text-muted-foreground" />
-                          <span>Access</span>
-                        </div>
-                      </div>
-                      <div className='text-right'>
-                        <p>Next-Gen</p>
-                        <Badge className='bg-green-100 text-green-800 hover:bg-green-100/80 rounded-full mt-1'>Public</Badge>
-                      </div>
-                  </div>
-                </CardContent>
-                <Separator />
-                <CardFooter className="p-4 text-xs text-muted-foreground justify-between">
-                    <span>Components: 0</span>
-                    <span>Issue Types: 0</span>
-                    <span>Versions: 0</span>
-                </CardFooter>
-              </Card>
+              <ProjectCard key={project.id} project={project} view={view} />
             ))}
           </div>
         ) : (
