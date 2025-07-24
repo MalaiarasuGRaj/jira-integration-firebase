@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   AlertCircle,
   Folder,
@@ -34,7 +35,16 @@ import {
 import { cn } from '@/lib/utils';
 
 
-function Header({ user }: { user: JiraUser | null }) {
+function Header({ user, onRefresh }: { user: JiraUser | null, onRefresh: () => void }) {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    onRefresh();
+    // Simulate a delay for visual feedback
+    setTimeout(() => setIsRefreshing(false), 1000);
+  };
+  
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-8">
       <div className="flex items-center gap-4">
@@ -49,8 +59,8 @@ function Header({ user }: { user: JiraUser | null }) {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon">
-          <RefreshCw className="h-5 w-5" />
+        <Button variant="ghost" size="icon" onClick={handleRefresh} disabled={isRefreshing}>
+          <RefreshCw className={cn("h-5 w-5", isRefreshing && "animate-spin")} />
         </Button>
         <form action={logout}>
            <Button variant="ghost" type="submit">
@@ -89,7 +99,7 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
               <span className='text-sm text-muted-foreground'>{project.lead.displayName}</span>
           </div>
           <div className='w-24'>
-             <Badge variant="outline" className='capitalize'>{project.insight ? 'Active' : 'Inactive'}</Badge>
+             <Badge variant={project.insight ? 'default' : 'secondary'} className={cn(project.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>{project.insight ? 'Active' : 'Inactive'}</Badge>
           </div>
           <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="icon">
@@ -111,8 +121,8 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
                 <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="font-semibold text-lg">{project.name}</h3>
-                <div className="text-sm text-muted-foreground flex items-center">
+                <CardTitle>{project.name}</CardTitle>
+                <div className="text-sm text-muted-foreground flex items-center mt-1">
                   <Badge variant="secondary" className="mr-1 rounded-sm">{project.key}</Badge> 
                   <span className='capitalize'>{project.projectTypeKey}</span>
                 </div>
@@ -126,28 +136,27 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
           </div>
       </CardHeader>
       <CardContent className="flex-grow space-y-4">
-        <div className='flex justify-between items-center text-sm'>
-            <div className='space-y-3'>
-              <div className="flex items-center gap-2">
-                <Folder className="h-4 w-4 text-muted-foreground" />
-                <span>Style</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Settings className="h-4 w-4 text-muted-foreground" />
-                <span>Access</span>
-              </div>
-            </div>
-            <div className='text-right'>
-              <p>Next-Gen</p>
-              <Badge className='bg-green-100 text-green-800 hover:bg-green-100/80 rounded-full mt-1'>Public</Badge>
-            </div>
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={project.lead.avatarUrls['48x48']} alt={`${project.lead.displayName} avatar`} />
+              <AvatarFallback>{project.lead.displayName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span className="text-muted-foreground">{project.lead.displayName}</span>
+          </div>
+          <Badge variant={project.insight ? 'default' : 'secondary'} className={cn(project.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>{project.insight ? 'Active' : 'Inactive'}</Badge>
         </div>
       </CardContent>
       <Separator />
       <CardFooter className="p-4 text-xs text-muted-foreground justify-between">
-          <span>Components: 0</span>
-          <span>Issue Types: 0</span>
-          <span>Versions: 0</span>
+          <div className="flex items-center gap-1">
+            <Folder className="h-3 w-3" />
+            <span>Next-Gen</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Settings className="h-3 w-3" />
+            <span>Public</span>
+          </div>
       </CardFooter>
     </Card>
   )
@@ -163,6 +172,7 @@ export function DashboardClient({
   user: JiraUser | null;
   apiError?: string;
 }) {
+  const router = useRouter();
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
@@ -178,7 +188,7 @@ export function DashboardClient({
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-      <Header user={user} />
+      <Header user={user} onRefresh={() => router.refresh()} />
       <main className="flex-1 p-8">
         <div className="mb-6">
             <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
@@ -247,7 +257,7 @@ export function DashboardClient({
                 <div className='w-32'>Type</div>
                 <div className='w-48'>Lead</div>
                 <div className='w-24'>Status</div>
-                <div className='w-8'></div>
+                <div className='w-12'></div>
               </div>
             )}
             {filteredProjects.map((project) => (
