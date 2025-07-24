@@ -121,9 +121,11 @@ export function DashboardClient({
                         </div>
                       </div>
                     </div>
-                     <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
-                       <ExternalLink className='h-4 w-4 text-muted-foreground' />
-                     </Button>
+                     <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
+                       <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
+                         <ExternalLink className='h-4 w-4 text-muted-foreground' />
+                       </Button>
+                     </a>
                   </div>
                   <div className='flex justify-between items-center text-sm'>
                       <div className='space-y-3'>

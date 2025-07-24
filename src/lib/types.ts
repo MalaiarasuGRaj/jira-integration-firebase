@@ -15,6 +15,7 @@ export interface JiraProject {
   id: string;
   key: string;
   name: string;
+  self: string;
   projectTypeKey: string;
   lead: JiraUser;
   avatarUrls: {
