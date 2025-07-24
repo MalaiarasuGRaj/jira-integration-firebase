@@ -1,9 +1,13 @@
+
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
 import {
   AlertCircle,
+  Briefcase,
+  Calendar,
   ChevronDown,
+  Code,
   LogOut,
   User,
 } from 'lucide-react';
@@ -13,7 +17,7 @@ import { logout } from '@/lib/actions';
 import type { JiraProject, JiraUser } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,14 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Badge } from './ui/badge';
 
@@ -103,6 +99,10 @@ export function DashboardClient({
         </div>
       </header>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <div className='flex items-center justify-between'>
+            <h2 className="text-2xl font-semibold leading-none tracking-tight">Your Projects</h2>
+        </div>
+
         {apiError && (
              <Alert variant="destructive">
              <AlertCircle className="h-4 w-4" />
@@ -110,41 +110,30 @@ export function DashboardClient({
              <AlertDescription>{apiError}</AlertDescription>
            </Alert>
         )}
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Projects</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[80px]">Avatar</TableHead>
-                  <TableHead>Project Name</TableHead>
-                  <TableHead className="hidden md:table-cell">Key</TableHead>
-                  <TableHead className="hidden md:table-cell">Type</TableHead>
-                  <TableHead>Lead</TableHead>
-                  <TableHead className="hidden sm:table-cell">Last Update</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {projects.length > 0 ? (
-                  projects.map((project) => (
-                    <TableRow key={project.id}>
-                      <TableCell>
-                        <Avatar>
-                           {/* Using standard img tag to avoid next/image domain configuration for dynamic user domains */}
-                           <img src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} className="aspect-square h-full w-full" />
-                           <AvatarFallback>{project.key}</AvatarFallback>
-                        </Avatar>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">{project.name}</div>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">{project.key}</TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <Badge variant="outline" className="capitalize">{project.projectTypeKey}</Badge>
-                      </TableCell>
-                      <TableCell>
+        
+        {projects.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <Card key={project.id} className="flex flex-col">
+                <CardHeader>
+                  <div className="flex items-start gap-4">
+                    <Avatar className="mt-1">
+                      <img src={project.avatarUrls['48x48']} alt={`${project.name} avatar`} className="aspect-square h-full w-full" />
+                      <AvatarFallback>{project.key.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <CardTitle>{project.name}</CardTitle>
+                      <CardDescription>{project.key}</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-grow space-y-4">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Briefcase className="h-4 w-4" />
+                        <span className="capitalize">{project.projectTypeKey} project</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        <User className="h-4 w-4 text-muted-foreground" />
                         <div className="flex items-center gap-2">
                            <Avatar className='h-6 w-6'>
                              <img src={project.lead.avatarUrls['48x48']} alt={project.lead.displayName} className="aspect-square h-full w-full"/>
@@ -152,25 +141,35 @@ export function DashboardClient({
                            </Avatar>
                            <span>{project.lead.displayName}</span>
                         </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        {project.insight?.lastIssueUpdateTime
-                          ? formatDistanceToNow(new Date(project.insight.lastIssueUpdateTime), { addSuffix: true })
-                          : 'N/A'}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="h-24 text-center">
-                     {!apiError && "No projects found."}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                    </div>
+                 
+                </CardContent>
+                <CardFooter>
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    Updated{' '}
+                    {project.insight?.lastIssueUpdateTime
+                      ? formatDistanceToNow(new Date(project.insight.lastIssueUpdateTime), { addSuffix: true })
+                      : 'N/A'}
+                  </div>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          !apiError && (
+            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <h3 className="text-2xl font-bold tracking-tight">
+                  No projects found
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  You don&apos;t have any Jira projects yet.
+                </p>
+              </div>
+            </div>
+          )
+        )}
       </main>
     </div>
   );
