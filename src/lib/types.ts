@@ -1,0 +1,34 @@
+export interface JiraUser {
+  accountId: string;
+  emailAddress?: string;
+  avatarUrls: {
+    '48x48': string;
+    '24x24': string;
+    '16x16': string;
+    '32x32': string;
+  };
+  displayName: string;
+  active: boolean;
+}
+
+export interface JiraProject {
+  id: string;
+  key: string;
+  name: string;
+  projectTypeKey: string;
+  lead: JiraUser;
+  avatarUrls: {
+    '48x48': string;
+    '24x24': string;
+    '16x16': string;
+    '32x32': string;
+  };
+  insight?: {
+    lastIssueUpdateTime: string;
+    totalIssueCount: number;
+  };
+}
+
+export interface JiraProjectSearchResponse {
+  values: JiraProject[];
+}
