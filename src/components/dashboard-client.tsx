@@ -320,7 +320,7 @@ export function DashboardClient({
       </main>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[800px] p-0">
+        <DialogContent className="sm:max-w-[600px] p-0">
           {selectedProject && (
             <>
               {/* Header */}
@@ -355,9 +355,9 @@ export function DashboardClient({
               </DialogHeader>
 
               {/* Main Content Area */}
-              <div className="p-6 grid md:grid-cols-3 gap-6">
+              <div className="p-6 flex flex-col gap-6">
                 {/* Project Information Section */}
-                <div className="border rounded-lg p-4 md:col-span-2">
+                <div className="border rounded-lg p-4">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
                     <Settings className="h-5 w-5 mr-2" /> Project Information
                   </h3>
