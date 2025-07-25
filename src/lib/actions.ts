@@ -149,7 +149,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent,sprint';
   
     try {
       const response = await fetch(
@@ -181,6 +181,7 @@ export async function getIssueTypesForProject(
         updated: issue.fields.updated,
         labels: issue.fields.labels,
         parent: issue.fields.parent,
+        sprint: issue.fields.sprint,
       }));
   
       return { issues };
@@ -201,9 +202,12 @@ export async function getIssueTypesForProject(
     const { email, domain, apiToken } = credentials;
     const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
+    // Note: The 'sprint' field is a custom field in many Jira setups. 
+    // The actual field name might be different (e.g., 'customfield_10020').
+    // We are using 'sprint' which is common for Next-Gen projects.
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,sprint';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -242,6 +246,7 @@ export async function getIssueTypesForProject(
           labels: issue.fields.labels,
           parent: issue.fields.parent,
           issueType: issue.fields.issuetype,
+          sprint: issue.fields.sprint,
         }));
         
         allIssues = allIssues.concat(issues);

@@ -11,6 +11,7 @@ import {
   Tag,
   User,
   X,
+  Repeat,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
@@ -144,8 +145,12 @@ export function IssuesDialog({
                           <Calendar className="h-4 w-4" />
                           <span>{formatDistanceToNow(parseISO(issue.updated))} ago</span>
                         </div>
+                        <div className="flex items-center gap-2">
+                            <Repeat className="h-4 w-4" />
+                            <span>{issue.sprint?.name ?? 'No Sprint'}</span>
+                        </div>
                         {issue.labels.length > 0 && (
-                            <div className='flex items-center gap-1 flex-wrap'>
+                            <div className='flex items-center gap-1 flex-wrap col-span-full mt-2'>
                                 <Tag className='h-4 w-4' />
                                 {issue.labels.map(label => <Badge key={label} variant='secondary' className='text-xs'>{label}</Badge>)}
                             </div>

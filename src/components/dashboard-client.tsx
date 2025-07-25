@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
-import type { JiraProject, JiraUser, JiraIssueType, JiraIssue } from '@/lib/types';
+import type { JiraProject, JiraUser, JiraIssueType, JiraIssue, JiraSprint } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -303,7 +303,7 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Sprint"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => [
@@ -317,7 +317,8 @@ export function DashboardClient({
             `"${issue.updated}"`,
             `"${issue.labels.join(' ')}"`,
             `"${issue.parent?.key ?? ''}"`,
-            `"${issue.issueType?.name ?? ''}"`
+            `"${issue.issueType?.name ?? ''}"`,
+            `"${issue.sprint?.name ?? ''}"`
         ].join(','))
     ];
 

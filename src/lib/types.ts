@@ -46,6 +46,17 @@ export interface JiraIssueType {
   hierarchyLevel: number;
 }
 
+export interface JiraSprint {
+    id: number;
+    self: string;
+    state: string;
+    name: string;
+    startDate?: string;
+    endDate?: string;
+    completeDate?: string;
+    originBoardId?: number;
+}
+
 export interface JiraIssue {
   id: string;
   key: string;
@@ -78,4 +89,5 @@ export interface JiraIssue {
     name: string;
     iconUrl: string;
   }
+  sprint: JiraSprint | null;
 }
