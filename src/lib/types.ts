@@ -45,3 +45,33 @@ export interface JiraIssueType {
   avatarId: number;
   hierarchyLevel: number;
 }
+
+export interface JiraIssue {
+  id: string;
+  key: string;
+  self: string;
+  summary: string;
+  status: {
+    name: string;
+    statusCategory: {
+      key: string;
+      name: string;
+    };
+  };
+  assignee: JiraUser | null;
+  reporter: JiraUser;
+  priority: {
+    name: string;
+    iconUrl: string;
+  };
+  created: string;
+  updated: string;
+  labels: string[];
+  parent?: {
+    id: string;
+    key: string;
+    fields: {
+      summary: string;
+    };
+  };
+}

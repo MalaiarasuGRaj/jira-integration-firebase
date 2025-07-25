@@ -17,11 +17,12 @@ import {
   User,
   Ticket,
   Loader2,
-  X
+  X,
+  ArrowRight
 } from 'lucide-react';
 
-import { logout, getIssueTypesForProject, type Credentials } from '@/lib/actions';
-import type { JiraProject, JiraUser, JiraIssueType } from '@/lib/types';
+import { logout, getIssueTypesForProject, getIssuesForProjectAndType, type Credentials } from '@/lib/actions';
+import type { JiraProject, JiraUser, JiraIssueType, JiraIssue } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,6 +39,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { ScrollArea } from './ui/scroll-area';
+import { IssuesDialog } from './issues-dialog';
 
 
 function Header({ user }: { user: JiraUser | null }) {
@@ -183,11 +185,22 @@ export function DashboardClient({
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+  
+  // Project Dialog
   const [selectedProject, setSelectedProject] = useState<JiraProject | null>(null);
+  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
+  
+  // Issue Types
   const [issueTypes, setIssueTypes] = useState<JiraIssueType[]>([]);
   const [isLoadingIssueTypes, setIsLoadingIssueTypes] = useState(false);
   const [issueTypeError, setIssueTypeError] = useState<string | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Issues Dialog
+  const [selectedIssueType, setSelectedIssueType] = useState<JiraIssueType | null>(null);
+  const [isIssuesDialogOpen, setIsIssuesDialogOpen] = useState(false);
+  const [issues, setIssues] = useState<JiraIssue[]>([]);
+  const [isLoadingIssues, setIsLoadingIssues] = useState(false);
+  const [issuesError, setIssuesError] = useState<string | null>(null);
 
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
@@ -205,7 +218,7 @@ export function DashboardClient({
         return;
     }
     setSelectedProject(project);
-    setIsDialogOpen(true);
+    setIsProjectDialogOpen(true);
     setIsLoadingIssueTypes(true);
     setIssueTypeError(null);
     setIssueTypes([]);
@@ -219,9 +232,28 @@ export function DashboardClient({
     }
     setIsLoadingIssueTypes(false);
   };
+
+  const handleViewIssuesClick = async (issueType: JiraIssueType) => {
+    if (!credentials || !selectedProject) return;
+
+    setSelectedIssueType(issueType);
+    setIsIssuesDialogOpen(true);
+    setIsLoadingIssues(true);
+    setIssuesError(null);
+    setIssues([]);
+
+    const result = await getIssuesForProjectAndType(selectedProject.key, issueType.id, credentials);
+
+    if (result.error) {
+      setIssuesError(result.error);
+    } else if (result.issues) {
+      setIssues(result.issues);
+    }
+    setIsLoadingIssues(false);
+  };
   
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
+  const handleProjectDialogClose = () => {
+    setIsProjectDialogOpen(false);
     setSelectedProject(null);
   };
 
@@ -319,7 +351,8 @@ export function DashboardClient({
         )}
       </main>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Project Details Dialog */}
+      <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
         <DialogContent className="sm:max-w-[600px] p-0">
           {selectedProject && (
             <>
@@ -346,7 +379,7 @@ export function DashboardClient({
                       </Button>
                     </a>
                     <DialogClose asChild>
-                      <Button variant="ghost" size="icon" onClick={handleDialogClose}>
+                      <Button variant="ghost" size="icon" onClick={handleProjectDialogClose}>
                         <X className="h-4 w-4" />
                       </Button>
                     </DialogClose>
@@ -355,6 +388,7 @@ export function DashboardClient({
               </DialogHeader>
 
               {/* Main Content Area */}
+              <ScrollArea className='max-h-[70vh]'>
               <div className="p-6 flex flex-col gap-6">
                 {/* Project Information Section */}
                 <div className="border rounded-lg p-4">
@@ -393,7 +427,6 @@ export function DashboardClient({
                     </div>
                 </div>
                 
-
                 {/* Issue Types Section */}
                 <div className="border rounded-lg p-4">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
@@ -410,26 +443,47 @@ export function DashboardClient({
                       <AlertDescription>{issueTypeError}</AlertDescription>
                     </Alert>
                   ) : (
-                    <ScrollArea className="h-48">
-                      <div className="space-y-3 pr-4">
-                          {issueTypes.map(issueType => (
-                              <div key={issueType.id} className="flex items-center justify-between text-sm">
-                                  <div className='flex items-center gap-2'>
-                                    <img src={issueType.iconUrl} alt={issueType.name} className="h-4 w-4" />
-                                    <span className="text-foreground">{issueType.name}</span>
-                                  </div>
-                                  <Badge variant="outline">{issueType.subtask ? 'Sub-task' : 'Standard'}</Badge>
-                              </div>
-                          ))}
-                      </div>
-                    </ScrollArea>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {issueTypes.map(issueType => (
+                           <Card key={issueType.id} className="flex flex-col">
+                             <CardContent className="p-4 flex-grow">
+                               <div className="flex items-center gap-3 mb-2">
+                                 <img src={issueType.iconUrl} alt={issueType.name} className="h-5 w-5" />
+                                 <h4 className="font-semibold text-md">{issueType.name}</h4>
+                               </div>
+                               <p className="text-sm text-muted-foreground truncate">{issueType.description || 'No description available.'}</p>
+                             </CardContent>
+                             <CardFooter className='p-4 pt-0'>
+                                <Button
+                                  variant="link"
+                                  className="p-0 h-auto text-primary"
+                                  onClick={() => handleViewIssuesClick(issueType)}
+                                >
+                                  View Issues <ArrowRight className="ml-1 h-4 w-4" />
+                                </Button>
+                             </CardFooter>
+                           </Card>
+                        ))}
+                    </div>
                   )}
                 </div>
               </div>
+              </ScrollArea>
             </>
           )}
         </DialogContent>
       </Dialog>
+      
+      {/* Issues Dialog */}
+      <IssuesDialog 
+        isOpen={isIssuesDialogOpen}
+        onClose={() => setIsIssuesDialogOpen(false)}
+        issueType={selectedIssueType}
+        project={selectedProject}
+        issues={issues}
+        isLoading={isLoadingIssues}
+        error={issuesError}
+      />
     </div>
   );
 }
