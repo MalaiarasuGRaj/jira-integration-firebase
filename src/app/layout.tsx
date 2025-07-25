@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'JiraLink',
+  title: 'Jira-Integration',
   description: 'View your Jira projects in a beautiful dashboard.',
 };
 
