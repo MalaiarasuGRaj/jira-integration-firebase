@@ -57,6 +57,26 @@ export interface JiraSprint {
     originBoardId?: number;
 }
 
+export interface JiraChangelogHistoryItem {
+  field: string;
+  fieldtype: string;
+  fieldId: string;
+  from: string | null;
+  fromString: string | null;
+  to: string | null;
+  toString: string | null;
+}
+
+export interface JiraChangelogHistory {
+  id: string;
+  created: string;
+  items: JiraChangelogHistoryItem[];
+}
+
+export interface JiraChangelog {
+  histories: JiraChangelogHistory[];
+}
+
 export interface JiraIssue {
   id: string;
   key: string;
@@ -90,4 +110,6 @@ export interface JiraIssue {
     iconUrl: string;
   }
   sprint: JiraSprint | null;
+  customfield_10021?: JiraSprint[] | null;
+  changelog?: JiraChangelog;
 }

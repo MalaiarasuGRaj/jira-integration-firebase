@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
-import type { JiraProject, JiraUser, JiraIssueType, JiraIssue, JiraSprint } from '@/lib/types';
+import type { JiraProject, JiraUser, JiraIssueType, JiraIssue, JiraSprint, JiraChangelogHistory } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -273,6 +273,41 @@ export function DashboardClient({
     setSelectedProject(null);
   };
 
+  const getCompletedSprintId = (issue: JiraIssue): number | null => {
+    if (issue.status.statusCategory.key !== 'done' || !issue.changelog) {
+      return null;
+    }
+  
+    let completedDate: Date | null = null;
+  
+    for (const history of issue.changelog.histories) {
+      for (const item of history.items) {
+        if (item.fieldId === 'status' && item.toString === 'Done') {
+          completedDate = new Date(history.created);
+          break;
+        }
+      }
+      if (completedDate) break;
+    }
+  
+    if (!completedDate || !issue.customfield_10021) {
+      return null;
+    }
+  
+    const closedSprints = issue.customfield_10021
+      .filter(sprint => sprint.state === 'closed' && sprint.completeDate)
+      .sort((a, b) => new Date(b.completeDate!).getTime() - new Date(a.completeDate!).getTime());
+  
+    for (const sprint of closedSprints) {
+      if (new Date(sprint.completeDate!) >= completedDate) {
+        return sprint.id;
+      }
+    }
+  
+    return null;
+  };
+  
+
   const handleDownload = async () => {
     if (!credentials || !selectedProject) {
         toast({
@@ -307,6 +342,7 @@ export function DashboardClient({
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
+            const sprintId = getCompletedSprintId(issue);
             return [
                 `"${issue.key}"`,
                 `"${issue.summary.replace(/"/g, '""')}"`,
@@ -319,7 +355,7 @@ export function DashboardClient({
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
-                `"${issue.sprint?.id ?? ''}"`,
+                `"${sprintId ?? (issue.sprint?.id ?? '')}"`,
             ].join(',')
         })
     ];
