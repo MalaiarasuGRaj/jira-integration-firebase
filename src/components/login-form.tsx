@@ -49,7 +49,7 @@ export function LoginForm() {
           <div className="flex justify-start items-center mb-2">
             <LinkIcon className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-bold ml-2 tracking-tight">
-              JiraLink
+              Jira-Integration
             </h1>
           </div>
           <CardTitle>Secure Login</CardTitle>
