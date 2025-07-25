@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: 'Jira-Integration',
-  description: 'View your Jira projects in a beautiful dashboard.',
+  description: 'View your Jira projects in a dashboard.',
 };
 
 export default function RootLayout({
