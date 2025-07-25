@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import {
   AlertCircle,
@@ -41,6 +42,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@
 import { ScrollArea } from './ui/scroll-area';
 import { IssuesDialog } from './issues-dialog';
 
+function LogoutButton() {
+    const { pending } = useFormStatus();
+    return (
+      <Button variant="ghost" type="submit" disabled={pending}>
+        {pending ? (
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+        ) : (
+          <LogOut className="mr-2 h-5 w-5" />
+        )}
+        <span>{pending ? 'Logging out...' : 'Logout'}</span>
+      </Button>
+    );
+  }
 
 function Header({ user }: { user: JiraUser | null }) {
   
@@ -59,10 +73,7 @@ function Header({ user }: { user: JiraUser | null }) {
       </div>
       <div className="flex items-center gap-4">
         <form action={logout}>
-           <Button variant="ghost" type="submit">
-            <LogOut className="mr-2 h-5 w-5" />
-            <span>Logout</span>
-          </Button>
+           <LogoutButton />
         </form>
       </div>
     </header>
