@@ -202,9 +202,6 @@ export async function getIssueTypesForProject(
     const { email, domain, apiToken } = credentials;
     const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
-    // Note: The 'sprint' field is a custom field in many Jira setups. 
-    // The actual field name might be different (e.g., 'customfield_10020').
-    // We are using 'sprint' which is common for Next-Gen projects.
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,sprint';
