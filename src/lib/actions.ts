@@ -189,4 +189,70 @@ export async function getIssueTypesForProject(
       return { error: 'Could not connect to Jira to fetch issues.' };
     }
   }
+
+  export async function getIssuesForProject(
+    projectKey: string,
+    credentials: Credentials
+  ): Promise<{ issues?: JiraIssue[]; error?: string }> {
+    if (!credentials) {
+      return { error: 'Authentication required.' };
+    }
+  
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    const jql = `project = "${projectKey}" ORDER BY created DESC`;
+    const encodedJql = encodeURIComponent(jql);
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
+  
+    let allIssues: JiraIssue[] = [];
+    let startAt = 0;
+    const maxResults = 100;
+    let isLast = false;
+  
+    try {
+      while (!isLast) {
+        const response = await fetch(
+          `https://${domain}/rest/api/3/search?jql=${encodedJql}&fields=${fields}&startAt=${startAt}&maxResults=${maxResults}`,
+          {
+            headers: { Authorization: `Basic ${encodedCredentials}` },
+            cache: 'no-store',
+          }
+        );
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          return {
+            error: `Failed to fetch issues. Status: ${response.status}. ${errorText}`,
+          };
+        }
+  
+        const data = await response.json();
+        const issues = data.issues.map((issue: any) => ({
+          id: issue.id,
+          key: issue.key,
+          self: issue.self,
+          summary: issue.fields.summary,
+          status: issue.fields.status,
+          assignee: issue.fields.assignee,
+          reporter: issue.fields.reporter,
+          priority: issue.fields.priority,
+          created: issue.fields.created,
+          updated: issue.fields.updated,
+          labels: issue.fields.labels,
+          parent: issue.fields.parent,
+          issueType: issue.fields.issuetype,
+        }));
+        
+        allIssues = allIssues.concat(issues);
+        startAt += data.issues.length;
+        isLast = startAt >= data.total;
+      }
+  
+      return { issues: allIssues };
+    } catch (error) {
+      console.error('Error fetching issues:', error);
+      return { error: 'Could not connect to Jira to fetch issues.' };
+    }
+  }
   

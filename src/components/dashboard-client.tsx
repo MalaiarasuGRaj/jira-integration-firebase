@@ -19,10 +19,11 @@ import {
   Ticket,
   Loader2,
   X,
-  ArrowRight
+  ArrowRight,
+  Download
 } from 'lucide-react';
 
-import { logout, getIssueTypesForProject, getIssuesForProjectAndType, type Credentials } from '@/lib/actions';
+import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
 import type { JiraProject, JiraUser, JiraIssueType, JiraIssue } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -41,6 +42,7 @@ import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { ScrollArea } from './ui/scroll-area';
 import { IssuesDialog } from './issues-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 function LogoutButton() {
     const { pending } = useFormStatus();
@@ -193,6 +195,7 @@ export function DashboardClient({
   apiError?: string;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
@@ -213,6 +216,8 @@ export function DashboardClient({
   const [isLoadingIssues, setIsLoadingIssues] = useState(false);
   const [issuesError, setIssuesError] = useState<string | null>(null);
 
+  // Download Issues
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -267,6 +272,71 @@ export function DashboardClient({
     setIsProjectDialogOpen(false);
     setSelectedProject(null);
   };
+
+  const handleDownload = async () => {
+    if (!credentials || !selectedProject) {
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Cannot download issues. Project or credentials missing."
+        });
+        return;
+    }
+
+    setIsDownloading(true);
+    toast({
+        title: "Preparing Download",
+        description: `Fetching all issues for ${selectedProject.name}. This may take a moment...`
+    })
+
+    const result = await getIssuesForProject(selectedProject.key, credentials);
+
+    setIsDownloading(false);
+
+    if (result.error || !result.issues) {
+        toast({
+            variant: "destructive",
+            title: "Download Failed",
+            description: result.error || "Could not fetch issues for the project."
+        });
+        return;
+    }
+    
+    // Convert to CSV
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent"];
+    const csvRows = [
+        headers.join(','),
+        ...result.issues.map(issue => [
+            `"${issue.key}"`,
+            `"${issue.summary.replace(/"/g, '""')}"`,
+            `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
+            `"${issue.reporter?.displayName ?? 'N/A'}"`,
+            `"${issue.status.name}"`,
+            `"${issue.priority.name}"`,
+            `"${issue.created}"`,
+            `"${issue.updated}"`,
+            `"${issue.labels.join(' ')}"`,
+            `"${issue.parent?.key ?? ''}"`
+        ].join(','))
+    ];
+
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${selectedProject.key}-issues.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+        variant: "default",
+        title: "Download Started",
+        description: `Your file ${selectedProject.key}-issues.csv is downloading.`
+    })
+  };
+
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -384,6 +454,9 @@ export function DashboardClient({
                     </div>
                   </div>
                   <div className="flex items-center gap-2 absolute right-4 top-4">
+                    <Button variant="ghost" size="icon" onClick={handleDownload} disabled={isDownloading}>
+                        {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                    </Button>
                     <a href={getExternalUrl(selectedProject)} target="_blank" rel="noopener noreferrer">
                       <Button variant="ghost" size="icon">
                         <ExternalLink className="h-4 w-4" />
