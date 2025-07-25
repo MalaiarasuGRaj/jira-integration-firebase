@@ -24,6 +24,9 @@ export type State = {
   message?: string | null;
 };
 
+export type Credentials = z.infer<typeof FormSchema>;
+
+
 export async function login(_prevState: State, formData: FormData): Promise<State> {
   const validatedFields = FormSchema.safeParse({
     email: formData.get('email'),
@@ -90,19 +93,12 @@ export async function logout() {
 
 
 export async function getIssueTypesForProject(
-    projectId: string
+    projectId: string,
+    credentials: Credentials
   ): Promise<{ issueTypes?: JiraIssueType[]; error?: string }> {
-    const authCookie = cookies().get('jira-auth');
   
-    if (!authCookie?.value) {
+    if (!credentials) {
       return { error: 'Authentication required.' };
-    }
-  
-    let credentials;
-    try {
-      credentials = JSON.parse(authCookie.value);
-    } catch {
-      return { error: 'Invalid authentication credentials.' };
     }
   
     const { email, domain, apiToken } = credentials;
@@ -126,7 +122,7 @@ export async function getIssueTypesForProject(
           errorText;
         console.error(errorMsg);
         return {
-          error: 'Failed to fetch issue types. Check server logs for details.',
+          error: 'Failed to fetch issue types. Your token might have expired or lacks permissions.',
         };
       }
   
