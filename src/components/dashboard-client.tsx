@@ -303,23 +303,29 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Sprint"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Completed In Sprint"];
     const csvRows = [
         headers.join(','),
-        ...result.issues.map(issue => [
-            `"${issue.key}"`,
-            `"${issue.summary.replace(/"/g, '""')}"`,
-            `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
-            `"${issue.reporter?.displayName ?? 'N/A'}"`,
-            `"${issue.status.name}"`,
-            `"${issue.priority.name}"`,
-            `"${issue.created}"`,
-            `"${issue.updated}"`,
-            `"${issue.labels.join(' ')}"`,
-            `"${issue.parent?.key ?? ''}"`,
-            `"${issue.issueType?.name ?? ''}"`,
-            `"${issue.sprint?.name ?? ''}"`
-        ].join(','))
+        ...result.issues.map(issue => {
+            const isCompleted = issue.status.statusCategory.key === 'done';
+            const sprintName = issue.sprint?.name ?? '';
+            const completedInSprint = isCompleted ? sprintName : '';
+
+            return [
+                `"${issue.key}"`,
+                `"${issue.summary.replace(/"/g, '""')}"`,
+                `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
+                `"${issue.reporter?.displayName ?? 'N/A'}"`,
+                `"${issue.status.name}"`,
+                `"${issue.priority.name}"`,
+                `"${issue.created}"`,
+                `"${issue.updated}"`,
+                `"${issue.labels.join(' ')}"`,
+                `"${issue.parent?.key ?? ''}"`,
+                `"${issue.issueType?.name ?? ''}"`,
+                `"${completedInSprint}"`
+            ].join(',')
+        })
     ];
 
     const csvContent = csvRows.join('\n');
@@ -573,3 +579,5 @@ export function DashboardClient({
     </div>
   );
 }
+
+    
