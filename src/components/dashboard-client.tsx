@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   AlertCircle,
@@ -14,11 +14,13 @@ import {
   ExternalLink,
   Filter,
   ChevronDown,
-  User
+  User,
+  Ticket,
+  Loader2
 } from 'lucide-react';
 
-import { logout } from '@/lib/actions';
-import type { JiraProject, JiraUser } from '@/lib/types';
+import { logout, getIssueTypesForProject } from '@/lib/actions';
+import type { JiraProject, JiraUser, JiraIssueType } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,9 +36,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from './ui/scroll-area';
 
 
 function Header({ user }: { user: JiraUser | null }) {
+  const router = useRouter();
   
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-8">
@@ -169,6 +173,9 @@ export function DashboardClient({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [selectedProject, setSelectedProject] = useState<JiraProject | null>(null);
+  const [issueTypes, setIssueTypes] = useState<JiraIssueType[]>([]);
+  const [isLoadingIssueTypes, setIsLoadingIssueTypes] = useState(false);
+  const [issueTypeError, setIssueTypeError] = useState<string | null>(null);
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -188,6 +195,22 @@ export function DashboardClient({
       return '#';
     }
   }
+
+  const handleProjectClick = async (project: JiraProject) => {
+    setSelectedProject(project);
+    setIsLoadingIssueTypes(true);
+    setIssueTypeError(null);
+    setIssueTypes([]);
+    
+    const result = await getIssueTypesForProject(project.id);
+    
+    if (result.error) {
+      setIssueTypeError(result.error);
+    } else if (result.issueTypes) {
+      setIssueTypes(result.issueTypes);
+    }
+    setIsLoadingIssueTypes(false);
+  };
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -264,7 +287,7 @@ export function DashboardClient({
               </div>
             )}
             {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} view={view} onClick={() => setSelectedProject(project)} />
+              <ProjectCard key={project.id} project={project} view={view} onClick={() => handleProjectClick(project)} />
             ))}
           </div>
         ) : (
@@ -314,13 +337,23 @@ export function DashboardClient({
               </DialogHeader>
 
               {/* Main Content Area */}
-              <div className="p-6 grid md:grid-cols-2 gap-6">
+              <div className="p-6 grid md:grid-cols-3 gap-6">
                 {/* Project Information Section */}
-                <div className="border rounded-lg p-4">
+                <div className="border rounded-lg p-4 md:col-span-2">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
                     <Settings className="h-5 w-5 mr-2" /> Project Information
                   </h3>
-                  <div className="grid gap-3 text-sm">
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex justify-between col-span-2">
+                      <span className="text-muted-foreground">Project Lead</span>
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6">
+                           <AvatarImage src={selectedProject.lead.avatarUrls['48x48']} alt={`${selectedProject.lead.displayName} avatar`} />
+                           <AvatarFallback>{selectedProject.lead.displayName.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <span>{selectedProject.lead.displayName}</span>
+                      </div>
+                    </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Project ID</span>
                       <span>{selectedProject.id}</span>
@@ -341,22 +374,38 @@ export function DashboardClient({
                     </div>
                   </div>
                 </div>
+                
 
-                {/* Project Lead Section */}
+                {/* Issue Types Section */}
                 <div className="border rounded-lg p-4">
                   <h3 className="text-lg font-semibold mb-4 flex items-center">
-                     <User className="h-5 w-5 mr-2" /> Project Lead
+                     <Ticket className="h-5 w-5 mr-2" /> Issue Types
                   </h3>
-                  <div className="flex items-center gap-4 text-sm">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={selectedProject.lead.avatarUrls['48x48']} alt={`${selectedProject.lead.displayName} avatar`} />
-                      <AvatarFallback>{selectedProject.lead.displayName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-semibold text-foreground">{selectedProject.lead.displayName}</p>
-                      <p className="text-muted-foreground break-all">ID: {selectedProject.lead.accountId}</p>
+                  {isLoadingIssueTypes ? (
+                    <div className="flex items-center justify-center h-24">
+                        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                     </div>
-                  </div>
+                  ) : issueTypeError ? (
+                    <Alert variant="destructive" className="text-xs">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>{issueTypeError}</AlertDescription>
+                    </Alert>
+                  ) : (
+                    <ScrollArea className="h-48">
+                      <div className="space-y-3 pr-4">
+                          {issueTypes.map(issueType => (
+                              <div key={issueType.id} className="flex items-center justify-between text-sm">
+                                  <div className='flex items-center gap-2'>
+                                    <img src={issueType.iconUrl} alt={issueType.name} className="h-4 w-4" />
+                                    <span className="text-foreground">{issueType.name}</span>
+                                  </div>
+                                  <Badge variant="outline">{issueType.subtask ? 'Sub-task' : 'Standard'}</Badge>
+                              </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                  )}
                 </div>
               </div>
             </>

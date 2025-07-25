@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import type { JiraIssueType } from './types';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -86,3 +87,40 @@ export async function logout() {
   cookies().delete('jira-auth');
   redirect('/');
 }
+
+
+export async function getIssueTypesForProject(projectId: string): Promise<{ issueTypes?: JiraIssueType[], error?: string }> {
+    const authCookie = cookies().get('jira-auth');
+    if (!authCookie?.value) {
+      return { error: 'Authentication required.' };
+    }
+  
+    let credentials;
+    try {
+      credentials = JSON.parse(authCookie.value);
+    } catch {
+      return { error: 'Invalid authentication credentials.' };
+    }
+  
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`, {
+        headers: { Authorization: `Basic ${encodedCredentials}` },
+        cache: 'no-store',
+      });
+  
+      if (!response.ok) {
+        const errorMsg = 'Failed to fetch issue types from Jira.';
+        console.error(errorMsg, await response.text());
+        return { error: errorMsg };
+      }
+  
+      const issueTypes: JiraIssueType[] = await response.json();
+      return { issueTypes };
+    } catch (error) {
+      console.error("Error fetching issue types:", error);
+      return { error: 'Could not connect to Jira to fetch issue types.' };
+    }
+  }

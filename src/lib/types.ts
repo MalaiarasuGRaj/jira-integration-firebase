@@ -34,3 +34,14 @@ export interface JiraProject {
 export interface JiraProjectSearchResponse {
   values: JiraProject[];
 }
+
+export interface JiraIssueType {
+  self: string;
+  id: string;
+  description: string;
+  iconUrl: string;
+  name: string;
+  subtask: boolean;
+  avatarId: number;
+  hierarchyLevel: number;
+}
