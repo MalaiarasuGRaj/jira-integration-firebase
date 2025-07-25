@@ -187,6 +187,8 @@ export function DashboardClient({
   const [issueTypes, setIssueTypes] = useState<JiraIssueType[]>([]);
   const [isLoadingIssueTypes, setIsLoadingIssueTypes] = useState(false);
   const [issueTypeError, setIssueTypeError] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -203,6 +205,7 @@ export function DashboardClient({
         return;
     }
     setSelectedProject(project);
+    setIsDialogOpen(true);
     setIsLoadingIssueTypes(true);
     setIssueTypeError(null);
     setIssueTypes([]);
@@ -217,6 +220,11 @@ export function DashboardClient({
     setIsLoadingIssueTypes(false);
   };
   
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setSelectedProject(null);
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Header user={user} />
@@ -311,7 +319,7 @@ export function DashboardClient({
         )}
       </main>
 
-      <Dialog open={selectedProject !== null} onOpenChange={() => setSelectedProject(null)}>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[800px] p-0">
           {selectedProject && (
             <>
@@ -338,7 +346,7 @@ export function DashboardClient({
                       </Button>
                     </a>
                     <DialogClose asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={handleDialogClose}>
                         <X className="h-4 w-4" />
                       </Button>
                     </DialogClose>
