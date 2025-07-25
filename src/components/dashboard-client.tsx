@@ -16,10 +16,11 @@ import {
   ChevronDown,
   User,
   Ticket,
-  Loader2
+  Loader2,
+  X
 } from 'lucide-react';
 
-import { logout, getIssueTypesForProject } from '@/lib/actions';
+import { logout, getIssueTypesForProject, type Credentials } from '@/lib/actions';
 import type { JiraProject, JiraUser, JiraIssueType } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -35,12 +36,11 @@ import {
   DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { ScrollArea } from './ui/scroll-area';
 
 
 function Header({ user }: { user: JiraUser | null }) {
-  const router = useRouter();
   
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-8">
@@ -162,10 +162,12 @@ const ProjectCard = ({ project, view, onClick }: { project: JiraProject; view: '
 export function DashboardClient({
   projects,
   user,
+  credentials,
   apiError
 }: {
   projects: JiraProject[];
   user: JiraUser | null;
+  credentials: Credentials | null;
   apiError?: string;
 }) {
   const router = useRouter();
@@ -197,12 +199,16 @@ export function DashboardClient({
   }
 
   const handleProjectClick = async (project: JiraProject) => {
+    if (!credentials) {
+        setIssueTypeError("Authentication credentials are not available.");
+        return;
+    }
     setSelectedProject(project);
     setIsLoadingIssueTypes(true);
     setIssueTypeError(null);
     setIssueTypes([]);
   
-    const result = await getIssueTypesForProject(project.id);
+    const result = await getIssueTypesForProject(project.id, credentials);
   
     if (result.error) {
       setIssueTypeError(result.error);
@@ -311,7 +317,7 @@ export function DashboardClient({
           {selectedProject && (
             <>
               {/* Header */}
-              <DialogHeader className="p-4 border-b bg-muted/40">
+              <DialogHeader className="p-4 pr-10 border-b bg-muted/40">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-10 w-10 rounded-lg">
@@ -326,12 +332,17 @@ export function DashboardClient({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 absolute right-4 top-4">
                     <a href={getExternalUrl(selectedProject)} target="_blank" rel="noopener noreferrer">
                       <Button variant="ghost" size="icon">
                         <ExternalLink className="h-4 w-4" />
                       </Button>
                     </a>
+                    <DialogClose asChild>
+                      <Button variant="ghost" size="icon">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </DialogClose>
                   </div>
                 </div>
               </DialogHeader>
