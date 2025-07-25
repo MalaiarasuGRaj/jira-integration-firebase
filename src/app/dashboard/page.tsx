@@ -1,3 +1,4 @@
+
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { DashboardClient } from '@/components/dashboard-client';
@@ -57,5 +58,5 @@ export default async function DashboardPage() {
 
   const { projects, user, error } = await getProjects(credentials);
 
-  return <DashboardClient projects={projects} user={user} apiError={error} />;
+  return <DashboardClient projects={projects} user={user} credentials={credentials} apiError={error} />;
 }

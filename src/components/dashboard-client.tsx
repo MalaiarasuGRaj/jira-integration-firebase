@@ -124,7 +124,7 @@ const ProjectCard = ({ project, view, onClick }: { project: JiraProject; view: '
                 </div>
               </div>
             </div>
-            <a href={externalUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+            <a href={getExternalUrl(project)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
               <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
                 <ExternalLink className='h-4 w-4 text-muted-foreground' />
               </Button>
@@ -158,6 +158,15 @@ const ProjectCard = ({ project, view, onClick }: { project: JiraProject; view: '
   )
 }
 
+function getExternalUrl(project: JiraProject | null) {
+  if (!project || !project.self) return '#';
+  try {
+    return `https://${new URL(project.self).hostname}/browse/${project.key}`;
+  } catch (error) {
+    console.error("Invalid project URL:", project.self);
+    return '#';
+  }
+}
 
 export function DashboardClient({
   projects,
@@ -187,16 +196,6 @@ export function DashboardClient({
     const typeMatch = selectedType === 'all' || project.projectTypeKey === selectedType;
     return searchMatch && typeMatch;
   });
-
-  const getExternalUrl = (project: JiraProject | null) => {
-    if (!project || !project.self) return '#';
-    try {
-      return `https://${new URL(project.self).hostname}/browse/${project.key}`;
-    } catch (error) {
-      console.error("Invalid project URL:", project.self);
-      return '#';
-    }
-  }
 
   const handleProjectClick = async (project: JiraProject) => {
     if (!credentials) {
