@@ -34,21 +34,24 @@ async function getProjects(credentials: {
     
     return { projects: projectsData.values || [], user };
   } catch (error) {
-    return { projects: [], user: null, error: 'Could not connect to Jira. Please check the domain and your connection.' };
+    console.error("Error fetching projects or user:", error);
+    return { projects: [], user: null, error: 'Could not connect to Jira or fetch initial data. Please check the domain and your connection.' };
   }
 }
 
 export default async function DashboardPage() {
-  const authCookie = cookies().get('jira-auth')?.value;
-  if (!authCookie) {
+  const cookieStore = await cookies();
+  const authCookie = cookieStore.get('jira-auth');
+
+  if (!authCookie?.value) {
     redirect('/');
   }
 
   let credentials;
   try {
-    credentials = JSON.parse(authCookie);
+    credentials = JSON.parse(authCookie.value);
   } catch {
-    cookies().delete('jira-auth');
+    // If cookie is malformed, just redirect to login
     redirect('/');
   }
 
