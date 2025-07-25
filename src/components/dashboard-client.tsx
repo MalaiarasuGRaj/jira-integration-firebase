@@ -358,39 +358,39 @@ export function DashboardClient({
               <div className="p-6 flex flex-col gap-6">
                 {/* Project Information Section */}
                 <div className="border rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center">
-                    <Settings className="h-5 w-5 mr-2" /> Project Information
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex justify-between col-span-2">
-                      <span className="text-muted-foreground">Project Lead</span>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                           <AvatarImage src={selectedProject.lead.avatarUrls['48x48']} alt={`${selectedProject.lead.displayName} avatar`} />
-                           <AvatarFallback>{selectedProject.lead.displayName.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <span>{selectedProject.lead.displayName}</span>
-                      </div>
+                    <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <Settings className="h-5 w-5 mr-2" /> Project Information
+                    </h3>
+                    <div className="space-y-3 text-sm">
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">Project Lead</span>
+                            <div className="flex items-center gap-2">
+                                <Avatar className="h-6 w-6">
+                                <AvatarImage src={selectedProject.lead.avatarUrls['48x48']} alt={`${selectedProject.lead.displayName} avatar`} />
+                                <AvatarFallback>{selectedProject.lead.displayName.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <span>{selectedProject.lead.displayName}</span>
+                            </div>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">Project ID</span>
+                            <span>{selectedProject.id}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">Style</span>
+                            <span>Next-Gen</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">Access Level</span>
+                            <Badge variant={selectedProject.insight ? 'default' : 'secondary'} className={cn(selectedProject.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>
+                                {selectedProject.insight ? 'Public' : 'Private'}
+                            </Badge>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">Simplified</span>
+                            <span>{selectedProject.simplified ? 'Yes' : 'No'}</span>
+                        </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Project ID</span>
-                      <span>{selectedProject.id}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Style</span>
-                      <span>Next-Gen</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Access Level</span>
-                      <Badge variant={selectedProject.insight ? 'default' : 'secondary'} className={cn(selectedProject.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>
-                        {selectedProject.insight ? 'Public' : 'Private'}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between">
-                       <span className="text-muted-foreground">Simplified</span>
-                       <span>{selectedProject.simplified ? 'Yes' : 'No'}</span>
-                    </div>
-                  </div>
                 </div>
                 
 
