@@ -303,7 +303,7 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => [
@@ -316,7 +316,8 @@ export function DashboardClient({
             `"${issue.created}"`,
             `"${issue.updated}"`,
             `"${issue.labels.join(' ')}"`,
-            `"${issue.parent?.key ?? ''}"`
+            `"${issue.parent?.key ?? ''}"`,
+            `"${issue.issueType?.name ?? ''}"`
         ].join(','))
     ];
 

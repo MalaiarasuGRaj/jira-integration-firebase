@@ -74,4 +74,8 @@ export interface JiraIssue {
       summary: string;
     };
   };
+  issueType?: {
+    name: string;
+    iconUrl: string;
+  }
 }
