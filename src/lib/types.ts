@@ -17,6 +17,7 @@ export interface JiraProject {
   name: string;
   self: string;
   projectTypeKey: string;
+  simplified?: boolean;
   lead: JiraUser;
   avatarUrls: {
     '48x48': string;

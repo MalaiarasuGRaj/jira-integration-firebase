@@ -13,7 +13,8 @@ import {
   Settings,
   ExternalLink,
   Filter,
-  ChevronDown
+  ChevronDown,
+  User
 } from 'lucide-react';
 
 import { logout } from '@/lib/actions';
@@ -32,6 +33,7 @@ import {
   DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 
 function Header({ user }: { user: JiraUser | null }) {
@@ -61,10 +63,12 @@ function Header({ user }: { user: JiraUser | null }) {
   );
 }
 
-const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | 'list' }) => {
+const ProjectCard = ({ project, view, onClick }: { project: JiraProject; view: 'grid' | 'list', onClick: () => void }) => {
+  const externalUrl = project.self ? `https://${new URL(project.self).hostname}/browse/${project.key}` : '#';
+
   if (view === 'list') {
     return (
-      <Card key={project.id} className="rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <Card key={project.id} className="rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <Avatar className="h-10 w-10 rounded-lg">
@@ -89,7 +93,7 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
           <div className='w-24'>
              <Badge variant={project.insight ? 'default' : 'secondary'} className={cn(project.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>{project.insight ? 'Active' : 'Inactive'}</Badge>
           </div>
-          <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
+          <a href={externalUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
             <Button variant="ghost" size="icon">
               <ExternalLink className='h-4 w-4 text-muted-foreground' />
             </Button>
@@ -100,7 +104,7 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
   }
 
   return (
-    <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow">
+    <Card key={project.id} className="flex flex-col rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
       <CardHeader>
         <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
@@ -116,7 +120,7 @@ const ProjectCard = ({ project, view }: { project: JiraProject; view: 'grid' | '
                 </div>
               </div>
             </div>
-            <a href={`https://${new URL(project.self).hostname}/browse/${project.key}`} target="_blank" rel="noopener noreferrer">
+            <a href={externalUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
               <Button variant="ghost" size="icon" className='-mt-2 -mr-2'>
                 <ExternalLink className='h-4 w-4 text-muted-foreground' />
               </Button>
@@ -164,6 +168,7 @@ export function DashboardClient({
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('all');
+  const [selectedProject, setSelectedProject] = useState<JiraProject | null>(null);
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -173,6 +178,16 @@ export function DashboardClient({
     const typeMatch = selectedType === 'all' || project.projectTypeKey === selectedType;
     return searchMatch && typeMatch;
   });
+
+  const getExternalUrl = (project: JiraProject | null) => {
+    if (!project || !project.self) return '#';
+    try {
+      return `https://${new URL(project.self).hostname}/browse/${project.key}`;
+    } catch (error) {
+      console.error("Invalid project URL:", project.self);
+      return '#';
+    }
+  }
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
@@ -249,7 +264,7 @@ export function DashboardClient({
               </div>
             )}
             {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} view={view} />
+              <ProjectCard key={project.id} project={project} view={view} onClick={() => setSelectedProject(project)} />
             ))}
           </div>
         ) : (
@@ -267,6 +282,87 @@ export function DashboardClient({
           )
         )}
       </main>
+
+      <Dialog open={selectedProject !== null} onOpenChange={() => setSelectedProject(null)}>
+        <DialogContent className="sm:max-w-[800px] p-0">
+          {selectedProject && (
+            <>
+              {/* Header */}
+              <DialogHeader className="p-4 border-b bg-muted/40">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10 rounded-lg">
+                      <AvatarImage src={selectedProject.avatarUrls['48x48']} alt={`${selectedProject.name} avatar`} />
+                      <AvatarFallback>{selectedProject.key.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <DialogTitle>{selectedProject.name}</DialogTitle>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="secondary">{selectedProject.key}</Badge>
+                        <Badge variant="outline" className="capitalize">{selectedProject.projectTypeKey}</Badge>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a href={getExternalUrl(selectedProject)} target="_blank" rel="noopener noreferrer">
+                      <Button variant="ghost" size="icon">
+                        <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              {/* Main Content Area */}
+              <div className="p-6 grid md:grid-cols-2 gap-6">
+                {/* Project Information Section */}
+                <div className="border rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center">
+                    <Settings className="h-5 w-5 mr-2" /> Project Information
+                  </h3>
+                  <div className="grid gap-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Project ID</span>
+                      <span>{selectedProject.id}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Style</span>
+                      <span>Next-Gen</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Access Level</span>
+                      <Badge variant={selectedProject.insight ? 'default' : 'secondary'} className={cn(selectedProject.insight ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800', 'capitalize')}>
+                        {selectedProject.insight ? 'Public' : 'Private'}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between">
+                       <span className="text-muted-foreground">Simplified</span>
+                       <span>{selectedProject.simplified ? 'Yes' : 'No'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Project Lead Section */}
+                <div className="border rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center">
+                     <User className="h-5 w-5 mr-2" /> Project Lead
+                  </h3>
+                  <div className="flex items-center gap-4 text-sm">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={selectedProject.lead.avatarUrls['48x48']} alt={`${selectedProject.lead.displayName} avatar`} />
+                      <AvatarFallback>{selectedProject.lead.displayName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold text-foreground">{selectedProject.lead.displayName}</p>
+                      <p className="text-muted-foreground break-all">ID: {selectedProject.lead.accountId}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
