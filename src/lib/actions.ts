@@ -89,8 +89,11 @@ export async function logout() {
 }
 
 
-export async function getIssueTypesForProject(projectId: string): Promise<{ issueTypes?: JiraIssueType[], error?: string }> {
+export async function getIssueTypesForProject(
+    projectId: string
+  ): Promise<{ issueTypes?: JiraIssueType[]; error?: string }> {
     const authCookie = cookies().get('jira-auth');
+  
     if (!authCookie?.value) {
       return { error: 'Authentication required.' };
     }
@@ -103,24 +106,34 @@ export async function getIssueTypesForProject(projectId: string): Promise<{ issu
     }
   
     const { email, domain, apiToken } = credentials;
-    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString(
+      'base64'
+    );
   
     try {
-      const response = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`, {
-        headers: { Authorization: `Basic ${encodedCredentials}` },
-        cache: 'no-store',
-      });
+      const response = await fetch(
+        `https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`,
+        {
+          headers: { Authorization: `Basic ${encodedCredentials}` },
+          cache: 'no-store',
+        }
+      );
   
       if (!response.ok) {
-        const errorMsg = 'Failed to fetch issue types from Jira.';
-        console.error(errorMsg, await response.text());
-        return { error: errorMsg };
+        const errorText = await response.text();
+        const errorMsg =
+          `Failed to fetch issue types from Jira. Status: ${response.status}. ` +
+          errorText;
+        console.error(errorMsg);
+        return {
+          error: 'Failed to fetch issue types. Check server logs for details.',
+        };
       }
   
       const issueTypes: JiraIssueType[] = await response.json();
       return { issueTypes };
     } catch (error) {
-      console.error("Error fetching issue types:", error);
+      console.error('Error fetching issue types:', error);
       return { error: 'Could not connect to Jira to fetch issue types.' };
     }
   }

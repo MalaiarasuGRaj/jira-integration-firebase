@@ -201,9 +201,9 @@ export function DashboardClient({
     setIsLoadingIssueTypes(true);
     setIssueTypeError(null);
     setIssueTypes([]);
-    
+  
     const result = await getIssueTypesForProject(project.id);
-    
+  
     if (result.error) {
       setIssueTypeError(result.error);
     } else if (result.issueTypes) {
