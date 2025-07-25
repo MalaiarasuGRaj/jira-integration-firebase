@@ -147,7 +147,7 @@ export function IssuesDialog({
                         </div>
                         <div className="flex items-center gap-2">
                             <Repeat className="h-4 w-4" />
-                            <span>{issue.sprint?.name ?? 'No Sprint'}</span>
+                            <span>No Sprint</span>
                         </div>
                         {issue.labels.length > 0 && (
                             <div className='flex items-center gap-1 flex-wrap col-span-full mt-2'>
@@ -173,3 +173,5 @@ export function IssuesDialog({
     </Dialog>
   );
 }
+
+    

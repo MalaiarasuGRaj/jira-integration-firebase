@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
-import type { JiraProject, JiraUser, JiraIssueType, JiraIssue, JiraSprint, JiraChangelogHistory } from '@/lib/types';
+import type { JiraProject, JiraUser, JiraIssueType, JiraIssue } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -273,47 +273,6 @@ export function DashboardClient({
     setSelectedProject(null);
   };
 
-  const getCompletedSprintId = (issue: JiraIssue): number | null => {
-    if (issue.status.statusCategory.key !== 'done' || !issue.changelog?.histories?.length) {
-      // If not done or no changelog, check for the active sprint.
-      return issue.sprint?.id ?? null;
-    }
-  
-    let completedDate: Date | null = null;
-    
-    // Find the date when the status was changed to "Done"
-    const doneHistory = issue.changelog.histories
-      .slice() // Create a shallow copy to avoid modifying the original array
-      .reverse() // Histories are usually ordered newest to oldest, so reverse to find the first "Done"
-      .find(history => 
-        history.items.some(item => item.fieldId === 'status' && item.toString === 'Done')
-      );
-  
-    if (doneHistory) {
-      completedDate = new Date(doneHistory.created);
-    }
-  
-    if (!completedDate || !issue.customfield_10021) {
-      // If we couldn't determine completion date, or there's no sprint history, fall back to active sprint.
-      return issue.sprint?.id ?? null;
-    }
-  
-    const closedSprints = issue.customfield_10021
-      .filter(sprint => sprint.state === 'closed' && sprint.completeDate)
-      .sort((a, b) => new Date(a.completeDate!).getTime() - new Date(b.completeDate!).getTime()); // Sort oldest to newest
-  
-    // Find the first closed sprint that was completed on or after the issue was marked as done.
-    for (const sprint of closedSprints) {
-      if (new Date(sprint.completeDate!) >= completedDate) {
-        return sprint.id;
-      }
-    }
-    
-    // If no suitable closed sprint is found, fall back to the last active sprint.
-    return issue.sprint?.id ?? null;
-  };
-  
-
   const handleDownload = async () => {
     if (!credentials || !selectedProject) {
         toast({
@@ -344,11 +303,10 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Sprint Number"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
-            const sprintId = getCompletedSprintId(issue);
             return [
                 `"${issue.key}"`,
                 `"${issue.summary.replace(/"/g, '""')}"`,
@@ -361,7 +319,6 @@ export function DashboardClient({
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
-                `"${sprintId ?? ''}"`,
             ].join(',')
         })
     ];
@@ -617,7 +574,5 @@ export function DashboardClient({
     </div>
   );
 }
-
-    
 
     

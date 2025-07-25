@@ -150,7 +150,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent,sprint';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent';
   
     try {
       const response = await fetch(
@@ -182,9 +182,6 @@ export async function getIssueTypesForProject(
         updated: issue.fields.updated,
         labels: issue.fields.labels,
         parent: issue.fields.parent,
-        sprint: issue.fields.sprint,
-        customfield_10021: issue.fields.customfield_10021,
-        changelog: issue.changelog,
       }));
   
       return { issues };
@@ -207,8 +204,7 @@ export async function getIssueTypesForProject(
   
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,sprint,customfield_10021';
-    const expand = 'changelog';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -218,7 +214,7 @@ export async function getIssueTypesForProject(
     try {
       while (!isLast) {
         const response = await fetch(
-          `https://${domain}/rest/api/3/search?jql=${encodedJql}&fields=${fields}&expand=${expand}&startAt=${startAt}&maxResults=${maxResults}`,
+          `https://${domain}/rest/api/3/search?jql=${encodedJql}&fields=${fields}&startAt=${startAt}&maxResults=${maxResults}`,
           {
             headers: { Authorization: `Basic ${encodedCredentials}` },
             cache: 'no-store',
@@ -247,9 +243,6 @@ export async function getIssueTypesForProject(
           labels: issue.fields.labels,
           parent: issue.fields.parent,
           issueType: issue.fields.issuetype,
-          sprint: issue.fields.sprint,
-          customfield_10021: issue.fields.customfield_10021,
-          changelog: issue.changelog,
         }));
         
         allIssues = allIssues.concat(issues);
@@ -263,4 +256,5 @@ export async function getIssueTypesForProject(
       return { error: 'Could not connect to Jira to fetch issues.' };
     }
   }
-  
+
+    

@@ -1,3 +1,4 @@
+
 export interface JiraUser {
   accountId: string;
   emailAddress?: string;
@@ -46,37 +47,6 @@ export interface JiraIssueType {
   hierarchyLevel: number;
 }
 
-export interface JiraSprint {
-    id: number;
-    self: string;
-    state: string;
-    name: string;
-    startDate?: string;
-    endDate?: string;
-    completeDate?: string;
-    originBoardId?: number;
-}
-
-export interface JiraChangelogHistoryItem {
-  field: string;
-  fieldtype: string;
-  fieldId: string;
-  from: string | null;
-  fromString: string | null;
-  to: string | null;
-  toString: string | null;
-}
-
-export interface JiraChangelogHistory {
-  id: string;
-  created: string;
-  items: JiraChangelogHistoryItem[];
-}
-
-export interface JiraChangelog {
-  histories: JiraChangelogHistory[];
-}
-
 export interface JiraIssue {
   id: string;
   key: string;
@@ -109,7 +79,6 @@ export interface JiraIssue {
     name: string;
     iconUrl: string;
   }
-  sprint: JiraSprint | null;
-  customfield_10021?: JiraSprint[] | null;
-  changelog?: JiraChangelog;
 }
+
+    
