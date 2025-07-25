@@ -274,37 +274,43 @@ export function DashboardClient({
   };
 
   const getCompletedSprintId = (issue: JiraIssue): number | null => {
-    if (issue.status.statusCategory.key !== 'done' || !issue.changelog) {
-      return null;
+    if (issue.status.statusCategory.key !== 'done' || !issue.changelog?.histories?.length) {
+      // If not done or no changelog, check for the active sprint.
+      return issue.sprint?.id ?? null;
     }
   
     let completedDate: Date | null = null;
+    
+    // Find the date when the status was changed to "Done"
+    const doneHistory = issue.changelog.histories
+      .slice() // Create a shallow copy to avoid modifying the original array
+      .reverse() // Histories are usually ordered newest to oldest, so reverse to find the first "Done"
+      .find(history => 
+        history.items.some(item => item.fieldId === 'status' && item.toString === 'Done')
+      );
   
-    for (const history of issue.changelog.histories) {
-      for (const item of history.items) {
-        if (item.fieldId === 'status' && item.toString === 'Done') {
-          completedDate = new Date(history.created);
-          break;
-        }
-      }
-      if (completedDate) break;
+    if (doneHistory) {
+      completedDate = new Date(doneHistory.created);
     }
   
     if (!completedDate || !issue.customfield_10021) {
-      return null;
+      // If we couldn't determine completion date, or there's no sprint history, fall back to active sprint.
+      return issue.sprint?.id ?? null;
     }
   
     const closedSprints = issue.customfield_10021
       .filter(sprint => sprint.state === 'closed' && sprint.completeDate)
-      .sort((a, b) => new Date(b.completeDate!).getTime() - new Date(a.completeDate!).getTime());
+      .sort((a, b) => new Date(a.completeDate!).getTime() - new Date(b.completeDate!).getTime()); // Sort oldest to newest
   
+    // Find the first closed sprint that was completed on or after the issue was marked as done.
     for (const sprint of closedSprints) {
       if (new Date(sprint.completeDate!) >= completedDate) {
         return sprint.id;
       }
     }
-  
-    return null;
+    
+    // If no suitable closed sprint is found, fall back to the last active sprint.
+    return issue.sprint?.id ?? null;
   };
   
 
@@ -355,7 +361,7 @@ export function DashboardClient({
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
-                `"${sprintId ?? (issue.sprint?.id ?? '')}"`,
+                `"${sprintId ?? ''}"`,
             ].join(',')
         })
     ];
@@ -611,5 +617,7 @@ export function DashboardClient({
     </div>
   );
 }
+
+    
 
     
