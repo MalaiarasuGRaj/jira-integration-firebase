@@ -303,21 +303,10 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Sprint", "Completed In Sprint"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
-            const isCompleted = issue.status.statusCategory.key === 'done';
-            
-            // Jira's 'sprint' field can be null or an array of sprint objects.
-            // We want the last (most recent) sprint if it exists.
-            const lastSprint = Array.isArray(issue.sprint) && issue.sprint.length > 0
-              ? issue.sprint[issue.sprint.length - 1] 
-              : issue.sprint;
-
-            const sprintName = lastSprint?.name ?? '';
-            const completedInSprint = isCompleted ? sprintName : '';
-
             return [
                 `"${issue.key}"`,
                 `"${issue.summary.replace(/"/g, '""')}"`,
@@ -330,8 +319,6 @@ export function DashboardClient({
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
-                `"${sprintName}"`,
-                `"${completedInSprint}"`
             ].join(',')
         })
     ];
