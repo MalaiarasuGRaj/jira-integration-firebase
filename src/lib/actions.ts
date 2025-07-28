@@ -204,7 +204,7 @@ export async function getIssueTypesForProject(
   
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -243,6 +243,7 @@ export async function getIssueTypesForProject(
           labels: issue.fields.labels,
           parent: issue.fields.parent,
           issueType: issue.fields.issuetype,
+          storyPoints: issue.fields.customfield_10016,
         }));
         
         allIssues = allIssues.concat(issues);

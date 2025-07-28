@@ -78,7 +78,8 @@ export interface JiraIssue {
   issueType?: {
     name: string;
     iconUrl: string;
-  }
+  };
+  storyPoints?: number | null;
 }
 
     
