@@ -303,16 +303,16 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Status", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort (Story Points)"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort", "Status"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
+            const status = issue.status.statusCategory.key === 'done' ? 'Completed' : 'Pending';
             return [
                 `"${issue.key}"`,
                 `"${issue.summary.replace(/"/g, '""')}"`,
                 `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
                 `"${issue.reporter?.displayName ?? 'N/A'}"`,
-                `"${issue.status.name}"`,
                 `"${issue.priority.name}"`,
                 `"${issue.created}"`,
                 `"${issue.updated}"`,
@@ -320,6 +320,7 @@ export function DashboardClient({
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
                 `"${issue.storyPoints ?? ''}"`,
+                `"${status}"`,
             ].join(',')
         })
     ];
@@ -575,5 +576,7 @@ export function DashboardClient({
     </div>
   );
 }
+
+    
 
     
