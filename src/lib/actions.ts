@@ -4,7 +4,8 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import type { JiraIssue, JiraIssueType } from './types';
+import type { JiraIssue, JiraIssueType, JiraUser } from './types';
+import Papa from 'papaparse';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -258,6 +259,21 @@ export async function getIssueTypesForProject(
     }
   }
 
+  async function findUserByEmail(email: string, domain: string, encodedCredentials: string): Promise<JiraUser | null> {
+    if (!email) return null;
+    try {
+        const response = await fetch(`https://${domain}/rest/api/3/user/search?query=${encodeURIComponent(email)}`, {
+            headers: { Authorization: `Basic ${encodedCredentials}` },
+        });
+        if (!response.ok) return null;
+        const users: JiraUser[] = await response.json();
+        return users.find(user => user.emailAddress?.toLowerCase() === email.toLowerCase()) || null;
+    } catch (error) {
+        console.error(`Error finding user by email ${email}:`, error);
+        return null;
+    }
+  }
+
   export async function bulkCreateIssues(
     projectKey: string,
     csvData: string,
@@ -266,14 +282,117 @@ export async function getIssueTypesForProject(
     if (!credentials) {
       return { success: false, error: 'Authentication required.' };
     }
+    
+    const { email: currentUserEmail, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${currentUserEmail}:${apiToken}`).toString('base64');
   
-    // TODO: Implement the logic to parse CSV and call Jira's bulk create API.
-    // For now, this is a placeholder.
-    console.log(`Bulk creating issues for project ${projectKey} with data:`, csvData);
+    const parsed = Papa.parse(csvData.trim(), { header: true });
   
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, details: { message: "Placeholder response: Issues would be created here." } });
-      }, 1000);
-    });
+    if (parsed.errors.length) {
+      return { success: false, error: `CSV Parsing Error: ${parsed.errors[0].message}` };
+    }
+  
+    const requiredHeaders = ['Summary', 'Issue Type'];
+    for (const header of requiredHeaders) {
+      if (!parsed.meta.fields?.includes(header)) {
+        return { success: false, error: `Missing required CSV header: ${header}. Please use the template.` };
+      }
+    }
+  
+    try {
+      // Fetch project details to get issue types
+      const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectKey}`, {
+        headers: { Authorization: `Basic ${encodedCredentials}` },
+      });
+      if (!issueTypesResponse.ok) throw new Error('Could not fetch project issue types.');
+      const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
+
+      const issuePayloads = await Promise.all(parsed.data.map(async (row: any) => {
+        if (!row.Summary || !row['Issue Type']) {
+          return null; // Skip empty rows
+        }
+
+        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === row['Issue Type'].toLowerCase());
+        if (!issueType) {
+            // We'll let Jira handle this error to provide a more specific message.
+            console.warn(`Invalid issue type specified: ${row['Issue Type']}`);
+        }
+
+        const assigneeEmail = row['Assignee (Email)'];
+        const reporterEmail = row['Reporter (Email)'];
+        
+        const [assignee, reporter] = await Promise.all([
+            assigneeEmail ? findUserByEmail(assigneeEmail, domain, encodedCredentials) : null,
+            reporterEmail ? findUserByEmail(reporterEmail, domain, encodedCredentials) : findUserByEmail(currentUserEmail, domain, encodedCredentials)
+        ]);
+        
+        const storyPoints = row['Story Points'] ? parseFloat(row['Story Points']) : null;
+
+        const issueData: any = {
+          fields: {
+            project: { key: projectKey },
+            summary: row.Summary,
+            description: {
+              type: 'doc',
+              version: 1,
+              content: row.Description ? [{ type: 'paragraph', content: [{ type: 'text', text: row.Description }] }] : [],
+            },
+            issuetype: { id: issueType?.id },
+          }
+        };
+
+        if (assignee?.accountId) {
+          issueData.fields.assignee = { id: assignee.accountId };
+        }
+        if (reporter?.accountId) {
+          issueData.fields.reporter = { id: reporter.accountId };
+        }
+        if (storyPoints && !isNaN(storyPoints)) {
+          // Note: This custom field ID can vary between Jira instances.
+          // 'customfield_10016' is a common default for Story Points.
+          issueData.fields.customfield_10016 = storyPoints;
+        }
+
+        return issueData;
+      }));
+      
+      const validPayloads = issuePayloads.filter(p => p !== null);
+
+      if (validPayloads.length === 0) {
+        return { success: false, error: 'No valid issues found in the CSV to import.' };
+      }
+
+      const response = await fetch(`https://${domain}/rest/api/3/issue/bulk`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+        body: JSON.stringify({ issueUpdates: validPayloads }),
+      });
+  
+      if (!response.ok) {
+        const errorBody = await response.json();
+        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred during bulk creation.';
+        const specificErrors = (errorBody?.errors || []).map((e: any) => e.elementErrors?.errorMessages?.join(' ')).filter(Boolean).join('; ');
+        return { success: false, error: `${errorMessage} ${specificErrors}`.trim() };
+      }
+  
+      const result = await response.json();
+      
+      if (result.errors?.length > 0) {
+        const failedCount = result.errors.length;
+        const totalCount = validPayloads.length;
+        const successCount = totalCount - failedCount;
+        const errorMessage = `Successfully created ${successCount} issues, but ${failedCount} failed. Check Jira for details.`;
+        return { success: false, error: errorMessage, details: result };
+      }
+
+      return { success: true, details: result };
+
+    } catch (error) {
+      console.error('Bulk create error:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'An unexpected server error occurred.' };
+    }
   }
+

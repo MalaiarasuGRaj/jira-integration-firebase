@@ -52,6 +52,15 @@ export interface JiraIssue {
   key: string;
   self: string;
   summary: string;
+  changelog?: {
+    histories: {
+      items: {
+        field: string;
+        toString: string;
+      }[];
+      created: string;
+    }[];
+  };
   status: {
     name: string;
     statusCategory: {
@@ -80,6 +89,14 @@ export interface JiraIssue {
     iconUrl: string;
   };
   storyPoints?: number | null;
+  customfield_10021?: { // Sprint field
+    id: number;
+    name: string;
+    state: 'active' | 'closed' | 'future';
+    startDate?: string;
+    endDate?: string;
+    completeDate?: string;
+  }[];
 }
 
     
