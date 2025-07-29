@@ -350,7 +350,8 @@ export async function getIssueTypesForProject(
 
         const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === row['Issue Type'].toLowerCase());
         if (!issueType) {
-            console.warn(`Invalid issue type specified: ${row['Issue Type']}`);
+            console.warn(`Invalid or missing issue type specified: "${row['Issue Type']}". Skipping this row.`);
+            return null;
         }
 
         const assigneeEmail = row['Assignee (Email)'];
@@ -372,7 +373,7 @@ export async function getIssueTypesForProject(
               version: 1,
               content: row.Description ? [{ type: 'paragraph', content: [{ type: 'text', text: row.Description }] }] : [],
             },
-            issuetype: { id: issueType?.id },
+            issuetype: { id: issueType.id },
           }
         };
 
