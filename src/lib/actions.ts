@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { JiraIssue, JiraIssueType, JiraUser } from './types';
-import Papa from 'paparse';
 import * as xlsx from 'xlsx';
 
 const FormSchema = z.object({
@@ -301,28 +300,22 @@ export async function getIssueTypesForProject(
 
     try {
         const fileBuffer = Buffer.from(await file.arrayBuffer());
-        if (file.type === 'text/csv') {
-            const csvData = fileBuffer.toString('utf-8');
-            const parsed = Papa.parse(csvData.trim(), { header: true, skipEmptyLines: true });
-            if (parsed.errors.length) {
-                return { success: false, error: `CSV Parsing Error: ${parsed.errors[0].message}` };
-            }
-            data = parsed.data;
-            headers = parsed.meta.fields;
-        } else if (file.type === 'application/vnd.ms-excel' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-            const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-            data = xlsx.utils.sheet_to_json(worksheet);
-            if (data.length > 0) {
-              headers = Object.keys(data[0]);
-            }
+        const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        data = xlsx.utils.sheet_to_json(worksheet, {
+            // This ensures that empty rows are skipped and headers are auto-detected.
+            defval: "", // Default value for empty cells
+        });
+
+        if (data.length > 0) {
+            headers = Object.keys(data[0]);
         } else {
-            return { success: false, error: 'Unsupported file type. Please upload a CSV or Excel file.' };
+            return { success: false, error: 'The uploaded file is empty or could not be read.' };
         }
     } catch(e) {
         console.error("File parsing error:", e);
-        return { success: false, error: "Failed to parse the uploaded file." };
+        return { success: false, error: "Failed to parse the uploaded file. Please ensure it's a valid CSV or Excel file." };
     }
   
     const requiredHeaders = ['Summary', 'Issue Type'];
