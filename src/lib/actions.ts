@@ -260,7 +260,10 @@ export async function getIssueTypesForProject(
   }
 
   async function findUserByEmail(email: string, domain: string, encodedCredentials: string): Promise<JiraUser | null> {
-    if (!email) return null;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      console.warn(`Invalid email format provided: "${email}". Skipping user lookup.`);
+      return null;
+    }
     try {
         const response = await fetch(`https://${domain}/rest/api/3/user/search?query=${encodeURIComponent(email)}`, {
             headers: { Authorization: `Basic ${encodedCredentials}` },
