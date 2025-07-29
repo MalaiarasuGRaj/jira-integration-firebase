@@ -348,7 +348,9 @@ export async function getIssueTypesForProject(
           return null; // Skip empty rows
         }
 
-        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === row['Issue Type'].toLowerCase());
+        const issueTypeName = row['Issue Type'].toLowerCase();
+        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName);
+        
         if (!issueType) {
             console.warn(`Invalid or missing issue type specified: "${row['Issue Type']}". Skipping this row.`);
             return null;
@@ -384,7 +386,23 @@ export async function getIssueTypesForProject(
           issueData.fields.reporter = { id: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
+          // This is the default field for Story Points in many Jira Cloud instances
           issueData.fields.customfield_10016 = storyPoints;
+        }
+
+        // Handle special fields for different issue types
+        if (issueTypeName === 'epic') {
+          // This is the default field for Epic Name in many Jira Cloud instances
+          issueData.fields.customfield_10011 = row.Summary; 
+        }
+
+        if (issueTypeName === 'subtask' || issueTypeName === 'sub-task') {
+            const parentKey = row['Parent Key'];
+            if (!parentKey) {
+                console.warn(`Sub-task "${row.Summary}" is missing a 'Parent Key'. Skipping this row.`);
+                return null;
+            }
+            issueData.fields.parent = { key: parentKey };
         }
 
         return issueData;
