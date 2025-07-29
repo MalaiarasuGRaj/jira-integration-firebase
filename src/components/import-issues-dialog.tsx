@@ -64,8 +64,6 @@ export function ImportIssuesDialog({
   const handleDownloadTemplate = () => {
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
     
-    // Using an array of arrays to represent rows, and then joining.
-    // This makes it easier to handle quotes and commas.
     const rows = [
       headers,
       [
@@ -91,9 +89,9 @@ export function ImportIssuesDialog({
         'Build the reusable header component based on the approved design mockups.',
         'assignee@example.com',
         'reporter@example.com',
-        'Subtask',
+        'Sub-task',
         '', // Subtasks often inherit story points from parent, or are not pointed
-        '', // NOTE: The Parent Key should be updated to the actual key of the parent story after it's created. Use a placeholder or leave blank if importing together.
+        'NOTE: Update with parent issue key after creation (e.g., PROJ-123)', // NOTE: The Parent Key should be updated to the actual key of the parent story after it's created. Use a placeholder or leave blank if importing together.
       ],
       [
         'Fix login button alignment on mobile',
@@ -106,12 +104,9 @@ export function ImportIssuesDialog({
       ]
     ];
 
-    // Function to safely format a cell for CSV, quoting if necessary
     const formatCell = (cell: string) => {
         const strCell = String(cell ?? '');
-        // Quote the cell if it contains a comma, a quote, or a newline.
         if (strCell.includes(',') || strCell.includes('"') || strCell.includes('\n')) {
-            // Escape any existing double quotes by doubling them up
             return `"${strCell.replace(/"/g, '""')}"`;
         }
         return strCell;

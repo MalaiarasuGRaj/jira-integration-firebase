@@ -151,7 +151,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
   
     try {
       const response = await fetch(
@@ -183,6 +183,7 @@ export async function getIssueTypesForProject(
         updated: issue.fields.updated,
         labels: issue.fields.labels,
         parent: issue.fields.parent,
+        issueType: issue.fields.issuetype,
       }));
   
       return { issues };
