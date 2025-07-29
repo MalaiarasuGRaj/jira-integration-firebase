@@ -95,10 +95,12 @@ export function ImportIssuesDialog({
     setError(null);
 
     try {
-        const fileContent = await file.arrayBuffer();
-        const contentBuffer = Buffer.from(fileContent);
-        
-        const result = await bulkCreateIssues(selectedProjectKey, contentBuffer, file.type, credentials);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('projectKey', selectedProjectKey);
+        formData.append('credentials', JSON.stringify(credentials));
+
+        const result = await bulkCreateIssues(formData);
 
         if (result.success) {
             toast({

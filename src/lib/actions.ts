@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { JiraIssue, JiraIssueType, JiraUser } from './types';
-import Papa from 'papaparse';
+import Papa from 'paparse';
 import * as xlsx from 'xlsx';
 
 const FormSchema = z.object({
@@ -276,13 +276,21 @@ export async function getIssueTypesForProject(
   }
 
   export async function bulkCreateIssues(
-    projectKey: string,
-    fileBuffer: Buffer,
-    fileType: string,
-    credentials: Credentials
+    formData: FormData,
   ): Promise<{ success: boolean; error?: string; details?: any }> {
-    if (!credentials) {
-      return { success: false, error: 'Authentication required.' };
+    const file = formData.get('file') as File;
+    const projectKey = formData.get('projectKey') as string;
+    const credentialsString = formData.get('credentials') as string;
+
+    if (!file || !projectKey || !credentialsString) {
+      return { success: false, error: "Missing required data: file, project key, or credentials." };
+    }
+    
+    let credentials;
+    try {
+      credentials = JSON.parse(credentialsString) as Credentials;
+    } catch (error) {
+      return { success: false, error: "Invalid credentials format." };
     }
     
     const { email: currentUserEmail, domain, apiToken } = credentials;
@@ -292,7 +300,8 @@ export async function getIssueTypesForProject(
     let headers: string[] | undefined;
 
     try {
-        if (fileType === 'text/csv') {
+        const fileBuffer = Buffer.from(await file.arrayBuffer());
+        if (file.type === 'text/csv') {
             const csvData = fileBuffer.toString('utf-8');
             const parsed = Papa.parse(csvData.trim(), { header: true, skipEmptyLines: true });
             if (parsed.errors.length) {
@@ -300,7 +309,7 @@ export async function getIssueTypesForProject(
             }
             data = parsed.data;
             headers = parsed.meta.fields;
-        } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        } else if (file.type === 'application/vnd.ms-excel' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
             const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
@@ -329,7 +338,7 @@ export async function getIssueTypesForProject(
         headers: { Authorization: `Basic ${encodedCredentials}` },
       });
       if (!issueTypesResponse.ok) {
-        throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct and that you have permissions to view it. Using the template CSV is also recommended.');
+        throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
       }
       const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
 
