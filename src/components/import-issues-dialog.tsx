@@ -47,12 +47,16 @@ export function ImportIssuesDialog({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (selectedFile && selectedFile.type === 'text/csv') {
-      setFile(selectedFile);
-      setError(null);
-    } else {
-      setFile(null);
-      setError('Please select a valid CSV file.');
+    if (selectedFile) {
+        const fileType = selectedFile.type;
+        const validTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+        if (validTypes.includes(fileType)) {
+            setFile(selectedFile);
+            setError(null);
+        } else {
+            setFile(null);
+            setError('Please select a valid CSV or Excel file.');
+        }
     }
   };
 
@@ -83,7 +87,7 @@ export function ImportIssuesDialog({
 
   const handleImport = async () => {
     if (!selectedProjectKey || !file || !credentials) {
-      setError('Please select a project and a CSV file to import.');
+      setError('Please select a project and a file to import.');
       return;
     }
 
@@ -91,8 +95,10 @@ export function ImportIssuesDialog({
     setError(null);
 
     try {
-        const fileContent = await file.text();
-        const result = await bulkCreateIssues(selectedProjectKey, fileContent, credentials);
+        const fileContent = await file.arrayBuffer();
+        const contentBuffer = Buffer.from(fileContent);
+        
+        const result = await bulkCreateIssues(selectedProjectKey, contentBuffer, file.type, credentials);
 
         if (result.success) {
             toast({
@@ -115,7 +121,7 @@ export function ImportIssuesDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Import Issues from CSV</DialogTitle>
+          <DialogTitle>Import Issues from File</DialogTitle>
         </DialogHeader>
         <div className="grid gap-6 py-4">
           <div className="grid gap-2">
@@ -134,8 +140,8 @@ export function ImportIssuesDialog({
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="csv-file">Upload CSV File</Label>
-            <Input id="csv-file" type="file" accept=".csv" onChange={handleFileChange} />
+            <Label htmlFor="csv-file">Upload CSV or Excel File</Label>
+            <Input id="csv-file" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={handleFileChange} />
              <Button variant="link" size="sm" className="justify-start p-0 h-auto" onClick={handleDownloadTemplate}>
                 <Download className="mr-2 h-3 w-3" />
                 Download CSV Template

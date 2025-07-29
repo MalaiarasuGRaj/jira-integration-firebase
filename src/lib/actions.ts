@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { JiraIssue, JiraIssueType, JiraUser } from './types';
 import Papa from 'papaparse';
+import * as xlsx from 'xlsx';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -276,7 +277,8 @@ export async function getIssueTypesForProject(
 
   export async function bulkCreateIssues(
     projectKey: string,
-    csvData: string,
+    fileBuffer: Buffer,
+    fileType: string,
     credentials: Credentials
   ): Promise<{ success: boolean; error?: string; details?: any }> {
     if (!credentials) {
@@ -286,16 +288,38 @@ export async function getIssueTypesForProject(
     const { email: currentUserEmail, domain, apiToken } = credentials;
     const encodedCredentials = Buffer.from(`${currentUserEmail}:${apiToken}`).toString('base64');
   
-    const parsed = Papa.parse(csvData.trim(), { header: true, skipEmptyLines: true });
-  
-    if (parsed.errors.length) {
-      return { success: false, error: `CSV Parsing Error: ${parsed.errors[0].message}` };
+    let data: any[];
+    let headers: string[] | undefined;
+
+    try {
+        if (fileType === 'text/csv') {
+            const csvData = fileBuffer.toString('utf-8');
+            const parsed = Papa.parse(csvData.trim(), { header: true, skipEmptyLines: true });
+            if (parsed.errors.length) {
+                return { success: false, error: `CSV Parsing Error: ${parsed.errors[0].message}` };
+            }
+            data = parsed.data;
+            headers = parsed.meta.fields;
+        } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            data = xlsx.utils.sheet_to_json(worksheet);
+            if (data.length > 0) {
+              headers = Object.keys(data[0]);
+            }
+        } else {
+            return { success: false, error: 'Unsupported file type. Please upload a CSV or Excel file.' };
+        }
+    } catch(e) {
+        console.error("File parsing error:", e);
+        return { success: false, error: "Failed to parse the uploaded file." };
     }
   
     const requiredHeaders = ['Summary', 'Issue Type'];
     for (const header of requiredHeaders) {
-      if (!parsed.meta.fields?.includes(header)) {
-        return { success: false, error: `Missing required CSV header: ${header}. Please use the template.` };
+      if (!headers?.includes(header)) {
+        return { success: false, error: `Missing required header: ${header}. Please use the template.` };
       }
     }
   
@@ -309,7 +333,7 @@ export async function getIssueTypesForProject(
       }
       const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
 
-      const issuePayloads = await Promise.all(parsed.data.map(async (row: any) => {
+      const issuePayloads = await Promise.all(data.map(async (row: any) => {
         if (!row.Summary || !row['Issue Type']) {
           return null; // Skip empty rows
         }
@@ -361,7 +385,7 @@ export async function getIssueTypesForProject(
       const validPayloads = issuePayloads.filter(p => p !== null);
 
       if (validPayloads.length === 0) {
-        return { success: false, error: 'No valid issues found in the CSV to import.' };
+        return { success: false, error: 'No valid issues found in the file to import.' };
       }
 
       const response = await fetch(`https://${domain}/rest/api/3/issue/bulk`, {
@@ -397,4 +421,3 @@ export async function getIssueTypesForProject(
       return { success: false, error: error instanceof Error ? error.message : 'An unexpected server error occurred.' };
     }
   }
-
