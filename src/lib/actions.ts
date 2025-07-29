@@ -281,11 +281,11 @@ export async function getIssueTypesForProject(
     formData: FormData,
   ): Promise<{ success: boolean; error?: string; details?: any }> {
     const file = formData.get('file') as File;
-    const projectKey = formData.get('projectKey') as string;
+    const projectId = formData.get('projectId') as string;
     const credentialsString = formData.get('credentials') as string;
 
-    if (!file || !projectKey || !credentialsString) {
-      return { success: false, error: "Missing required data: file, project key, or credentials." };
+    if (!file || !projectId || !credentialsString) {
+      return { success: false, error: "Missing required data: file, project ID, or credentials." };
     }
     
     let credentials;
@@ -307,8 +307,7 @@ export async function getIssueTypesForProject(
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         data = xlsx.utils.sheet_to_json(worksheet, {
-            // This ensures that empty rows are skipped and headers are auto-detected.
-            defval: "", // Default value for empty cells
+            defval: "", 
         });
 
         if (data.length > 0) {
@@ -329,14 +328,20 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      // Fetch project details to get issue types
-      const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectKey}`, {
+      // Fetch project details to get issue types and the project key
+      const projectDetailsResponse = await fetch(`https://${domain}/rest/api/3/project/${projectId}`, {
         headers: { Authorization: `Basic ${encodedCredentials}` },
       });
-      if (!issueTypesResponse.ok) {
+      if (!projectDetailsResponse.ok) {
+        throw new Error('Could not fetch project details. Please ensure the project exists and you have permissions.');
+      }
+      const projectDetails = await projectDetailsResponse.json();
+      const projectKey = projectDetails.key;
+      const projectIssueTypes: JiraIssueType[] = projectDetails.issueTypes || [];
+
+      if (!projectIssueTypes || projectIssueTypes.length === 0) {
         throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
       }
-      const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
 
       const issuePayloads = await Promise.all(data.map(async (row: any) => {
         if (!row.Summary || !row['Issue Type']) {
@@ -345,7 +350,6 @@ export async function getIssueTypesForProject(
 
         const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === row['Issue Type'].toLowerCase());
         if (!issueType) {
-            // We'll let Jira handle this error to provide a more specific message.
             console.warn(`Invalid issue type specified: ${row['Issue Type']}`);
         }
 
@@ -379,8 +383,6 @@ export async function getIssueTypesForProject(
           issueData.fields.reporter = { id: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-          // Note: This custom field ID can vary between Jira instances.
-          // 'customfield_10016' is a common default for Story Points.
           issueData.fields.customfield_10016 = storyPoints;
         }
 

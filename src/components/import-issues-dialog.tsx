@@ -40,7 +40,7 @@ export function ImportIssuesDialog({
   credentials,
 }: ImportIssuesDialogProps) {
   const { toast } = useToast();
-  const [selectedProjectKey, setSelectedProjectKey] = useState<string | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,8 +49,9 @@ export function ImportIssuesDialog({
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
         const fileType = selectedFile.type;
+        // Broader check for excel and csv mimetypes
         const validTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-        if (validTypes.includes(fileType)) {
+        if (validTypes.includes(fileType) || selectedFile.name.endsWith('.csv') || selectedFile.name.endsWith('.xlsx') || selectedFile.name.endsWith('.xls')) {
             setFile(selectedFile);
             setError(null);
         } else {
@@ -74,7 +75,7 @@ export function ImportIssuesDialog({
   };
   
   const resetState = () => {
-    setSelectedProjectKey(null);
+    setSelectedProjectId(null);
     setFile(null);
     setIsImporting(false);
     setError(null);
@@ -86,7 +87,7 @@ export function ImportIssuesDialog({
   };
 
   const handleImport = async () => {
-    if (!selectedProjectKey || !file || !credentials) {
+    if (!selectedProjectId || !file || !credentials) {
       setError('Please select a project and a file to import.');
       return;
     }
@@ -97,7 +98,7 @@ export function ImportIssuesDialog({
     try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('projectKey', selectedProjectKey);
+        formData.append('projectId', selectedProjectId);
         formData.append('credentials', JSON.stringify(credentials));
 
         const result = await bulkCreateIssues(formData);
@@ -128,13 +129,13 @@ export function ImportIssuesDialog({
         <div className="grid gap-6 py-4">
           <div className="grid gap-2">
             <Label htmlFor="project">Select Project</Label>
-            <Select onValueChange={setSelectedProjectKey} value={selectedProjectKey ?? undefined}>
+            <Select onValueChange={setSelectedProjectId} value={selectedProjectId ?? undefined}>
               <SelectTrigger id="project">
                 <SelectValue placeholder="Choose a project..." />
               </SelectTrigger>
               <SelectContent>
                 {projects.map((project) => (
-                  <SelectItem key={project.id} value={project.key}>
+                  <SelectItem key={project.id} value={project.id}>
                     {project.name} ({project.key})
                   </SelectItem>
                 ))}
@@ -142,8 +143,8 @@ export function ImportIssuesDialog({
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="csv-file">Upload CSV or Excel File</Label>
-            <Input id="csv-file" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={handleFileChange} />
+            <Label htmlFor="upload-file">Upload CSV or Excel File</Label>
+            <Input id="upload-file" type="file" accept=".csv, .xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={handleFileChange} />
              <Button variant="link" size="sm" className="justify-start p-0 h-auto" onClick={handleDownloadTemplate}>
                 <Download className="mr-2 h-3 w-3" />
                 Download CSV Template
@@ -161,7 +162,7 @@ export function ImportIssuesDialog({
           <DialogClose asChild>
             <Button variant="outline" onClick={handleClose}>Cancel</Button>
           </DialogClose>
-          <Button onClick={handleImport} disabled={!selectedProjectKey || !file || isImporting}>
+          <Button onClick={handleImport} disabled={!selectedProjectId || !file || isImporting}>
             {isImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
             {isImporting ? 'Importing...' : 'Import'}
           </Button>
