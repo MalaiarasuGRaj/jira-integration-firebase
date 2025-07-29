@@ -286,7 +286,7 @@ export async function getIssueTypesForProject(
     const { email: currentUserEmail, domain, apiToken } = credentials;
     const encodedCredentials = Buffer.from(`${currentUserEmail}:${apiToken}`).toString('base64');
   
-    const parsed = Papa.parse(csvData.trim(), { header: true });
+    const parsed = Papa.parse(csvData.trim(), { header: true, skipEmptyLines: true });
   
     if (parsed.errors.length) {
       return { success: false, error: `CSV Parsing Error: ${parsed.errors[0].message}` };
@@ -304,7 +304,9 @@ export async function getIssueTypesForProject(
       const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectKey}`, {
         headers: { Authorization: `Basic ${encodedCredentials}` },
       });
-      if (!issueTypesResponse.ok) throw new Error('Could not fetch project issue types.');
+      if (!issueTypesResponse.ok) {
+        throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct and that you have permissions to view it. Using the template CSV is also recommended.');
+      }
       const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
 
       const issuePayloads = await Promise.all(parsed.data.map(async (row: any) => {

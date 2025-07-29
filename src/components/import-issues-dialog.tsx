@@ -144,7 +144,7 @@ export function ImportIssuesDialog({
           {error && (
              <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
+                <AlertTitle>Import Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
