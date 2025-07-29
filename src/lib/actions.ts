@@ -258,4 +258,22 @@ export async function getIssueTypesForProject(
     }
   }
 
-    
+  export async function bulkCreateIssues(
+    projectKey: string,
+    csvData: string,
+    credentials: Credentials
+  ): Promise<{ success: boolean; error?: string; details?: any }> {
+    if (!credentials) {
+      return { success: false, error: 'Authentication required.' };
+    }
+  
+    // TODO: Implement the logic to parse CSV and call Jira's bulk create API.
+    // For now, this is a placeholder.
+    console.log(`Bulk creating issues for project ${projectKey} with data:`, csvData);
+  
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ success: true, details: { message: "Placeholder response: Issues would be created here." } });
+      }, 1000);
+    });
+  }

@@ -20,7 +20,8 @@ import {
   Loader2,
   X,
   ArrowRight,
-  Download
+  Download,
+  Upload,
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
@@ -43,6 +44,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@
 import { ScrollArea } from './ui/scroll-area';
 import { IssuesDialog } from './issues-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { ImportIssuesDialog } from './import-issues-dialog';
 
 function LogoutButton() {
     const { pending } = useFormStatus();
@@ -218,6 +220,9 @@ export function DashboardClient({
 
   // Download Issues
   const [isDownloading, setIsDownloading] = useState(false);
+  
+  // Import Issues
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -303,7 +308,7 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort", "Status"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort (Story Points)", "Status"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
@@ -347,9 +352,15 @@ export function DashboardClient({
     <div className="flex min-h-screen w-full flex-col bg-background">
       <Header user={user} />
       <main className="flex-1 p-8">
-        <div className="mb-6">
-            <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
-            <p className="text-muted-foreground">{filteredProjects.length} of {projects.length} projects</p>
+        <div className="mb-6 flex items-center justify-between">
+            <div>
+                <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
+                <p className="text-muted-foreground">{filteredProjects.length} of {projects.length} projects</p>
+            </div>
+            <Button onClick={() => setIsImportDialogOpen(true)}>
+                <Upload className="mr-2 h-4 w-4" />
+                Import Issues
+            </Button>
         </div>
         <div className="mb-6 flex items-center justify-between gap-4">
             <div className='relative w-full max-w-sm'>
@@ -573,10 +584,14 @@ export function DashboardClient({
         isLoading={isLoadingIssues}
         error={issuesError}
       />
+
+      {/* Import Issues Dialog */}
+      <ImportIssuesDialog
+        isOpen={isImportDialogOpen}
+        onClose={() => setIsImportDialogOpen(false)}
+        projects={projects}
+        credentials={credentials}
+      />
     </div>
   );
 }
-
-    
-
-    
