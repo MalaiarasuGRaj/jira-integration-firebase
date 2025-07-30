@@ -119,8 +119,8 @@ export function EditIssueDialog({
         if (editMetaResult.fields) {
             setIsPriorityEditable('priority' in editMetaResult.fields);
         } else {
-            // Default to true if meta fetch fails to not block user unnecessarily
-            setIsPriorityEditable(true); 
+            // Default to not showing if meta fetch fails to avoid errors
+            setIsPriorityEditable(false); 
             console.error(editMetaResult.error);
         }
         
@@ -148,21 +148,7 @@ export function EditIssueDialog({
     setIsSubmitting(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append('summary', data.summary);
-    if(data.description) formData.append('description', data.description);
-
-    const assigneeValue = data.assignee === 'unassigned' ? null : data.assignee;
-    if (assigneeValue) {
-        formData.append('assignee', assigneeValue);
-    } else {
-        formData.append('assignee', 'unassigned');
-    }
-
-    if(data.reporter) formData.append('reporter', data.reporter);
-    if(data.priority && isPriorityEditable) formData.append('priority', data.priority);
-
-    const result = await updateIssue(issue, formData, credentials);
+    const result = await updateIssue(issue, data, credentials);
 
     setIsSubmitting(false);
 
@@ -171,14 +157,14 @@ export function EditIssueDialog({
         title: 'Issue Updated',
         description: `Issue ${issue.key} has been updated successfully.`,
       });
-      const updatedAssignee = users.find(u => u.accountId === assigneeValue) || null;
+      const updatedAssignee = users.find(u => u.accountId === data.assignee) || null;
       const updatedReporter = users.find(u => u.accountId === data.reporter);
       const updatedPriority = priorities.find(p => p.id === data.priority);
 
       onSuccessfulUpdate({
         ...issue, 
         summary: data.summary,
-        description: { type: 'doc', version: 1, content: [{ type: 'paragraph', content: [{ type: 'text', text: data.description || '' }] }] },
+        description: { type: 'doc', version: 1, content: data.description ? [{ type: 'paragraph', content: [{ type: 'text', text: data.description }] }] : [] },
         assignee: updatedAssignee,
         reporter: updatedReporter || issue.reporter,
         priority: updatedPriority || issue.priority
@@ -266,41 +252,30 @@ export function EditIssueDialog({
                 />
             </div>
           </div>
-
-          <div className="grid gap-2">
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="priority">Priority</Label>
-                            <Controller
-                            name="priority"
-                            control={control}
-                            render={({ field }) => (
-                                <Select onValueChange={field.onChange} value={field.value} disabled={!isPriorityEditable}>
-                                <SelectTrigger id="priority">
-                                    <SelectValue placeholder="Select priority..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {priorities.map((priority) => (
-                                    <SelectItem key={priority.id} value={priority.id}>
-                                        {priority.name}
-                                    </SelectItem>
-                                    ))}
-                                </SelectContent>
-                                </Select>
-                            )}
-                            />
-                        </div>
-                    </TooltipTrigger>
-                    {!isPriorityEditable && (
-                        <TooltipContent>
-                            <p>Priority cannot be edited for this issue. <br/> It may not be on the 'Edit' screen in your Jira project configuration.</p>
-                        </TooltipContent>
-                    )}
-                </Tooltip>
-            </TooltipProvider>
+          
+          {isPriorityEditable && (
+            <div className="grid gap-2">
+                <Label htmlFor="priority">Priority</Label>
+                <Controller
+                name="priority"
+                control={control}
+                render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger id="priority">
+                        <SelectValue placeholder="Select priority..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {priorities.map((priority) => (
+                        <SelectItem key={priority.id} value={priority.id}>
+                            {priority.name}
+                        </SelectItem>
+                        ))}
+                    </SelectContent>
+                    </Select>
+                )}
+                />
             </div>
+          )}
           
           {error && (
             <Alert variant="destructive">
@@ -327,5 +302,3 @@ export function EditIssueDialog({
     </Dialog>
   );
 }
-
-    

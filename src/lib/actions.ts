@@ -28,6 +28,15 @@ export type State = {
 
 export type Credentials = z.infer<typeof FormSchema>;
 
+const editIssueFormSchema = z.object({
+    summary: z.string().min(1, { message: 'Summary cannot be empty.' }),
+    description: z.string().optional(),
+    assignee: z.string().optional().nullable(),
+    reporter: z.string().optional().nullable(),
+    priority: z.string().optional(),
+  });
+  
+type EditIssueFormValues = z.infer<typeof editIssueFormSchema>;
 
 export async function login(_prevState: State, formData: FormData): Promise<State> {
   const validatedFields = FormSchema.safeParse({
@@ -518,8 +527,15 @@ export async function getEditMeta(
       cache: 'no-store',
     });
     if (!response.ok) {
-      const errorText = await response.text();
-      return { error: `Failed to fetch edit metadata. Status: ${response.status}. ${errorText}` };
+        const errorText = await response.text().catch(() => `Status code: ${response.status}`);
+        // Try to parse the error for a more specific message
+        try {
+            const errorJson = JSON.parse(errorText);
+            const specificError = errorJson?.errorMessages?.join(' ') || 'Could not fetch editable fields.';
+            return { error: `Failed to fetch edit metadata: ${specificError}` };
+        } catch {
+             return { error: `Failed to fetch edit metadata. Status: ${response.status}.` };
+        }
     }
     const meta = await response.json();
     return { fields: meta.fields };
@@ -545,7 +561,7 @@ function parseDescription(description: JiraIssue['description']): string {
 
 export async function updateIssue(
   issue: JiraIssue,
-  formData: FormData,
+  data: EditIssueFormValues,
   credentials: Credentials
 ): Promise<{ success: boolean; error?: string }> {
   if (!credentials) {
@@ -555,46 +571,41 @@ export async function updateIssue(
   const { email, domain, apiToken } = credentials;
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
-  // Directly get values from FormData
-  const summary = formData.get('summary') as string;
-  const description = formData.get('description') as string | null;
-  const assigneeId = formData.get('assignee') as string | null;
-  const reporterId = formData.get('reporter') as string | null;
-  const priorityId = formData.get('priority') as string | null;
-
   const fields: any = {};
 
   // Compare summary
-  if (summary && summary !== issue.summary) {
-    fields.summary = summary;
+  if (data.summary && data.summary !== issue.summary) {
+    fields.summary = data.summary;
   }
 
   // Compare description
   const originalDescription = parseDescription(issue.description);
-  if (description !== null && description !== originalDescription) {
+  const newDescription = data.description ?? '';
+  if (newDescription !== originalDescription) {
     fields.description = {
       type: 'doc',
       version: 1,
-      content: description ? [{ type: 'paragraph', content: [{ type: 'text', text: description }] }] : [],
+      content: newDescription ? [{ type: 'paragraph', content: [{ type: 'text', text: newDescription }] }] : [],
     };
   }
 
   // Compare assignee
   const originalAssigneeId = issue.assignee?.accountId || 'unassigned';
-  if (assigneeId && assigneeId !== originalAssigneeId) {
-    fields.assignee = assigneeId === 'unassigned' ? null : { accountId: assigneeId };
+  const newAssigneeId = data.assignee || 'unassigned';
+  if (newAssigneeId !== originalAssigneeId) {
+    fields.assignee = newAssigneeId === 'unassigned' ? null : { accountId: newAssigneeId };
   }
   
   // Compare reporter
   const originalReporterId = issue.reporter?.accountId;
-  if (reporterId && reporterId !== originalReporterId) {
-    fields.reporter = { accountId: reporterId };
+  if (data.reporter && data.reporter !== originalReporterId) {
+    fields.reporter = { accountId: data.reporter };
   }
 
   // Compare priority
   const originalPriorityId = issue.priority?.id;
-  if (priorityId && priorityId !== originalPriorityId) {
-    fields.priority = { id: priorityId };
+  if (data.priority && data.priority !== originalPriorityId) {
+    fields.priority = { id: data.priority };
   }
 
   if (Object.keys(fields).length === 0) {
@@ -625,7 +636,3 @@ export async function updateIssue(
     return { success: false, error: 'Failed to connect to Jira to update the issue.' };
   }
 }
-
-    
-
-    
