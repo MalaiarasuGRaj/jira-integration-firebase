@@ -54,6 +54,20 @@ export interface JiraPriority {
   id: string;
 }
 
+export interface JiraTransition {
+    id: string;
+    name: string;
+    to: {
+      name: string;
+      id: string;
+      statusCategory: {
+        key: string;
+        name: string;
+      };
+    };
+    isAvailable: boolean;
+  }
+
 export interface JiraIssue {
   id: string;
   key: string;
@@ -75,6 +89,7 @@ export interface JiraIssue {
   };
   status: {
     name: string;
+    id: string;
     statusCategory: {
       key: string;
       name: string;

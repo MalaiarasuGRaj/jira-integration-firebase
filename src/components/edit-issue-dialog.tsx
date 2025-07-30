@@ -25,8 +25,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import type { JiraIssue, JiraProject, JiraUser, JiraPriority } from '@/lib/types';
-import { type Credentials, getUsersForProject, getPriorities, updateIssue, getEditMeta } from '@/lib/actions';
+import type { JiraIssue, JiraProject, JiraUser, JiraPriority, JiraTransition } from '@/lib/types';
+import { type Credentials, getUsersForProject, getPriorities, updateIssue, getEditMeta, getAvailableTransitions } from '@/lib/actions';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
@@ -46,6 +46,7 @@ const editIssueFormSchema = z.object({
   assignee: z.string().optional().nullable(),
   reporter: z.string().optional().nullable(),
   priority: z.string().optional(),
+  status: z.string().optional(),
 });
 
 type EditIssueFormValues = z.infer<typeof editIssueFormSchema>;
@@ -77,8 +78,13 @@ export function EditIssueDialog({
 
   const [users, setUsers] = useState<JiraUser[]>([]);
   const [priorities, setPriorities] = useState<JiraPriority[]>([]);
+  const [transitions, setTransitions] = useState<JiraTransition[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPriorityEditable, setIsPriorityEditable] = useState(false);
+  
+  const [editableFields, setEditableFields] = useState<Record<string, boolean>>({
+    priority: false,
+    status: false,
+  });
 
   const {
     handleSubmit,
@@ -93,6 +99,7 @@ export function EditIssueDialog({
       assignee: issue.assignee?.accountId || 'unassigned',
       reporter: issue.reporter?.accountId,
       priority: issue.priority?.id,
+      status: issue.status?.id,
     },
   });
   
@@ -103,7 +110,8 @@ export function EditIssueDialog({
         getUsersForProject(project.key, credentials),
         getPriorities(credentials),
         getEditMeta(issue.key, credentials),
-      ]).then(([usersResult, prioritiesResult, editMetaResult]) => {
+        getAvailableTransitions(issue.key, credentials),
+      ]).then(([usersResult, prioritiesResult, editMetaResult, transitionsResult]) => {
         if (usersResult.users) setUsers(usersResult.users);
         else console.error(usersResult.error);
         
@@ -117,17 +125,25 @@ export function EditIssueDialog({
         }
 
         if (editMetaResult.fields) {
-            setIsPriorityEditable('priority' in editMetaResult.fields);
+            setEditableFields({
+                priority: 'priority' in editMetaResult.fields,
+                status: 'status' in editMetaResult.fields,
+            });
         } else {
-            // Default to not showing if meta fetch fails to avoid errors
-            setIsPriorityEditable(false); 
+            setEditableFields({ priority: false, status: false });
             console.error(editMetaResult.error);
+        }
+
+        if (transitionsResult.transitions) {
+            setTransitions(transitionsResult.transitions);
+        } else {
+            console.error(transitionsResult.error);
         }
         
         setIsLoading(false);
       });
     }
-  }, [isOpen, issue.key, project.key, credentials]);
+  }, [isOpen, issue, project.key, credentials]);
 
   useEffect(() => {
     reset({
@@ -136,6 +152,7 @@ export function EditIssueDialog({
         assignee: issue.assignee?.accountId || 'unassigned',
         reporter: issue.reporter?.accountId,
         priority: issue.priority?.id,
+        status: issue.status?.id,
     });
   }, [issue, reset]);
 
@@ -157,9 +174,11 @@ export function EditIssueDialog({
         title: 'Issue Updated',
         description: `Issue ${issue.key} has been updated successfully.`,
       });
+      // Refetch the entire issue to get the most up-to-date state
       const updatedAssignee = users.find(u => u.accountId === data.assignee) || null;
       const updatedReporter = users.find(u => u.accountId === data.reporter);
       const updatedPriority = priorities.find(p => p.id === data.priority);
+      const updatedTransition = transitions.find(t => t.id === data.status);
 
       onSuccessfulUpdate({
         ...issue, 
@@ -167,7 +186,8 @@ export function EditIssueDialog({
         description: { type: 'doc', version: 1, content: data.description ? [{ type: 'paragraph', content: [{ type: 'text', text: data.description }] }] : [] },
         assignee: updatedAssignee,
         reporter: updatedReporter || issue.reporter,
-        priority: updatedPriority || issue.priority
+        priority: updatedPriority || issue.priority,
+        status: updatedTransition ? updatedTransition.to : issue.status,
       });
       onClose();
     } else {
@@ -253,29 +273,58 @@ export function EditIssueDialog({
             </div>
           </div>
           
-          {isPriorityEditable && (
-            <div className="grid gap-2">
-                <Label htmlFor="priority">Priority</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {editableFields.priority && (
+                <div className="grid gap-2">
+                    <Label htmlFor="priority">Priority</Label>
+                    <Controller
+                    name="priority"
+                    control={control}
+                    render={({ field }) => (
+                        <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger id="priority">
+                            <SelectValue placeholder="Select priority..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {priorities.map((priority) => (
+                            <SelectItem key={priority.id} value={priority.id}>
+                                {priority.name}
+                            </SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+                    )}
+                    />
+                </div>
+            )}
+             <div className="grid gap-2">
+                <Label htmlFor="status">Status</Label>
                 <Controller
-                name="priority"
+                name="status"
                 control={control}
                 render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger id="priority">
-                        <SelectValue placeholder="Select priority..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {priorities.map((priority) => (
-                        <SelectItem key={priority.id} value={priority.id}>
-                            {priority.name}
-                        </SelectItem>
-                        ))}
-                    </SelectContent>
+                        <SelectTrigger id="status">
+                            <SelectValue placeholder="Select status..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {/* The current status is always an option */}
+                            <SelectItem key={issue.status.id} value={issue.status.id}>
+                                {issue.status.name}
+                            </SelectItem>
+                            {/* Available transitions */}
+                            {transitions.map((transition) => (
+                                <SelectItem key={transition.id} value={transition.id}>
+                                    {transition.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
                     </Select>
                 )}
                 />
             </div>
-          )}
+
+            </div>
           
           {error && (
             <Alert variant="destructive">

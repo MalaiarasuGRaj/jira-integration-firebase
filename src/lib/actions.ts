@@ -4,7 +4,7 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import type { JiraIssue, JiraIssueType, JiraUser, JiraPriority } from './types';
+import type { JiraIssue, JiraIssueType, JiraUser, JiraPriority, JiraTransition } from './types';
 import * as xlsx from 'xlsx';
 
 const FormSchema = z.object({
@@ -16,16 +16,6 @@ const FormSchema = z.object({
   apiToken: z.string().min(1, { message: 'Jira API token is required.' }),
 });
 
-export type State = {
-  errors?: {
-    email?: string[];
-    domain?: string[];
-    apiToken?: string[];
-    api?: string[];
-  };
-  message?: string | null;
-};
-
 export type Credentials = z.infer<typeof FormSchema>;
 
 const editIssueFormSchema = z.object({
@@ -34,6 +24,7 @@ const editIssueFormSchema = z.object({
     assignee: z.string().optional().nullable(),
     reporter: z.string().optional().nullable(),
     priority: z.string().optional(),
+    status: z.string().optional(),
   });
   
 type EditIssueFormValues = z.infer<typeof editIssueFormSchema>;
@@ -531,7 +522,7 @@ export async function getEditMeta(
         // Try to parse the error for a more specific message
         try {
             const errorJson = JSON.parse(errorText);
-            const specificError = errorJson?.errorMessages?.join(' ') || 'Could not fetch editable fields.';
+            const specificError = errorJson?.errorMessages?.join(' ') || "Field 'priority' cannot be set. It is not on the appropriate screen, or unknown.";
             return { error: `Failed to fetch edit metadata: ${specificError}` };
         } catch {
              return { error: `Failed to fetch edit metadata. Status: ${response.status}.` };
@@ -544,6 +535,67 @@ export async function getEditMeta(
     return { error: 'Could not connect to Jira to fetch edit metadata.' };
   }
 }
+
+export async function getAvailableTransitions(
+    issueKey: string,
+    credentials: Credentials
+  ): Promise<{ transitions?: JiraTransition[]; error?: string }> {
+    if (!credentials) {
+      return { error: 'Authentication required.' };
+    }
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/issue/${issueKey}/transitions`, {
+        headers: { Authorization: `Basic ${encodedCredentials}` },
+        cache: 'no-store',
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return { error: `Failed to fetch transitions. Status: ${response.status}. ${errorText}` };
+      }
+      const data = await response.json();
+      return { transitions: data.transitions };
+    } catch (error) {
+      console.error('Error fetching transitions:', error);
+      return { error: 'Could not connect to Jira to fetch transitions.' };
+    }
+}
+
+export async function transitionIssue(
+    issueKey: string,
+    transitionId: string,
+    credentials: Credentials
+  ): Promise<{ success: boolean; error?: string }> {
+    if (!credentials) {
+      return { success: false, error: 'Authentication required.' };
+    }
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/issue/${issueKey}/transitions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+        body: JSON.stringify({ transition: { id: transitionId } }),
+      });
+  
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while transitioning the issue.';
+        return { success: false, error: errorMessage };
+      }
+  
+      return { success: true };
+    } catch (error) {
+      console.error('Error transitioning issue:', error);
+      return { success: false, error: 'Could not connect to Jira to transition the issue.' };
+    }
+  }
 
 
 function parseDescription(description: JiraIssue['description']): string {
@@ -572,7 +624,14 @@ export async function updateIssue(
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
   const fields: any = {};
+  let transitionResult: { success: boolean; error?: string } = { success: true };
 
+  // Handle status transition separately
+  if (data.status && data.status !== issue.status.id) {
+    transitionResult = await transitionIssue(issue.key, data.status, credentials);
+  }
+
+  // Handle other field updates
   // Compare summary
   if (data.summary && data.summary !== issue.summary) {
     fields.summary = data.summary;
@@ -608,31 +667,48 @@ export async function updateIssue(
     fields.priority = { id: data.priority };
   }
 
-  if (Object.keys(fields).length === 0) {
-    return { success: true }; // No changes to submit
-  }
+  // Only call the update API if there are fields to update
+  if (Object.keys(fields).length > 0) {
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/issue/${issue.key}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+        body: JSON.stringify({ fields }),
+      });
 
-  try {
-    const response = await fetch(`https://${domain}/rest/api/3/issue/${issue.key}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${encodedCredentials}`,
-      },
-      body: JSON.stringify({ fields }),
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
-      console.error("Jira API Error:", JSON.stringify(errorBody, null, 2));
-      const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
-      const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
-      return { success: false, error: `${errorMessage} ${fieldErrors}`.trim() };
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        console.error("Jira API Error:", JSON.stringify(errorBody, null, 2));
+        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
+        const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
+        
+        // Combine errors from transition and field updates
+        const combinedError = [transitionResult.error, `${errorMessage} ${fieldErrors}`.trim()].filter(Boolean).join(' | ');
+        return { success: false, error: combinedError };
+      }
+    } catch (error) {
+      console.error('Error updating issue:', error);
+       const combinedError = [transitionResult.error, 'Failed to connect to Jira to update the issue.'].filter(Boolean).join(' | ');
+      return { success: false, error: combinedError };
     }
-
-    return { success: true };
-  } catch (error) {
-    console.error('Error updating issue:', error);
-    return { success: false, error: 'Failed to connect to Jira to update the issue.' };
   }
+
+  if (!transitionResult.success) {
+      return transitionResult;
+  }
+  
+  return { success: true };
 }
+
+export type State = {
+    errors?: {
+      email?: string[];
+      domain?: string[];
+      apiToken?: string[];
+      api?: string[];
+    };
+    message?: string | null;
+  };
