@@ -568,7 +568,6 @@ export async function updateIssue(
         content: [{ type: 'paragraph', content: [{ type: 'text', text: changes.description }] }],
       };
     } else {
-      // Jira API to clear description is to set it to an empty string, not null
        fields.description = "";
     }
   }
@@ -592,7 +591,6 @@ export async function updateIssue(
     fields.priority = { id: changes.priority };
   }
 
-  // If no fields have changed, we can return success without an API call
   if (Object.keys(fields).length === 0) {
     return { success: true };
   }
