@@ -40,7 +40,7 @@ export function ImportIssuesDialog({
   credentials,
 }: ImportIssuesDialogProps) {
   const { toast } = useToast();
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<JiraProject | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -125,7 +125,7 @@ export function ImportIssuesDialog({
   };
   
   const resetState = () => {
-    setSelectedProjectId(null);
+    setSelectedProject(null);
     setFile(null);
     setIsImporting(false);
     setError(null);
@@ -137,7 +137,7 @@ export function ImportIssuesDialog({
   };
 
   const handleImport = async () => {
-    if (!selectedProjectId || !file || !credentials) {
+    if (!selectedProject || !file || !credentials) {
       setError('Please select a project and a file to import.');
       return;
     }
@@ -148,7 +148,8 @@ export function ImportIssuesDialog({
     try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('projectId', selectedProjectId);
+        formData.append('projectId', selectedProject.id);
+        formData.append('projectKey', selectedProject.key);
         formData.append('credentials', JSON.stringify(credentials));
 
         const result = await bulkCreateIssues(formData);
@@ -179,7 +180,10 @@ export function ImportIssuesDialog({
         <div className="grid gap-6 py-4">
           <div className="grid gap-2">
             <Label htmlFor="project">Select Project</Label>
-            <Select onValueChange={setSelectedProjectId} value={selectedProjectId ?? undefined}>
+            <Select onValueChange={(value) => {
+              const project = projects.find(p => p.id === value);
+              setSelectedProject(project || null);
+            }}>
               <SelectTrigger id="project">
                 <SelectValue placeholder="Choose a project..." />
               </SelectTrigger>
@@ -212,7 +216,7 @@ export function ImportIssuesDialog({
           <DialogClose asChild>
             <Button variant="outline" onClick={handleClose}>Cancel</Button>
           </DialogClose>
-          <Button onClick={handleImport} disabled={!selectedProjectId || !file || isImporting}>
+          <Button onClick={handleImport} disabled={!selectedProject || !file || isImporting}>
             {isImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
             {isImporting ? 'Importing...' : 'Import'}
           </Button>

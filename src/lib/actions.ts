@@ -4,7 +4,7 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import type { JiraIssue, JiraIssueType, JiraUser } from './types';
+import type { JiraIssue, JiraIssueType, JiraUser, JiraPriority } from './types';
 import * as xlsx from 'xlsx';
 
 const FormSchema = z.object({
@@ -151,7 +151,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,description';
   
     try {
       const response = await fetch(
@@ -175,6 +175,7 @@ export async function getIssueTypesForProject(
         key: issue.key,
         self: issue.self,
         summary: issue.fields.summary,
+        description: issue.fields.description,
         status: issue.fields.status,
         assignee: issue.fields.assignee,
         reporter: issue.fields.reporter,
@@ -206,7 +207,7 @@ export async function getIssueTypesForProject(
   
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016,description';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -236,6 +237,7 @@ export async function getIssueTypesForProject(
           key: issue.key,
           self: issue.self,
           summary: issue.fields.summary,
+          description: issue.fields.description,
           status: issue.fields.status,
           assignee: issue.fields.assignee,
           reporter: issue.fields.reporter,
@@ -283,10 +285,11 @@ export async function getIssueTypesForProject(
   ): Promise<{ success: boolean; error?: string; details?: any }> {
     const file = formData.get('file') as File;
     const projectId = formData.get('projectId') as string;
+    const projectKey = formData.get('projectKey') as string;
     const credentialsString = formData.get('credentials') as string;
 
-    if (!file || !projectId || !credentialsString) {
-      return { success: false, error: "Missing required data: file, project ID, or credentials." };
+    if (!file || !projectId || !credentialsString || !projectKey) {
+      return { success: false, error: "Missing required data: file, project ID, project key, or credentials." };
     }
     
     let credentials;
@@ -330,15 +333,13 @@ export async function getIssueTypesForProject(
   
     try {
       // Fetch project details to get issue types and the project key
-      const projectDetailsResponse = await fetch(`https://${domain}/rest/api/3/project/${projectId}`, {
+      const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`, {
         headers: { Authorization: `Basic ${encodedCredentials}` },
       });
-      if (!projectDetailsResponse.ok) {
-        throw new Error('Could not fetch project details. Please ensure the project exists and you have permissions.');
+      if (!issueTypesResponse.ok) {
+        throw new Error('Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
-      const projectDetails = await projectDetailsResponse.json();
-      const projectKey = projectDetails.key;
-      const projectIssueTypes: JiraIssueType[] = projectDetails.issueTypes || [];
+      const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
 
       if (!projectIssueTypes || projectIssueTypes.length === 0) {
         throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
@@ -353,8 +354,8 @@ export async function getIssueTypesForProject(
         const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName);
         
         if (!issueType) {
-            console.warn(`Invalid or missing issue type specified: "${row['Issue Type']}". Skipping this row.`);
-            return null;
+          console.warn(`Invalid or missing issue type specified: "${row['Issue Type']}" for summary "${row.Summary}". Skipping this row.`);
+          return null;
         }
 
         const assigneeEmail = row['Assignee (Email)'];
@@ -391,9 +392,7 @@ export async function getIssueTypesForProject(
           issueData.fields.customfield_10016 = storyPoints;
         }
 
-        // Handle special fields for different issue types
         if (issueTypeName === 'epic') {
-          // This is the default field for Epic Name in many Jira Cloud instances
           issueData.fields.customfield_10011 = row.Summary; 
         }
 
@@ -448,3 +447,136 @@ export async function getIssueTypesForProject(
       return { success: false, error: error instanceof Error ? error.message : 'An unexpected server error occurred.' };
     }
   }
+
+export async function getUsersForProject(
+    projectKey: string,
+    credentials: Credentials
+  ): Promise<{ users?: JiraUser[]; error?: string }> {
+    if (!credentials) {
+      return { error: 'Authentication required.' };
+    }
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/user/assignable/search?project=${projectKey}`, {
+          headers: { Authorization: `Basic ${encodedCredentials}` },
+          cache: 'no-store',
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return { error: `Failed to fetch users. Status: ${response.status}. ${errorText}` };
+      }
+      const users: JiraUser[] = await response.json();
+      return { users };
+    } catch (error) {
+      console.error('Error fetching assignable users:', error);
+      return { error: 'Could not connect to Jira to fetch users.' };
+    }
+}
+
+export async function getPriorities(
+    credentials: Credentials
+  ): Promise<{ priorities?: JiraPriority[]; error?: string }> {
+    if (!credentials) {
+      return { error: 'Authentication required.' };
+    }
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/priority`, {
+          headers: { Authorization: `Basic ${encodedCredentials}` },
+          cache: 'no-store',
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return { error: `Failed to fetch priorities. Status: ${response.status}. ${errorText}` };
+      }
+      const priorities: JiraPriority[] = await response.json();
+      return { priorities };
+    } catch (error) {
+      console.error('Error fetching priorities:', error);
+      return { error: 'Could not connect to Jira to fetch priorities.' };
+    }
+}
+
+const updateIssueSchema = z.object({
+  summary: z.string().min(1, 'Summary is required.'),
+  description: z.string().optional(),
+  assignee: z.string().optional().nullable(),
+  reporter: z.string().optional().nullable(),
+  priority: z.string().optional(),
+});
+
+export async function updateIssue(
+  issueKey: string,
+  formData: FormData,
+  credentials: Credentials
+): Promise<{ success: boolean; error?: string }> {
+  if (!credentials) {
+    return { success: false, error: 'Authentication required.' };
+  }
+  const validatedFields = updateIssueSchema.safeParse({
+    summary: formData.get('summary'),
+    description: formData.get('description'),
+    assignee: formData.get('assignee'),
+    reporter: formData.get('reporter'),
+    priority: formData.get('priority'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      error: validatedFields.error.flatten().fieldErrors.summary?.[0] || 'Invalid data provided.',
+    };
+  }
+
+  const { email, domain, apiToken } = credentials;
+  const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+  const { summary, description, assignee, reporter, priority } = validatedFields.data;
+
+  const fields: any = {
+    summary,
+  };
+
+  if (description) {
+    fields.description = {
+      type: 'doc',
+      version: 1,
+      content: [{ type: 'paragraph', content: [{ type: 'text', text: description }] }],
+    };
+  } else {
+    fields.description = null;
+  }
+  
+  fields.assignee = assignee ? { id: assignee } : null;
+  fields.reporter = reporter ? { id: reporter } : null;
+
+  if (priority) {
+    fields.priority = { id: priority };
+  }
+
+  try {
+    const response = await fetch(`https://${domain}/rest/api/3/issue/${issueKey}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${encodedCredentials}`,
+      },
+      body: JSON.stringify({ fields }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
+      return { success: false, error: errorMessage };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating issue:', error);
+    return { success: false, error: 'Failed to connect to Jira to update the issue.' };
+  }
+}

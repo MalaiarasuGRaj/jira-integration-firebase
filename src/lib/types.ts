@@ -47,11 +47,23 @@ export interface JiraIssueType {
   hierarchyLevel: number;
 }
 
+export interface JiraPriority {
+  self: string;
+  iconUrl: string;
+  name: string;
+  id: string;
+}
+
 export interface JiraIssue {
   id: string;
   key: string;
   self: string;
   summary: string;
+  description?: {
+    type: 'doc',
+    version: 1,
+    content: any[],
+  } | null;
   changelog?: {
     histories: {
       items: {
@@ -72,6 +84,7 @@ export interface JiraIssue {
   reporter: JiraUser;
   priority: {
     name: string;
+    id: string;
     iconUrl: string;
   };
   created: string;

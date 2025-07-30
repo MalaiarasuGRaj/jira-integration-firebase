@@ -253,6 +253,14 @@ export function DashboardClient({
     }
     setIsLoadingIssueTypes(false);
   };
+  
+  const handleIssueUpdate = (updatedIssue: JiraIssue) => {
+    setIssues(prevIssues => 
+      prevIssues.map(issue => 
+        issue.id === updatedIssue.id ? { ...issue, ...updatedIssue } : issue
+      )
+    );
+  };
 
   const handleViewIssuesClick = async (issueType: JiraIssueType) => {
     if (!credentials || !selectedProject) return;
@@ -583,6 +591,8 @@ export function DashboardClient({
         issues={issues}
         isLoading={isLoadingIssues}
         error={issuesError}
+        credentials={credentials}
+        onIssueUpdate={handleIssueUpdate}
       />
 
       {/* Import Issues Dialog */}
