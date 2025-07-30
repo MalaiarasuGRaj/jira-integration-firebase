@@ -501,14 +501,6 @@ export async function getPriorities(
     }
 }
 
-const updateIssueSchema = z.object({
-  summary: z.string().min(1, 'Summary is required.'),
-  description: z.string().optional(),
-  assignee: z.string().optional().nullable(),
-  reporter: z.string().optional().nullable(),
-  priority: z.string().optional(),
-});
-
 function parseDescription(description: JiraIssue['description']): string {
   if (!description || !description.content) return '';
   return description.content
@@ -522,7 +514,6 @@ function parseDescription(description: JiraIssue['description']): string {
     .join('\n');
 }
 
-
 export async function updateIssue(
   issue: JiraIssue,
   formData: FormData,
@@ -532,67 +523,52 @@ export async function updateIssue(
     return { success: false, error: 'Authentication required.' };
   }
   
-  const validatedFields = updateIssueSchema.safeParse({
-    summary: formData.get('summary'),
-    description: formData.get('description'),
-    assignee: formData.get('assignee'),
-    reporter: formData.get('reporter'),
-    priority: formData.get('priority'),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      success: false,
-      error: validatedFields.error.flatten().fieldErrors.summary?.[0] || 'Invalid data provided.',
-    };
-  }
-
   const { email, domain, apiToken } = credentials;
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
-  const changes = validatedFields.data;
+  const summary = formData.get('summary') as string;
+  const description = formData.get('description') as string | null;
+  const assigneeId = formData.get('assignee') as string | null;
+  const reporterId = formData.get('reporter') as string | null;
+  const priorityId = formData.get('priority') as string | null;
+
   const fields: any = {};
 
   // Compare summary
-  if (changes.summary && changes.summary !== issue.summary) {
-    fields.summary = changes.summary;
+  if (summary && summary !== issue.summary) {
+    fields.summary = summary;
   }
 
   // Compare description
   const originalDescription = parseDescription(issue.description);
-  if (changes.description !== undefined && changes.description !== originalDescription) {
-    if (changes.description) {
-      fields.description = {
-        type: 'doc',
-        version: 1,
-        content: [{ type: 'paragraph', content: [{ type: 'text', text: changes.description }] }],
-      };
-    } else {
-       fields.description = "";
-    }
+  if (description !== null && description !== originalDescription) {
+    fields.description = {
+      type: 'doc',
+      version: 1,
+      content: description ? [{ type: 'paragraph', content: [{ type: 'text', text: description }] }] : [],
+    };
   }
 
   // Compare assignee
-  const originalAssigneeId = issue.assignee?.accountId || null;
-  const newAssigneeId = changes.assignee === 'unassigned' ? null : changes.assignee;
-  if (newAssigneeId !== originalAssigneeId) {
-    fields.assignee = newAssigneeId ? { accountId: newAssigneeId } : null;
+  const originalAssigneeId = issue.assignee?.accountId || 'unassigned';
+  if (assigneeId && assigneeId !== originalAssigneeId) {
+    fields.assignee = assigneeId === 'unassigned' ? null : { accountId: assigneeId };
   }
   
   // Compare reporter
   const originalReporterId = issue.reporter?.accountId;
-  if (changes.reporter && changes.reporter !== originalReporterId) {
-    fields.reporter = { accountId: changes.reporter };
+  if (reporterId && reporterId !== originalReporterId) {
+    fields.reporter = { accountId: reporterId };
   }
 
   // Compare priority
   const originalPriorityId = issue.priority?.id;
-  if (changes.priority && changes.priority !== originalPriorityId) {
-    fields.priority = { id: changes.priority };
+  if (priorityId && priorityId !== originalPriorityId) {
+    fields.priority = { id: priorityId };
   }
 
   if (Object.keys(fields).length === 0) {
-    return { success: true };
+    return { success: true }; // No changes to submit
   }
 
   try {
@@ -606,9 +582,11 @@ export async function updateIssue(
     });
 
     if (!response.ok) {
-      const errorBody = await response.json();
+      const errorBody = await response.json().catch(() => ({}));
+      console.error("Jira API Error:", JSON.stringify(errorBody, null, 2));
       const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
-      return { success: false, error: errorMessage };
+      const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
+      return { success: false, error: `${errorMessage} ${fieldErrors}`.trim() };
     }
 
     return { success: true };
@@ -617,3 +595,5 @@ export async function updateIssue(
     return { success: false, error: 'Failed to connect to Jira to update the issue.' };
   }
 }
+
+    
