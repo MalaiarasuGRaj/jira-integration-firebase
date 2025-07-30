@@ -350,7 +350,7 @@ export async function getIssueTypesForProject(
           return null; // Skip empty rows
         }
 
-        const issueTypeName = String(row['Issue Type']).toLowerCase();
+        const issueTypeName = String(row['Issue Type']).trim().toLowerCase();
         const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName);
         
         if (!issueType) {

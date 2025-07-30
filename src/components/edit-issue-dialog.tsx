@@ -145,7 +145,6 @@ export function EditIssueDialog({
     if (assigneeValue) {
         formData.append('assignee', assigneeValue);
     } else {
-        // Handle case where assignee is explicitly unassigned
         formData.append('assignee', 'unassigned');
     }
 
@@ -161,13 +160,17 @@ export function EditIssueDialog({
         title: 'Issue Updated',
         description: `Issue ${issue.key} has been updated successfully.`,
       });
+      const updatedAssignee = users.find(u => u.accountId === assigneeValue) || null;
+      const updatedReporter = users.find(u => u.accountId === data.reporter);
+      const updatedPriority = priorities.find(p => p.id === data.priority);
+
       onSuccessfulUpdate({
         ...issue, 
         summary: data.summary,
         description: { type: 'doc', version: 1, content: [{ type: 'paragraph', content: [{ type: 'text', text: data.description || '' }] }] },
-        assignee: users.find(u => u.accountId === assigneeValue) || null,
-        reporter: users.find(u => u.accountId === data.reporter)!,
-        priority: priorities.find(p => p.id === data.priority) || issue.priority
+        assignee: updatedAssignee,
+        reporter: updatedReporter || issue.reporter,
+        priority: updatedPriority || issue.priority
       });
       onClose();
     } else {
