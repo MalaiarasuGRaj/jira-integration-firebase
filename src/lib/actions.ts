@@ -382,10 +382,10 @@ export async function getIssueTypesForProject(
         };
 
         if (assignee?.accountId) {
-          issueData.fields.assignee = { id: assignee.accountId };
+          issueData.fields.assignee = { accountId: assignee.accountId };
         }
         if (reporter?.accountId) {
-          issueData.fields.reporter = { id: reporter.accountId };
+          issueData.fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
           // This is the default field for Story Points in many Jira Cloud instances
@@ -509,14 +509,29 @@ const updateIssueSchema = z.object({
   priority: z.string().optional(),
 });
 
+function parseDescription(description: JiraIssue['description']): string {
+  if (!description || !description.content) return '';
+  return description.content
+    .filter(block => block.type === 'paragraph')
+    .map(block => 
+      block.content
+        ?.filter(inline => inline.type === 'text')
+        .map(inline => inline.text)
+        .join('') || ''
+    )
+    .join('\n');
+}
+
+
 export async function updateIssue(
-  issueKey: string,
+  issue: JiraIssue,
   formData: FormData,
   credentials: Credentials
 ): Promise<{ success: boolean; error?: string }> {
   if (!credentials) {
     return { success: false, error: 'Authentication required.' };
   }
+  
   const validatedFields = updateIssueSchema.safeParse({
     summary: formData.get('summary'),
     description: formData.get('description'),
@@ -535,31 +550,55 @@ export async function updateIssue(
   const { email, domain, apiToken } = credentials;
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
-  const { summary, description, assignee, reporter, priority } = validatedFields.data;
+  const changes = validatedFields.data;
+  const fields: any = {};
 
-  const fields: any = {
-    summary,
-  };
+  // Compare summary
+  if (changes.summary && changes.summary !== issue.summary) {
+    fields.summary = changes.summary;
+  }
 
-  if (description) {
-    fields.description = {
-      type: 'doc',
-      version: 1,
-      content: [{ type: 'paragraph', content: [{ type: 'text', text: description }] }],
-    };
-  } else {
-    fields.description = null;
+  // Compare description
+  const originalDescription = parseDescription(issue.description);
+  if (changes.description !== undefined && changes.description !== originalDescription) {
+    if (changes.description) {
+      fields.description = {
+        type: 'doc',
+        version: 1,
+        content: [{ type: 'paragraph', content: [{ type: 'text', text: changes.description }] }],
+      };
+    } else {
+      // Jira API to clear description is to set it to an empty string, not null
+       fields.description = "";
+    }
+  }
+
+  // Compare assignee
+  const originalAssigneeId = issue.assignee?.accountId || null;
+  const newAssigneeId = changes.assignee === 'unassigned' ? null : changes.assignee;
+  if (newAssigneeId !== originalAssigneeId) {
+    fields.assignee = newAssigneeId ? { accountId: newAssigneeId } : null;
   }
   
-  fields.assignee = assignee ? { accountId: assignee } : null;
-  fields.reporter = reporter ? { accountId: reporter } : null;
+  // Compare reporter
+  const originalReporterId = issue.reporter?.accountId;
+  if (changes.reporter && changes.reporter !== originalReporterId) {
+    fields.reporter = { accountId: changes.reporter };
+  }
 
-  if (priority) {
-    fields.priority = { id: priority };
+  // Compare priority
+  const originalPriorityId = issue.priority?.id;
+  if (changes.priority && changes.priority !== originalPriorityId) {
+    fields.priority = { id: changes.priority };
+  }
+
+  // If no fields have changed, we can return success without an API call
+  if (Object.keys(fields).length === 0) {
+    return { success: true };
   }
 
   try {
-    const response = await fetch(`https://${domain}/rest/api/3/issue/${issueKey}`, {
+    const response = await fetch(`https://${domain}/rest/api/3/issue/${issue.key}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

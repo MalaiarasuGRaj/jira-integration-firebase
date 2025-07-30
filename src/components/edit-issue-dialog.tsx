@@ -88,7 +88,7 @@ export function EditIssueDialog({
     defaultValues: {
       summary: issue.summary,
       description: parseDescription(issue.description),
-      assignee: issue.assignee?.accountId || null,
+      assignee: issue.assignee?.accountId || 'unassigned',
       reporter: issue.reporter?.accountId,
       priority: issue.priority?.id,
     },
@@ -116,7 +116,7 @@ export function EditIssueDialog({
     reset({
         summary: issue.summary,
         description: parseDescription(issue.description),
-        assignee: issue.assignee?.accountId || null,
+        assignee: issue.assignee?.accountId || 'unassigned',
         reporter: issue.reporter?.accountId,
         priority: issue.priority?.id,
     });
@@ -135,17 +135,18 @@ export function EditIssueDialog({
     formData.append('summary', data.summary);
     if(data.description) formData.append('description', data.description);
 
-    const assigneeId = data.assignee === 'unassigned' ? null : data.assignee;
-    if(assigneeId) {
-      formData.append('assignee', assigneeId);
+    const assigneeValue = data.assignee === 'unassigned' ? null : data.assignee;
+    if (assigneeValue) {
+        formData.append('assignee', assigneeValue);
     } else {
-        formData.append('assignee', '');
+        // Handle case where assignee is explicitly unassigned
+        formData.append('assignee', 'unassigned');
     }
 
     if(data.reporter) formData.append('reporter', data.reporter);
     if(data.priority) formData.append('priority', data.priority);
 
-    const result = await updateIssue(issue.key, formData, credentials);
+    const result = await updateIssue(issue, formData, credentials);
 
     setIsSubmitting(false);
 
@@ -158,7 +159,7 @@ export function EditIssueDialog({
         ...issue, 
         summary: data.summary,
         description: { type: 'doc', version: 1, content: [{ type: 'paragraph', content: [{ type: 'text', text: data.description || '' }] }] },
-        assignee: users.find(u => u.accountId === assigneeId) || null,
+        assignee: users.find(u => u.accountId === assigneeValue) || null,
         reporter: users.find(u => u.accountId === data.reporter)!,
         priority: priorities.find(p => p.id === data.priority) || issue.priority
       });
@@ -195,7 +196,7 @@ export function EditIssueDialog({
             <Controller
               name="description"
               control={control}
-              render={({ field }) => <Textarea id="description" {...field} rows={6} />}
+              render={({ field }) => <Textarea id="description" {...field} value={field.value ?? ''} rows={6} />}
             />
           </div>
 
