@@ -332,7 +332,7 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      // Fetch project details to get issue types and the project key
+      // Fetch project details to get issue types
       const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`, {
         headers: { Authorization: `Basic ${encodedCredentials}` },
       });
@@ -350,7 +350,7 @@ export async function getIssueTypesForProject(
           return null; // Skip empty rows
         }
 
-        const issueTypeName = row['Issue Type'].toLowerCase();
+        const issueTypeName = String(row['Issue Type']).toLowerCase();
         const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName);
         
         if (!issueType) {
@@ -396,7 +396,7 @@ export async function getIssueTypesForProject(
           issueData.fields.customfield_10011 = row.Summary; 
         }
 
-        if (issueTypeName === 'subtask' || issueTypeName === 'sub-task') {
+        if (issueTypeName === 'sub-task' || issueTypeName === 'subtask') {
             const parentKey = row['Parent Key'];
             if (!parentKey) {
                 console.warn(`Sub-task "${row.Summary}" is missing a 'Parent Key'. Skipping this row.`);

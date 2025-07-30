@@ -134,7 +134,14 @@ export function EditIssueDialog({
     const formData = new FormData();
     formData.append('summary', data.summary);
     if(data.description) formData.append('description', data.description);
-    if(data.assignee) formData.append('assignee', data.assignee);
+
+    const assigneeId = data.assignee === 'unassigned' ? null : data.assignee;
+    if(assigneeId) {
+      formData.append('assignee', assigneeId);
+    } else {
+        formData.append('assignee', '');
+    }
+
     if(data.reporter) formData.append('reporter', data.reporter);
     if(data.priority) formData.append('priority', data.priority);
 
@@ -151,7 +158,7 @@ export function EditIssueDialog({
         ...issue, 
         summary: data.summary,
         description: { type: 'doc', version: 1, content: [{ type: 'paragraph', content: [{ type: 'text', text: data.description || '' }] }] },
-        assignee: users.find(u => u.accountId === data.assignee) || null,
+        assignee: users.find(u => u.accountId === assigneeId) || null,
         reporter: users.find(u => u.accountId === data.reporter)!,
         priority: priorities.find(p => p.id === data.priority) || issue.priority
       });
@@ -199,12 +206,12 @@ export function EditIssueDialog({
                 name="assignee"
                 control={control}
                 render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value || ''}>
+                    <Select onValueChange={field.onChange} value={field.value || 'unassigned'}>
                     <SelectTrigger id="assignee">
                         <SelectValue placeholder="Select assignee..." />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="">Unassigned</SelectItem>
+                        <SelectItem value="unassigned">Unassigned</SelectItem>
                         {users.map((user) => (
                         <SelectItem key={user.accountId} value={user.accountId}>
                             {user.displayName}
