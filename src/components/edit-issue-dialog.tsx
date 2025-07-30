@@ -187,13 +187,20 @@ export function EditIssueDialog({
         assignee: updatedAssignee,
         reporter: updatedReporter || issue.reporter,
         priority: updatedPriority || issue.priority,
-        status: updatedTransition ? updatedTransition.to : issue.status,
+        status: updatedTransition ? { ...updatedTransition.to, name: updatedTransition.to.name || issue.status.name } : issue.status,
       });
       onClose();
     } else {
       setError(result.error || 'An unknown error occurred.');
     }
   };
+  
+  const allTransitions = [
+    // Include the current status as a non-transition option
+    { id: issue.status.id, name: issue.status.name, isCurrent: true },
+    // Include available transitions, filtering out any that lead to the same status name
+    ...transitions.filter(t => t.name !== issue.status.name),
+  ];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -256,7 +263,7 @@ export function EditIssueDialog({
                 name="reporter"
                 control={control}
                 render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value || ''}>
+                    <Select onValueChange={field.onChange} value={field.value || ''} disabled>
                     <SelectTrigger id="reporter">
                         <SelectValue placeholder="Select reporter..." />
                     </SelectTrigger>
@@ -308,11 +315,9 @@ export function EditIssueDialog({
                             <SelectValue placeholder="Select status..." />
                         </SelectTrigger>
                         <SelectContent>
-                            {/* The current status is always an option */}
                             <SelectItem key={issue.status.id} value={issue.status.id}>
                                 {issue.status.name}
                             </SelectItem>
-                            {/* Available transitions */}
                             {transitions.map((transition) => (
                                 <SelectItem key={transition.id} value={transition.id}>
                                     {transition.name}
