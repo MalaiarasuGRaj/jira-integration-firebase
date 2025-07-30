@@ -104,8 +104,14 @@ export function EditIssueDialog({
         if (usersResult.users) setUsers(usersResult.users);
         else console.error(usersResult.error);
         
-        if (prioritiesResult.priorities) setPriorities(prioritiesResult.priorities);
-        else console.error(prioritiesResult.error);
+        if (prioritiesResult.priorities) {
+            const filteredPriorities = prioritiesResult.priorities.filter(p => 
+                ['High', 'Medium', 'Low'].includes(p.name)
+            );
+            setPriorities(filteredPriorities);
+        } else {
+            console.error(prioritiesResult.error);
+        }
         
         setIsLoading(false);
       });
