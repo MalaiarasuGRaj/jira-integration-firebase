@@ -395,8 +395,9 @@ export async function getIssueTypesForProject(
         if (issueTypeName === 'epic') {
           issueData.fields.customfield_10011 = row.Summary; 
         }
-
-        if (issueTypeName === 'sub-task' || issueTypeName === 'subtask') {
+        
+        const subtaskVariations = ['sub-task', 'subtask'];
+        if (subtaskVariations.includes(issueTypeName)) {
             const parentKey = row['Parent Key'];
             if (!parentKey) {
                 console.warn(`Sub-task "${row.Summary}" is missing a 'Parent Key'. Skipping this row.`);
@@ -501,6 +502,34 @@ export async function getPriorities(
     }
 }
 
+export async function getEditMeta(
+  issueKey: string,
+  credentials: Credentials
+): Promise<{ fields?: any; error?: string }> {
+  if (!credentials) {
+    return { error: 'Authentication required.' };
+  }
+  const { email, domain, apiToken } = credentials;
+  const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+
+  try {
+    const response = await fetch(`https://${domain}/rest/api/3/issue/${issueKey}/editmeta`, {
+      headers: { Authorization: `Basic ${encodedCredentials}` },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      return { error: `Failed to fetch edit metadata. Status: ${response.status}. ${errorText}` };
+    }
+    const meta = await response.json();
+    return { fields: meta.fields };
+  } catch (error) {
+    console.error('Error fetching edit metadata:', error);
+    return { error: 'Could not connect to Jira to fetch edit metadata.' };
+  }
+}
+
+
 function parseDescription(description: JiraIssue['description']): string {
   if (!description || !description.content) return '';
   return description.content
@@ -526,6 +555,7 @@ export async function updateIssue(
   const { email, domain, apiToken } = credentials;
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
   
+  // Directly get values from FormData
   const summary = formData.get('summary') as string;
   const description = formData.get('description') as string | null;
   const assigneeId = formData.get('assignee') as string | null;
@@ -595,5 +625,7 @@ export async function updateIssue(
     return { success: false, error: 'Failed to connect to Jira to update the issue.' };
   }
 }
+
+    
 
     

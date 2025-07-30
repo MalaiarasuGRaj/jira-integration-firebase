@@ -26,9 +26,10 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import type { JiraIssue, JiraProject, JiraUser, JiraPriority } from '@/lib/types';
-import { type Credentials, getUsersForProject, getPriorities, updateIssue } from '@/lib/actions';
+import { type Credentials, getUsersForProject, getPriorities, updateIssue, getEditMeta } from '@/lib/actions';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface EditIssueDialogProps {
   isOpen: boolean;
@@ -77,6 +78,7 @@ export function EditIssueDialog({
   const [users, setUsers] = useState<JiraUser[]>([]);
   const [priorities, setPriorities] = useState<JiraPriority[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPriorityEditable, setIsPriorityEditable] = useState(false);
 
   const {
     handleSubmit,
@@ -100,7 +102,8 @@ export function EditIssueDialog({
       Promise.all([
         getUsersForProject(project.key, credentials),
         getPriorities(credentials),
-      ]).then(([usersResult, prioritiesResult]) => {
+        getEditMeta(issue.key, credentials),
+      ]).then(([usersResult, prioritiesResult, editMetaResult]) => {
         if (usersResult.users) setUsers(usersResult.users);
         else console.error(usersResult.error);
         
@@ -112,11 +115,19 @@ export function EditIssueDialog({
         } else {
             console.error(prioritiesResult.error);
         }
+
+        if (editMetaResult.fields) {
+            setIsPriorityEditable('priority' in editMetaResult.fields);
+        } else {
+            // Default to true if meta fetch fails to not block user unnecessarily
+            setIsPriorityEditable(true); 
+            console.error(editMetaResult.error);
+        }
         
         setIsLoading(false);
       });
     }
-  }, [isOpen, project.key, credentials]);
+  }, [isOpen, issue.key, project.key, credentials]);
 
   useEffect(() => {
     reset({
@@ -149,7 +160,7 @@ export function EditIssueDialog({
     }
 
     if(data.reporter) formData.append('reporter', data.reporter);
-    if(data.priority) formData.append('priority', data.priority);
+    if(data.priority && isPriorityEditable) formData.append('priority', data.priority);
 
     const result = await updateIssue(issue, formData, credentials);
 
@@ -257,25 +268,38 @@ export function EditIssueDialog({
           </div>
 
           <div className="grid gap-2">
-                <Label htmlFor="priority">Priority</Label>
-                <Controller
-                name="priority"
-                control={control}
-                render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger id="priority">
-                        <SelectValue placeholder="Select priority..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {priorities.map((priority) => (
-                        <SelectItem key={priority.id} value={priority.id}>
-                            {priority.name}
-                        </SelectItem>
-                        ))}
-                    </SelectContent>
-                    </Select>
-                )}
-                />
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="priority">Priority</Label>
+                            <Controller
+                            name="priority"
+                            control={control}
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} value={field.value} disabled={!isPriorityEditable}>
+                                <SelectTrigger id="priority">
+                                    <SelectValue placeholder="Select priority..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {priorities.map((priority) => (
+                                    <SelectItem key={priority.id} value={priority.id}>
+                                        {priority.name}
+                                    </SelectItem>
+                                    ))}
+                                </SelectContent>
+                                </Select>
+                            )}
+                            />
+                        </div>
+                    </TooltipTrigger>
+                    {!isPriorityEditable && (
+                        <TooltipContent>
+                            <p>Priority cannot be edited for this issue. <br/> It may not be on the 'Edit' screen in your Jira project configuration.</p>
+                        </TooltipContent>
+                    )}
+                </Tooltip>
+            </TooltipProvider>
             </div>
           
           {error && (
@@ -303,3 +327,5 @@ export function EditIssueDialog({
     </Dialog>
   );
 }
+
+    
