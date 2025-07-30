@@ -29,7 +29,6 @@ import type { JiraIssue, JiraProject, JiraUser, JiraPriority, JiraTransition } f
 import { type Credentials, getUsersForProject, getPriorities, updateIssue, getEditMeta, getAvailableTransitions } from '@/lib/actions';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface EditIssueDialogProps {
   isOpen: boolean;
@@ -93,19 +92,20 @@ export function EditIssueDialog({
     formState: { errors },
   } = useForm<EditIssueFormValues>({
     resolver: zodResolver(editIssueFormSchema),
-    defaultValues: {
-      summary: issue.summary,
-      description: parseDescription(issue.description),
-      assignee: issue.assignee?.accountId || 'unassigned',
-      reporter: issue.reporter?.accountId,
-      priority: issue.priority?.id,
-      status: issue.status?.id,
-    },
   });
   
   useEffect(() => {
     if (isOpen && credentials) {
       setIsLoading(true);
+      reset({
+        summary: issue.summary,
+        description: parseDescription(issue.description),
+        assignee: issue.assignee?.accountId || 'unassigned',
+        reporter: issue.reporter?.accountId,
+        priority: issue.priority?.id,
+        status: issue.status?.id,
+      });
+
       Promise.all([
         getUsersForProject(project.key, credentials),
         getPriorities(credentials),
@@ -143,29 +143,25 @@ export function EditIssueDialog({
         setIsLoading(false);
       });
     }
-  }, [isOpen, issue, project.key, credentials]);
-
-  useEffect(() => {
-    reset({
-        summary: issue.summary,
-        description: parseDescription(issue.description),
-        assignee: issue.assignee?.accountId || 'unassigned',
-        reporter: issue.reporter?.accountId,
-        priority: issue.priority?.id,
-        status: issue.status?.id,
-    });
-  }, [issue, reset]);
+  }, [isOpen, issue, project.key, credentials, reset]);
 
 
-  const onSubmit = async (data: EditIssueFormValues) => {
+  const onSubmit = async (data: any) => {
     if (!credentials) {
       setError('Authentication credentials are not available.');
       return;
     }
     setIsSubmitting(true);
     setError(null);
+    
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+        if (data[key] !== null && data[key] !== undefined) {
+            formData.append(key, data[key]);
+        }
+    });
 
-    const result = await updateIssue(issue, data, credentials);
+    const result = await updateIssue(issue, formData, credentials);
 
     setIsSubmitting(false);
 
@@ -187,7 +183,7 @@ export function EditIssueDialog({
         assignee: updatedAssignee,
         reporter: updatedReporter || issue.reporter,
         priority: updatedPriority || issue.priority,
-        status: updatedTransition ? { ...updatedTransition.to, name: updatedTransition.to.name || issue.status.name } : issue.status,
+        status: updatedTransition ? { ...updatedTransition.to, name: updatedTransition.to.name || issue.status.name, statusCategory: updatedTransition.to.statusCategory } : issue.status,
       });
       onClose();
     } else {
@@ -308,10 +304,12 @@ export function EditIssueDialog({
                             <SelectValue placeholder="Select status..." />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem key={issue.status.id} value={issue.status.id}>
+                            {/* Current status as a non-selectable first item if needed for display */}
+                            <SelectItem key={issue.status.id} value={issue.status.id} disabled>
                                 {issue.status.name}
                             </SelectItem>
-                            {transitions.filter(t => t.to.name !== issue.status.name).map((transition) => (
+                            {/* Available transitions */}
+                            {transitions.map((transition) => (
                                 <SelectItem key={transition.id} value={transition.id}>
                                     {transition.name}
                                 </SelectItem>

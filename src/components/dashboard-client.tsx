@@ -22,6 +22,7 @@ import {
   ArrowRight,
   Download,
   Upload,
+  Plus,
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
@@ -45,6 +46,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { IssuesDialog } from './issues-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { ImportIssuesDialog } from './import-issues-dialog';
+import { CreateIssueDialog } from './create-issue-dialog';
 
 function LogoutButton() {
     const { pending } = useFormStatus();
@@ -223,6 +225,9 @@ export function DashboardClient({
   
   // Import Issues
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+  
+  // Create Issue
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const projectTypes = ['all', ...Array.from(new Set(projects.map(p => p.projectTypeKey)))];
 
@@ -365,10 +370,16 @@ export function DashboardClient({
                 <h2 className="text-3xl font-bold tracking-tight">Your Projects</h2>
                 <p className="text-muted-foreground">{filteredProjects.length} of {projects.length} projects</p>
             </div>
-            <Button onClick={() => setIsImportDialogOpen(true)}>
-                <Upload className="mr-2 h-4 w-4" />
-                Import Issues
-            </Button>
+            <div className="flex items-center gap-2">
+                <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Import Issues
+                </Button>
+                <Button onClick={() => setIsCreateDialogOpen(true)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Issue
+                </Button>
+            </div>
         </div>
         <div className="mb-6 flex items-center justify-between gap-4">
             <div className='relative w-full max-w-sm'>
@@ -599,6 +610,14 @@ export function DashboardClient({
       <ImportIssuesDialog
         isOpen={isImportDialogOpen}
         onClose={() => setIsImportDialogOpen(false)}
+        projects={projects}
+        credentials={credentials}
+      />
+      
+      {/* Create Issue Dialog */}
+      <CreateIssueDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
         projects={projects}
         credentials={credentials}
       />

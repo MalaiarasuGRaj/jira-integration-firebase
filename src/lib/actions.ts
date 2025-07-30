@@ -18,16 +18,15 @@ const FormSchema = z.object({
 
 export type Credentials = z.infer<typeof FormSchema>;
 
-const editIssueFormSchema = z.object({
-    summary: z.string().min(1, { message: 'Summary cannot be empty.' }),
+const createIssueFormSchema = z.object({
+    projectId: z.string().min(1, { message: 'Please select a project.' }),
+    issueTypeId: z.string().min(1, { message: 'Please select an issue type.' }),
+    summary: z.string().min(1, { message: 'Summary is required.' }),
     description: z.string().optional(),
-    assignee: z.string().optional().nullable(),
-    reporter: z.string().optional().nullable(),
-    priority: z.string().optional(),
-    status: z.string().optional(),
+    assigneeId: z.string().optional(),
   });
   
-type EditIssueFormValues = z.infer<typeof editIssueFormSchema>;
+type CreateIssueFormValues = z.infer<typeof createIssueFormSchema>;
 
 export async function login(_prevState: State, formData: FormData): Promise<State> {
   const validatedFields = FormSchema.safeParse({
@@ -519,10 +518,9 @@ export async function getEditMeta(
     });
     if (!response.ok) {
         const errorText = await response.text().catch(() => `Status code: ${response.status}`);
-        // Try to parse the error for a more specific message
         try {
             const errorJson = JSON.parse(errorText);
-            const specificError = errorJson?.errorMessages?.join(' ') || "Field 'priority' cannot be set. It is not on the appropriate screen, or unknown.";
+            const specificError = errorJson?.errorMessages?.join(' ');
             return { error: `Failed to fetch edit metadata: ${specificError}` };
         } catch {
              return { error: `Failed to fetch edit metadata. Status: ${response.status}.` };
@@ -613,7 +611,7 @@ function parseDescription(description: JiraIssue['description']): string {
 
 export async function updateIssue(
   issue: JiraIssue,
-  data: EditIssueFormValues,
+  formData: FormData,
   credentials: Credentials
 ): Promise<{ success: boolean; error?: string }> {
   if (!credentials) {
@@ -622,24 +620,28 @@ export async function updateIssue(
   
   const { email, domain, apiToken } = credentials;
   const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
-  
+
   const fields: any = {};
   let transitionResult: { success: boolean; error?: string } = { success: true };
 
+  const summary = formData.get('summary') as string;
+  const description = formData.get('description') as string | null;
+  const assigneeId = formData.get('assignee') as string | null;
+  const priorityId = formData.get('priority') as string | null;
+  const statusId = formData.get('status') as string | null;
+  
   // Handle status transition separately
-  if (data.status && data.status !== issue.status.id) {
-    transitionResult = await transitionIssue(issue.key, data.status, credentials);
+  if (statusId && statusId !== issue.status.id) {
+    transitionResult = await transitionIssue(issue.key, statusId, credentials);
   }
 
   // Handle other field updates
-  // Compare summary
-  if (data.summary && data.summary !== issue.summary) {
-    fields.summary = data.summary;
+  if (summary && summary !== issue.summary) {
+    fields.summary = summary;
   }
 
-  // Compare description
   const originalDescription = parseDescription(issue.description);
-  const newDescription = data.description ?? '';
+  const newDescription = description ?? '';
   if (newDescription !== originalDescription) {
     fields.description = {
       type: 'doc',
@@ -648,26 +650,17 @@ export async function updateIssue(
     };
   }
 
-  // Compare assignee
   const originalAssigneeId = issue.assignee?.accountId || 'unassigned';
-  const newAssigneeId = data.assignee || 'unassigned';
+  const newAssigneeId = assigneeId || 'unassigned';
   if (newAssigneeId !== originalAssigneeId) {
     fields.assignee = newAssigneeId === 'unassigned' ? null : { accountId: newAssigneeId };
   }
-  
-  // Compare reporter
-  const originalReporterId = issue.reporter?.accountId;
-  if (data.reporter && data.reporter !== originalReporterId) {
-    fields.reporter = { accountId: data.reporter };
-  }
 
-  // Compare priority
   const originalPriorityId = issue.priority?.id;
-  if (data.priority && data.priority !== originalPriorityId) {
-    fields.priority = { id: data.priority };
+  if (priorityId && priorityId !== originalPriorityId) {
+    fields.priority = { id: priorityId };
   }
 
-  // Only call the update API if there are fields to update
   if (Object.keys(fields).length > 0) {
     try {
       const response = await fetch(`https://${domain}/rest/api/3/issue/${issue.key}`, {
@@ -685,7 +678,6 @@ export async function updateIssue(
         const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
         const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
         
-        // Combine errors from transition and field updates
         const combinedError = [transitionResult.error, `${errorMessage} ${fieldErrors}`.trim()].filter(Boolean).join(' | ');
         return { success: false, error: combinedError };
       }
@@ -702,6 +694,64 @@ export async function updateIssue(
   
   return { success: true };
 }
+
+
+export async function createIssue(
+    data: CreateIssueFormValues,
+    credentials: Credentials
+  ): Promise<{ success: boolean; error?: string, issueKey?: string }> {
+    if (!credentials) {
+      return { success: false, error: 'Authentication required.' };
+    }
+  
+    const { email, domain, apiToken } = credentials;
+    const encodedCredentials = Buffer.from(`${email}:${apiToken}`).toString('base64');
+  
+    const fields: any = {
+      project: { id: data.projectId },
+      issuetype: { id: data.issueTypeId },
+      summary: data.summary,
+    };
+  
+    if (data.description) {
+      fields.description = {
+        type: 'doc',
+        version: 1,
+        content: [{ type: 'paragraph', content: [{ type: 'text', text: data.description }] }],
+      };
+    }
+  
+    if (data.assigneeId && data.assigneeId !== 'unassigned') {
+      fields.assignee = { accountId: data.assigneeId };
+    }
+    
+    try {
+      const response = await fetch(`https://${domain}/rest/api/3/issue`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+        body: JSON.stringify({ fields }),
+      });
+  
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        console.error("Jira API Error:", JSON.stringify(errorBody, null, 2));
+        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while creating the issue.';
+        const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
+        return { success: false, error: `${errorMessage} ${fieldErrors}`.trim() };
+      }
+  
+      const newIssue = await response.json();
+      return { success: true, issueKey: newIssue.key };
+  
+    } catch (error) {
+      console.error('Error creating issue:', error);
+      return { success: false, error: 'Failed to connect to Jira to create the issue.' };
+    }
+}
+  
 
 export type State = {
     errors?: {
