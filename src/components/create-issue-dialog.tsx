@@ -100,7 +100,7 @@ export function CreateIssueDialog({
     setSelectedProject(project || null);
     
     // Reset downstream fields
-    reset({ issueTypeId: '', assigneeId: 'unassigned' });
+    reset({ ...watch(), issueTypeId: '', assigneeId: 'unassigned' });
     setIssueTypes([]);
     setUsers([]);
 
@@ -119,7 +119,7 @@ export function CreateIssueDialog({
             setIsLoadingUsers(false);
         });
     }
-  }, [watchedProjectId, credentials, projects, reset]);
+  }, [watchedProjectId, credentials, projects, reset, watch]);
 
 
   const onSubmit = async (data: CreateIssueFormValues) => {
@@ -265,4 +265,3 @@ export function CreateIssueDialog({
     </Dialog>
   );
 }
-
