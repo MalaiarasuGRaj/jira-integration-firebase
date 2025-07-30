@@ -195,13 +195,6 @@ export function EditIssueDialog({
     }
   };
   
-  const allTransitions = [
-    // Include the current status as a non-transition option
-    { id: issue.status.id, name: issue.status.name, isCurrent: true },
-    // Include available transitions, filtering out any that lead to the same status name
-    ...transitions.filter(t => t.name !== issue.status.name),
-  ];
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl">
@@ -318,7 +311,7 @@ export function EditIssueDialog({
                             <SelectItem key={issue.status.id} value={issue.status.id}>
                                 {issue.status.name}
                             </SelectItem>
-                            {transitions.map((transition) => (
+                            {transitions.filter(t => t.to.name !== issue.status.name).map((transition) => (
                                 <SelectItem key={transition.id} value={transition.id}>
                                     {transition.name}
                                 </SelectItem>
