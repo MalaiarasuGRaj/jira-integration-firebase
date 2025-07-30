@@ -551,8 +551,8 @@ export async function updateIssue(
     fields.description = null;
   }
   
-  fields.assignee = assignee ? { id: assignee } : null;
-  fields.reporter = reporter ? { id: reporter } : null;
+  fields.assignee = assignee ? { accountId: assignee } : null;
+  fields.reporter = reporter ? { accountId: reporter } : null;
 
   if (priority) {
     fields.priority = { id: priority };
