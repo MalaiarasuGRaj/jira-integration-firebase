@@ -126,7 +126,5 @@ export interface JiraIssue {
     iconUrl: string;
   };
   storyPoints?: number | null;
-  customfield_10021?: Sprint[];
+  customfield_10020?: Sprint[];
 }
-
-    

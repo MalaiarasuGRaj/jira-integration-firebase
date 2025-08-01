@@ -150,7 +150,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,description,customfield_10021';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,description,customfield_10020';
   
     try {
       const response = await fetch(
@@ -184,7 +184,7 @@ export async function getIssueTypesForProject(
         labels: issue.fields.labels,
         parent: issue.fields.parent,
         issueType: issue.fields.issuetype,
-        customfield_10021: issue.fields.customfield_10021,
+        customfield_10020: issue.fields.customfield_10020 || [],
       }));
   
       return { issues };
@@ -207,7 +207,7 @@ export async function getIssueTypesForProject(
   
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016,description,customfield_10021';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016,description,customfield_10020';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -248,7 +248,7 @@ export async function getIssueTypesForProject(
           parent: issue.fields.parent,
           issueType: issue.fields.issuetype,
           storyPoints: issue.fields.customfield_10016,
-          customfield_10021: issue.fields.customfield_10021 || [],
+          customfield_10020: issue.fields.customfield_10020 || [],
         }));
         
         allIssues = allIssues.concat(issues);

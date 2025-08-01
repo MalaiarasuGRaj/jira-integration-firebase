@@ -182,7 +182,7 @@ export function EditIssueDialog({
         reporter: updatedReporter || issue.reporter,
         priority: updatedPriority || issue.priority,
         status: updatedTransition ? { ...updatedTransition.to, name: updatedTransition.to.name || issue.status.name, statusCategory: updatedTransition.to.statusCategory } : issue.status,
-        customfield_10021: issue.customfield_10021
+        customfield_10020: issue.customfield_10020
       });
       onClose();
     } else {

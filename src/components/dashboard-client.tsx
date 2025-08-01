@@ -327,19 +327,22 @@ export function DashboardClient({
         ...result.issues.map(issue => {
             const statusCategory = issue.status.statusCategory.key;
             
-            const sprints = (issue.customfield_10021 || []).sort((a, b) => {
+            const sprints = (issue.customfield_10020 || []).sort((a, b) => {
                 const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
                 const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
-                return dateB - dateA;
+                return dateB - dateA; // Sort descending to get the most recent first
             });
             
             let sprintName = '';
-            if (statusCategory === 'done') {
-                const lastSprint = sprints[0];
-                sprintName = lastSprint?.name ?? '';
-            } else {
-                const activeSprint = sprints.find(s => s.state === 'active');
-                sprintName = activeSprint?.name ?? '';
+            if (sprints.length > 0) {
+              if (statusCategory === 'done') {
+                  // If done, find the most recent sprint (could be active or closed)
+                  sprintName = sprints[0]?.name ?? '';
+              } else {
+                  // If not done, find the currently active sprint
+                  const activeSprint = sprints.find(s => s.state === 'active');
+                  sprintName = activeSprint?.name ?? '';
+              }
             }
 
             return [
