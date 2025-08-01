@@ -362,13 +362,11 @@ export async function getIssueTypesForProject(
           issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${row['Issue Type']}". Valid types for this project are: ${validNames}.`);
           return null;
         }
-
-        if (issueType.subtask) {
-            const parentKey = row['Parent Key'];
-            if (!parentKey) {
-                issueCreationFailures.push(`Row ${rowNum}: Sub-task "${row.Summary}" is missing a 'Parent Key'.`);
-                return null;
-            }
+        
+        const parentKey = row['Parent Key'];
+        if (issueType.subtask && !parentKey) {
+            issueCreationFailures.push(`Row ${rowNum}: Sub-task "${row.Summary}" is missing a 'Parent Key'.`);
+            return null;
         }
         
         const assigneeEmail = row['Assignee (Email)'];
@@ -446,7 +444,12 @@ export async function getIssueTypesForProject(
       const createdCount = result.issues?.length || 0;
 
       if (failedCount > 0) {
-        const apiErrorDetails = (result.errors || []).map((e:any, i: number) => `Issue "${validPayloads[e.failedElementNumber]?.fields?.summary}": ${e.elementErrors?.errorMessages?.join(', ')}`).join('; ');
+        const apiErrorDetails = (result.errors || []).map((e:any, i: number) => {
+            const failedIssueSummary = validPayloads[e.failedElementNumber]?.fields?.summary;
+            const errorMessages = e.elementErrors?.errorMessages?.join(', ') || "An unspecified error occurred.";
+            return `Issue "${failedIssueSummary}": ${errorMessages}`;
+        }).join('; ');
+        
         const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join(' ');
         const errorMessage = `Import complete. ${createdCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
         return { success: false, error: errorMessage, details: result };
