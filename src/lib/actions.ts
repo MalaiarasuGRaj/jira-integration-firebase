@@ -394,6 +394,7 @@ export async function getIssueTypesForProject(
         }
 
         if (issueTypeName === 'epic') {
+          // 'customfield_10011' is the default field for Epic Name in many Jira Cloud instances.
           issueData.fields.customfield_10011 = row.Summary; 
         }
         

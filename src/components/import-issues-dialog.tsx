@@ -91,7 +91,7 @@ export function ImportIssuesDialog({
         'reporter@example.com',
         'Sub-task',
         '', // Subtasks often inherit story points from parent, or are not pointed
-        'NOTE: Update with parent issue key after creation (e.g., PROJ-123)', // NOTE: The Parent Key should be updated to the actual key of the parent story after it's created. Use a placeholder or leave blank if importing together.
+        'PROJ-123', // NOTE: A Sub-task MUST have a Parent Key. Update with the actual key of the parent issue (e.g., the Story above).
       ],
       [
         'Fix login button alignment on mobile',
