@@ -89,9 +89,9 @@ export function ImportIssuesDialog({
         'Build the reusable header component based on the approved design mockups.',
         'assignee@example.com',
         'reporter@example.com',
-        'Sub-task',
+        'Subtask', // Using "Subtask" (lowercase t) to avoid case-sensitivity issues
         '', // Subtasks often inherit story points from parent, or are not pointed
-        'PROJ-123', // NOTE: A Sub-task MUST have a Parent Key. Update with the actual key of the parent issue (e.g., the Story above).
+        'PROJ-123', // NOTE: A Subtask MUST have a Parent Key. Update with the actual key of the parent issue (e.g., the Story above).
       ],
       [
         'Fix login button alignment on mobile',
