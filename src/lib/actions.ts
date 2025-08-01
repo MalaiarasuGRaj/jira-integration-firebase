@@ -341,24 +341,36 @@ export async function getIssueTypesForProject(
         throw new Error('Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
       const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
+      const validIssueTypeNames = projectIssueTypes.map(it => it.name.toLowerCase());
 
       if (!projectIssueTypes || projectIssueTypes.length === 0) {
         throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
       }
 
-      const issuePayloads = await Promise.all(data.map(async (row: any) => {
+      const issueCreationFailures: string[] = [];
+      const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
+        const rowNum = index + 2; // Account for header row
         if (!row.Summary || !row['Issue Type']) {
           return null; // Skip empty rows
         }
 
-        const issueTypeName = String(row['Issue Type']).trim().toLowerCase();
-        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName);
+        const issueTypeName = String(row['Issue Type']).trim();
+        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName.toLowerCase());
         
         if (!issueType) {
-          console.warn(`Invalid or missing issue type specified: "${row['Issue Type']}" for summary "${row.Summary}". Skipping this row.`);
+          issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${issueTypeName}". Valid types for this project are: ${validIssueTypeNames.join(', ')}.`);
           return null;
         }
 
+        const subtaskVariations = ['sub-task', 'subtask'];
+        if (subtaskVariations.includes(issueTypeName.toLowerCase())) {
+            const parentKey = row['Parent Key'];
+            if (!parentKey) {
+                issueCreationFailures.push(`Row ${rowNum}: Sub-task "${row.Summary}" is missing a 'Parent Key'.`);
+                return null;
+            }
+        }
+        
         const assigneeEmail = row['Assignee (Email)'];
         const reporterEmail = row['Reporter (Email)'];
         
@@ -392,20 +404,14 @@ export async function getIssueTypesForProject(
           // This is the default field for Story Points in many Jira Cloud instances
           issueData.fields.customfield_10016 = storyPoints;
         }
-
-        if (issueTypeName === 'epic') {
+        
+        if (issueTypeName.toLowerCase() === 'epic') {
           // 'customfield_10011' is the default field for Epic Name in many Jira Cloud instances.
           issueData.fields.customfield_10011 = row.Summary; 
         }
         
-        const subtaskVariations = ['sub-task', 'subtask'];
-        if (subtaskVariations.includes(issueTypeName)) {
-            const parentKey = row['Parent Key'];
-            if (!parentKey) {
-                console.warn(`Sub-task "${row.Summary}" is missing a 'Parent Key'. Skipping this row.`);
-                return null;
-            }
-            issueData.fields.parent = { key: parentKey };
+        if (subtaskVariations.includes(issueTypeName.toLowerCase())) {
+            issueData.fields.parent = { key: row['Parent Key'] };
         }
 
         return issueData;
@@ -414,7 +420,8 @@ export async function getIssueTypesForProject(
       const validPayloads = issuePayloads.filter(p => p !== null);
 
       if (validPayloads.length === 0) {
-        return { success: false, error: 'No valid issues found in the file to import.' };
+        const errorSummary = issueCreationFailures.length > 0 ? issueCreationFailures.join(' ') : 'No valid issues found in the file to import.';
+        return { success: false, error: errorSummary };
       }
 
       const response = await fetch(`https://${domain}/rest/api/3/issue/bulk`, {
@@ -435,11 +442,14 @@ export async function getIssueTypesForProject(
   
       const result = await response.json();
       
-      if (result.errors?.length > 0) {
-        const failedCount = result.errors.length;
-        const totalCount = validPayloads.length;
-        const successCount = totalCount - failedCount;
-        const errorMessage = `Successfully created ${successCount} issues, but ${failedCount} failed. Check Jira for details.`;
+      const failedCount = (result.errors?.length || 0) + issueCreationFailures.length;
+      const totalCount = data.length;
+      const successCount = totalCount - failedCount;
+      
+      if (failedCount > 0) {
+        const apiErrorDetails = (result.errors || []).map((e:any, i: number) => `Issue "${validPayloads[e.failedElementNumber]?.fields?.summary}": ${e.elementErrors?.errorMessages?.join(', ')}`).join('; ');
+        const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join(' ');
+        const errorMessage = `Import complete. ${successCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
         return { success: false, error: errorMessage, details: result };
       }
 
@@ -782,3 +792,6 @@ export type State = {
     };
     message?: string | null;
   };
+
+
+    
