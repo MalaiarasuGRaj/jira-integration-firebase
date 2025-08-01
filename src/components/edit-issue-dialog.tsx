@@ -82,7 +82,6 @@ export function EditIssueDialog({
   
   const [editableFields, setEditableFields] = useState<Record<string, boolean>>({
     priority: false,
-    status: false,
   });
 
   const {
@@ -127,10 +126,9 @@ export function EditIssueDialog({
         if (editMetaResult.fields) {
             setEditableFields({
                 priority: 'priority' in editMetaResult.fields,
-                status: 'status' in editMetaResult.fields,
             });
         } else {
-            setEditableFields({ priority: false, status: false });
+            setEditableFields({ priority: false });
             console.error(editMetaResult.error);
         }
 
@@ -184,6 +182,7 @@ export function EditIssueDialog({
         reporter: updatedReporter || issue.reporter,
         priority: updatedPriority || issue.priority,
         status: updatedTransition ? { ...updatedTransition.to, name: updatedTransition.to.name || issue.status.name, statusCategory: updatedTransition.to.statusCategory } : issue.status,
+        customfield_10021: issue.customfield_10021
       });
       onClose();
     } else {
@@ -270,7 +269,7 @@ export function EditIssueDialog({
           </div>
           
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {editableFields.priority && (
+            {editableFields.priority ? (
                 <div className="grid gap-2">
                     <Label htmlFor="priority">Priority</Label>
                     <Controller
@@ -292,7 +291,7 @@ export function EditIssueDialog({
                     )}
                     />
                 </div>
-            )}
+            ) : null}
              <div className="grid gap-2">
                 <Label htmlFor="status">Status</Label>
                 <Controller
@@ -304,11 +303,6 @@ export function EditIssueDialog({
                             <SelectValue placeholder="Select status..." />
                         </SelectTrigger>
                         <SelectContent>
-                            {/* Current status as a non-selectable first item if needed for display */}
-                            <SelectItem key={issue.status.id} value={issue.status.id} disabled>
-                                {issue.status.name}
-                            </SelectItem>
-                            {/* Available transitions */}
                             {transitions.map((transition) => (
                                 <SelectItem key={transition.id} value={transition.id}>
                                     {transition.name}

@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 import { logout, getIssueTypesForProject, getIssuesForProjectAndType, getIssuesForProject, type Credentials } from '@/lib/actions';
-import type { JiraProject, JiraUser, JiraIssueType, JiraIssue } from '@/lib/types';
+import type { JiraProject, JiraUser, JiraIssueType, JiraIssue, Sprint } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -326,18 +326,18 @@ export function DashboardClient({
         headers.join(','),
         ...result.issues.map(issue => {
             const statusCategory = issue.status.statusCategory.key;
-            const sprints = (issue.customfield_10021 || []).sort(
-              (a, b) => new Date(b.startDate || 0).getTime() - new Date(a.startDate || 0).getTime()
-            );
+            
+            const sprints = (issue.customfield_10021 || []).sort((a, b) => {
+                const dateA = a.startDate ? new Date(a.startDate).getTime() : 0;
+                const dateB = b.startDate ? new Date(b.startDate).getTime() : 0;
+                return dateB - dateA;
+            });
             
             let sprintName = '';
             if (statusCategory === 'done') {
-                // If issue is done, find the most recently started sprint it was in.
-                // This is often the sprint it was completed in.
                 const lastSprint = sprints[0];
                 sprintName = lastSprint?.name ?? '';
             } else {
-                // If issue is not done, find the currently active sprint.
                 const activeSprint = sprints.find(s => s.state === 'active');
                 sprintName = activeSprint?.name ?? '';
             }

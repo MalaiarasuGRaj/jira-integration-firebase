@@ -68,6 +68,15 @@ export interface JiraTransition {
     isAvailable: boolean;
   }
 
+export interface Sprint {
+    id: number;
+    name: string;
+    state: 'active' | 'closed' | 'future';
+    startDate?: string;
+    endDate?: string;
+    completeDate?: string;
+}
+
 export interface JiraIssue {
   id: string;
   key: string;
@@ -117,14 +126,7 @@ export interface JiraIssue {
     iconUrl: string;
   };
   storyPoints?: number | null;
-  customfield_10021?: { // Sprint field
-    id: number;
-    name: string;
-    state: 'active' | 'closed' | 'future';
-    startDate?: string;
-    endDate?: string;
-    completeDate?: string;
-  }[];
+  customfield_10021?: Sprint[];
 }
 
     
