@@ -206,7 +206,7 @@ export async function getIssueTypesForProject(
   
     const jql = `project = "${projectKey}" ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
-    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016,description';
+    const fields = 'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,customfield_10016,description,customfield_10021';
   
     let allIssues: JiraIssue[] = [];
     let startAt = 0;
@@ -247,6 +247,7 @@ export async function getIssueTypesForProject(
           parent: issue.fields.parent,
           issueType: issue.fields.issuetype,
           storyPoints: issue.fields.customfield_10016,
+          customfield_10021: issue.fields.customfield_10021,
         }));
         
         allIssues = allIssues.concat(issues);
@@ -521,7 +522,10 @@ export async function getEditMeta(
         try {
             const errorJson = JSON.parse(errorText);
             const specificError = errorJson?.errorMessages?.join(' ');
-            return { error: `Failed to fetch edit metadata: ${specificError}` };
+            if (specificError) {
+              return { error: `Failed to fetch edit metadata: ${specificError}` };
+            }
+            return { error: `Failed to fetch edit metadata. Field 'priority' cannot be set. It is not on the appropriate screen, or unknown.` };
         } catch {
              return { error: `Failed to fetch edit metadata. Status: ${response.status}.` };
         }
@@ -632,7 +636,10 @@ export async function updateIssue(
   
   // Handle status transition separately
   if (statusId && statusId !== issue.status.id) {
-    transitionResult = await transitionIssue(issue.key, statusId, credentials);
+    const availableTransitions = await getAvailableTransitions(issue.key, credentials);
+    if (availableTransitions.transitions?.find(t => t.id === statusId)) {
+        transitionResult = await transitionIssue(issue.key, statusId, credentials);
+    }
   }
 
   // Handle other field updates
@@ -675,11 +682,22 @@ export async function updateIssue(
       if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
         console.error("Jira API Error:", JSON.stringify(errorBody, null, 2));
-        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred while updating the issue.';
-        const fieldErrors = Object.values(errorBody?.errors || {}).join(' ');
         
-        const combinedError = [transitionResult.error, `${errorMessage} ${fieldErrors}`.trim()].filter(Boolean).join(' | ');
-        return { success: false, error: combinedError };
+        let errorMessage = "An unknown error occurred while updating the issue.";
+        if (errorBody?.errorMessages?.length > 0) {
+            errorMessage = errorBody.errorMessages.join(' ');
+        }
+        if (errorBody?.errors) {
+            const fieldErrors = Object.entries(errorBody.errors)
+                .map(([field, message]) => `${field}: ${message}`)
+                .join('; ');
+            if (fieldErrors) {
+                errorMessage += ` ${fieldErrors}`;
+            }
+        }
+        
+        const combinedError = [transitionResult.error, errorMessage].filter(Boolean).join(' | ');
+        return { success: false, error: combinedError || "An unknown error occurred." };
       }
     } catch (error) {
       console.error('Error updating issue:', error);

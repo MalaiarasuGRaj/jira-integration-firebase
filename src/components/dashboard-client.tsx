@@ -321,24 +321,29 @@ export function DashboardClient({
     }
     
     // Convert to CSV
-    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Priority", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort (Story Points)", "Status"];
+    const headers = ["Issue Key", "Summary", "Assignee", "Reporter", "Priority", "Status", "Created", "Updated", "Labels", "Parent", "Issue Type", "Effort (Story Points)", "Sprint"];
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
-            const status = issue.status.statusCategory.key === 'done' ? 'Completed' : 'Pending';
+            const status = issue.status.name;
+            const closedSprint = (issue.customfield_10021 || [])
+                .filter(sprint => sprint.state === 'closed')
+                .sort((a, b) => new Date(b.completeDate || 0).getTime() - new Date(a.completeDate || 0).getTime())[0];
+
             return [
                 `"${issue.key}"`,
                 `"${issue.summary.replace(/"/g, '""')}"`,
                 `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
                 `"${issue.reporter?.displayName ?? 'N/A'}"`,
                 `"${issue.priority.name}"`,
+                `"${status}"`,
                 `"${issue.created}"`,
                 `"${issue.updated}"`,
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
                 `"${issue.storyPoints ?? ''}"`,
-                `"${status}"`,
+                `"${closedSprint?.name ?? ''}"`,
             ].join(',')
         })
     ];
