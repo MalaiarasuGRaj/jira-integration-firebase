@@ -325,10 +325,22 @@ export function DashboardClient({
     const csvRows = [
         headers.join(','),
         ...result.issues.map(issue => {
-            const status = issue.status.name;
-            const closedSprint = (issue.customfield_10021 || [])
-                .filter(sprint => sprint.state === 'closed')
-                .sort((a, b) => new Date(b.completeDate || 0).getTime() - new Date(a.completeDate || 0).getTime())[0];
+            const statusCategory = issue.status.statusCategory.key;
+            const sprints = (issue.customfield_10021 || []).sort(
+              (a, b) => new Date(b.startDate || 0).getTime() - new Date(a.startDate || 0).getTime()
+            );
+            
+            let sprintName = '';
+            if (statusCategory === 'done') {
+                // If issue is done, find the most recently started sprint it was in.
+                // This is often the sprint it was completed in.
+                const lastSprint = sprints[0];
+                sprintName = lastSprint?.name ?? '';
+            } else {
+                // If issue is not done, find the currently active sprint.
+                const activeSprint = sprints.find(s => s.state === 'active');
+                sprintName = activeSprint?.name ?? '';
+            }
 
             return [
                 `"${issue.key}"`,
@@ -336,14 +348,14 @@ export function DashboardClient({
                 `"${issue.assignee?.displayName ?? 'Unassigned'}"`,
                 `"${issue.reporter?.displayName ?? 'N/A'}"`,
                 `"${issue.priority.name}"`,
-                `"${status}"`,
+                `"${issue.status.name}"`,
                 `"${issue.created}"`,
                 `"${issue.updated}"`,
                 `"${issue.labels.join(' ')}"`,
                 `"${issue.parent?.key ?? ''}"`,
                 `"${issue.issueType?.name ?? ''}"`,
                 `"${issue.storyPoints ?? ''}"`,
-                `"${closedSprint?.name ?? ''}"`,
+                `"${sprintName}"`,
             ].join(',')
         })
     ];
