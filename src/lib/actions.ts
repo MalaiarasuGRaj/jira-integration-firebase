@@ -341,7 +341,7 @@ export async function getIssueTypesForProject(
         throw new Error('Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
       const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
-      const validIssueTypeNames = projectIssueTypes.map(it => it.name.toLowerCase());
+      const validIssueTypesMap = new Map(projectIssueTypes.map(it => [it.name.toLowerCase(), it]));
 
       if (!projectIssueTypes || projectIssueTypes.length === 0) {
         throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
@@ -354,16 +354,16 @@ export async function getIssueTypesForProject(
           return null; // Skip empty rows
         }
 
-        const issueTypeName = String(row['Issue Type']).trim();
-        const issueType = projectIssueTypes.find(it => it.name.toLowerCase() === issueTypeName.toLowerCase());
+        const issueTypeName = String(row['Issue Type']).trim().toLowerCase();
+        const issueType = validIssueTypesMap.get(issueTypeName);
         
         if (!issueType) {
-          issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${issueTypeName}". Valid types for this project are: ${validIssueTypeNames.join(', ')}.`);
+          const validNames = Array.from(validIssueTypesMap.keys()).join(', ');
+          issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${row['Issue Type']}". Valid types for this project are: ${validNames}.`);
           return null;
         }
 
-        const subtaskVariations = ['sub-task', 'subtask'];
-        if (subtaskVariations.includes(issueTypeName.toLowerCase())) {
+        if (issueType.subtask) {
             const parentKey = row['Parent Key'];
             if (!parentKey) {
                 issueCreationFailures.push(`Row ${rowNum}: Sub-task "${row.Summary}" is missing a 'Parent Key'.`);
@@ -405,12 +405,12 @@ export async function getIssueTypesForProject(
           issueData.fields.customfield_10016 = storyPoints;
         }
         
-        if (issueTypeName.toLowerCase() === 'epic') {
+        if (issueTypeName === 'epic') {
           // 'customfield_10011' is the default field for Epic Name in many Jira Cloud instances.
           issueData.fields.customfield_10011 = row.Summary; 
         }
         
-        if (subtaskVariations.includes(issueTypeName.toLowerCase())) {
+        if (issueType.subtask) {
             issueData.fields.parent = { key: row['Parent Key'] };
         }
 
@@ -443,13 +443,12 @@ export async function getIssueTypesForProject(
       const result = await response.json();
       
       const failedCount = (result.errors?.length || 0) + issueCreationFailures.length;
-      const totalCount = data.length;
-      const successCount = totalCount - failedCount;
-      
+      const createdCount = result.issues?.length || 0;
+
       if (failedCount > 0) {
         const apiErrorDetails = (result.errors || []).map((e:any, i: number) => `Issue "${validPayloads[e.failedElementNumber]?.fields?.summary}": ${e.elementErrors?.errorMessages?.join(', ')}`).join('; ');
         const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join(' ');
-        const errorMessage = `Import complete. ${successCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
+        const errorMessage = `Import complete. ${createdCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
         return { success: false, error: errorMessage, details: result };
       }
 

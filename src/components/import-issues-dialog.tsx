@@ -85,21 +85,21 @@ export function ImportIssuesDialog({
         '', // This will be a parent issue, so it has no parent itself
       ],
       [
-        'Create header component',
-        'Build the reusable header component based on the approved design mockups.',
-        'assignee@example.com',
-        'reporter@example.com',
-        'Subtask', // Using "Subtask" (lowercase t) to avoid case-sensitivity issues
-        '', // Subtasks often inherit story points from parent, or are not pointed
-        'PROJ-123', // NOTE: A Subtask MUST have a Parent Key. Update with the actual key of the parent issue (e.g., the Story above).
-      ],
-      [
         'Fix login button alignment on mobile',
         'The login button is misaligned on screens smaller than 375px.',
         'assignee@example.com',
         'reporter@example.com',
         'Task',
         '1',
+        '',
+      ],
+      [
+        'Write documentation for new feature',
+        'Create user-facing documentation for the new landing page feature.',
+        'assignee@example.com',
+        'reporter@example.com',
+        'Task',
+        '2',
         '',
       ]
     ];
@@ -157,7 +157,7 @@ export function ImportIssuesDialog({
         if (result.success) {
             toast({
                 title: 'Import Successful',
-                description: 'Your issues are being created in Jira. This may take a few moments.',
+                description: 'Your issues have been created in Jira.',
             });
             handleClose();
         } else {
