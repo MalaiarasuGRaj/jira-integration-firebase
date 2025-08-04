@@ -402,7 +402,7 @@ export async function getIssueTypesForProject(
         if (issueType.name.toLowerCase() === 'epic') {
             // Jira requires the "Epic Name" custom field to be set.
             // The standard ID for this field is 'customfield_10011'.
-            baseFields['customfield_10011'] = row.Summary;
+            baseFields.customfield_10011 = row.Summary;
         }
 
         return { fields: baseFields };
@@ -853,3 +853,4 @@ export type State = {
     };
     message?: string | null;
   };
+
