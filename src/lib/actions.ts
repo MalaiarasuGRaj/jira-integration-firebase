@@ -281,22 +281,6 @@ export async function getIssueTypesForProject(
         return null;
     }
   }
-  
-  async function findEpicNameFieldId(domain: string, encodedCredentials: string): Promise<string | null> {
-    try {
-        const response = await fetch(`https://${domain}/rest/api/3/field`, {
-            headers: { Authorization: `Basic ${encodedCredentials}` },
-        });
-        if (!response.ok) return null;
-        const fields: { id: string; name: string }[] = await response.json();
-        const epicNameField = fields.find(field => field.name.toLowerCase() === 'epic name');
-        return epicNameField ? epicNameField.id : null;
-    } catch (error) {
-        console.error('Error finding Epic Name field ID:', error);
-        return null;
-    }
-  }
-
 
   export async function bulkCreateIssues(
     formData: FormData,
@@ -350,11 +334,8 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      // Pre-fetch project configuration in parallel
-      const [issueTypesResult, epicNameFieldId] = await Promise.all([
-        getIssueTypesForProject(projectId, credentials),
-        findEpicNameFieldId(domain, encodedCredentials)
-      ]);
+      // Pre-fetch project configuration
+      const issueTypesResult = await getIssueTypesForProject(projectId, credentials);
 
       if (issueTypesResult.error || !issueTypesResult.issueTypes) {
         throw new Error(issueTypesResult.error || 'Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
@@ -366,7 +347,7 @@ export async function getIssueTypesForProject(
       
       const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
         const rowNum = index + 2;
-        const summary = row.Summary;
+        const summary = String(row.Summary || '').trim();
         const issueTypeNameRaw = String(row['Issue Type'] || '').trim();
         const issueTypeName = issueTypeNameRaw.toLowerCase();
         
@@ -377,7 +358,7 @@ export async function getIssueTypesForProject(
         const issueType = validIssueTypesMap.get(issueTypeName);
         
         if (!issueType) {
-          const validNames = Array.from(validIssueTypesMap.keys()).join(', ');
+          const validNames = Array.from(validIssueTypesMap.keys()).map(name => `"${name}"`).join(', ');
           issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${issueTypeNameRaw}". Valid types for this project are: ${validNames}.`);
           return null;
         }
@@ -423,23 +404,20 @@ export async function getIssueTypesForProject(
         if (issueType.subtask && parentKey) {
             fields.parent = { key: parentKey };
         }
-        if (issueTypeName === 'epic') {
-            if (epicNameFieldId) {
-                fields[epicNameFieldId] = summary;
-            } else {
-                 issueCreationFailures.push(`Row ${rowNum}: Could not find the 'Epic Name' custom field in your Jira instance. Cannot create Epic "${summary}".`);
-                 return null;
-            }
-        }
+        // No special handling is needed for the 'Epic Name' in Team-managed projects.
+        // The summary is used automatically.
 
         return { fields };
       }));
       
       const validPayloads = issuePayloads.filter(p => p !== null);
 
+      if (issueCreationFailures.length > 0 && validPayloads.length === 0) {
+        return { success: false, error: issueCreationFailures.join(' ') };
+      }
+      
       if (validPayloads.length === 0) {
-        const errorSummary = issueCreationFailures.length > 0 ? issueCreationFailures.join(' ') : 'No valid issues found in the file to import.';
-        return { success: false, error: errorSummary };
+          return { success: false, error: 'No valid issues found in the file to import.' };
       }
 
       const response = await fetch(`https://${domain}/rest/api/3/issue/bulk`, {
