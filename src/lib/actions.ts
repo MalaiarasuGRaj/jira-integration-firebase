@@ -385,7 +385,7 @@ export async function getIssueTypesForProject(
             issuetype: { id: issueType.id },
           }
         };
-        
+
         if (issueType.name.toLowerCase() === 'epic') {
             issueData.fields.customfield_10011 = row.Summary;
         }
@@ -845,5 +845,7 @@ export type State = {
     };
     message?: string | null;
   };
+
+    
 
     
