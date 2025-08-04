@@ -405,7 +405,6 @@ export async function getIssueTypesForProject(
             // Standard ID for Epic Name field
             fields.customfield_10011 = row.Summary;
         }
-        // --- END OF REWRITTEN LOGIC ---
 
         return { fields };
       }));
@@ -855,5 +854,3 @@ export type State = {
     };
     message?: string | null;
   };
-
-
