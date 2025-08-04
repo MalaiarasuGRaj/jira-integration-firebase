@@ -395,14 +395,12 @@ export async function getIssueTypesForProject(
             fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-            // Standard ID for Story Points field in many Jira Cloud instances
             fields.customfield_10016 = storyPoints;
         }
         if (issueType.subtask && parentKey) {
             fields.parent = { key: parentKey };
         }
         if (issueType.name.toLowerCase() === 'epic') {
-            // Standard ID for Epic Name field in many Jira Cloud instances
             fields.customfield_10011 = summary;
         }
 
