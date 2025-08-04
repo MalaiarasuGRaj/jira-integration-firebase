@@ -282,6 +282,29 @@ export async function getIssueTypesForProject(
     }
   }
 
+  async function getCustomFieldIds(domain: string, encodedCredentials: string): Promise<Record<string, string | undefined>> {
+    try {
+        const response = await fetch(`https://${domain}/rest/api/3/field`, {
+            headers: { Authorization: `Basic ${encodedCredentials}` },
+        });
+        if (!response.ok) {
+            console.error("Failed to fetch custom field IDs from Jira.");
+            return {};
+        }
+        const fields: { id: string; name: string }[] = await response.json();
+        const storyPointsField = fields.find(f => f.name.toLowerCase() === 'story points');
+        const epicNameField = fields.find(f => f.name.toLowerCase() === 'epic name');
+        
+        return {
+            storyPoints: storyPointsField?.id,
+            epicName: epicNameField?.id,
+        };
+    } catch (error) {
+        console.error("Error fetching custom field IDs:", error);
+        return {};
+    }
+  }
+
   export async function bulkCreateIssues(
     formData: FormData,
   ): Promise<{ success: boolean; error?: string; details?: any }> {
@@ -334,15 +357,18 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      // Pre-fetch project configuration
-      const issueTypesResult = await getIssueTypesForProject(projectId, credentials);
+      // Pre-fetch project and instance configurations
+      const [issueTypesResult, customFieldIds] = await Promise.all([
+         getIssueTypesForProject(projectId, credentials),
+         getCustomFieldIds(domain, encodedCredentials),
+      ]);
 
       if (issueTypesResult.error || !issueTypesResult.issueTypes) {
         throw new Error(issueTypesResult.error || 'Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
       const projectIssueTypes = issueTypesResult.issueTypes;
       const validIssueTypesMap = new Map(projectIssueTypes.map(it => [it.name.toLowerCase(), it]));
-
+      
       const issueCreationFailures: string[] = [];
       
       const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
@@ -377,7 +403,7 @@ export async function getIssueTypesForProject(
             reporterEmail ? findUserByEmail(reporterEmail, domain, encodedCredentials) : findUserByEmail(currentUserEmail, domain, encodedCredentials)
         ]);
         
-        const storyPoints = row['Story Points'] ? parseFloat(row['Story Points']) : null;
+        const storyPointsValue = row['Story Points'] ? parseFloat(row['Story Points']) : null;
         const descriptionText = row.Description || '';
 
         const fields: any = {
@@ -397,15 +423,24 @@ export async function getIssueTypesForProject(
         if (reporter?.accountId) {
             fields.reporter = { accountId: reporter.accountId };
         }
-        if (storyPoints && !isNaN(storyPoints)) {
-            // Note: This assumes the Story Points field ID is customfield_10016
-            fields.customfield_10016 = storyPoints;
+       
+        // Handle Story Points dynamically
+        if (customFieldIds.storyPoints && storyPointsValue && !isNaN(storyPointsValue)) {
+            fields[customFieldIds.storyPoints] = storyPointsValue;
         }
+
+        // Handle Epic Name for Team-Managed vs Company-Managed
+        if (issueTypeName === 'epic') {
+             // For Team-managed projects, the Epic Name is usually just the summary.
+             // For Company-managed, it's a separate field.
+             if (customFieldIds.epicName) {
+                fields[customFieldIds.epicName] = summary;
+             }
+        }
+
         if (issueType.subtask && parentKey) {
             fields.parent = { key: parentKey };
         }
-        // No special handling is needed for the 'Epic Name' in Team-managed projects.
-        // The summary is used automatically.
 
         return { fields };
       }));
