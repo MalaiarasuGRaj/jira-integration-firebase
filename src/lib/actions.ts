@@ -387,7 +387,7 @@ export async function getIssueTypesForProject(
         };
         
         if (issueType.name.toLowerCase() === 'epic') {
-            issueData.fields.customfield_10011 = row.Summary; 
+            issueData.fields['customfield_10011'] = row.Summary; 
         }
 
         if (assignee?.accountId) {
@@ -790,23 +790,24 @@ export async function generateDynamicCsvTemplate(
     }
 
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
+    
     const exampleRows = issueTypesResult.issueTypes
-        .filter(it => !it.subtask)
-        .map(issueType => {
-            const row = [
-                `Example ${issueType.name} Summary`,
-                `A description for the ${issueType.name}.`,
-                `user@example.com`,
-                `reporter@example.com`,
-                issueType.name,
-                '', // Story points
-                '' // Parent key
-            ];
-            if (issueType.name.toLowerCase() === 'story') {
-                row[5] = '5'; // Story points
-            }
-            return row;
-        });
+    .filter(it => !it.subtask) // Exclude sub-task types from generating top-level examples
+    .map(issueType => {
+        let storyPoints = '';
+        if (issueType.name.toLowerCase() === 'story') {
+            storyPoints = '5';
+        }
+        return [
+            `Example ${issueType.name} Summary`,
+            `A description for the ${issueType.name}.`,
+            `user@example.com`,
+            `reporter@example.com`,
+            issueType.name,
+            storyPoints, // Story points
+            '' // Parent key
+        ];
+    });
 
     const formatCell = (cell: string) => {
         const strCell = String(cell ?? '');
@@ -839,3 +840,5 @@ export type State = {
     };
     message?: string | null;
   };
+
+    
