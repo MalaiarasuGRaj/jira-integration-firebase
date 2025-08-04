@@ -281,6 +281,22 @@ export async function getIssueTypesForProject(
         return null;
     }
   }
+  
+  async function findEpicNameFieldId(domain: string, encodedCredentials: string): Promise<string | null> {
+    try {
+        const response = await fetch(`https://${domain}/rest/api/3/field`, {
+            headers: { Authorization: `Basic ${encodedCredentials}` },
+        });
+        if (!response.ok) return null;
+        const fields: { id: string; name: string }[] = await response.json();
+        const epicNameField = fields.find(field => field.name.toLowerCase() === 'epic name');
+        return epicNameField ? epicNameField.id : null;
+    } catch (error) {
+        console.error('Error finding Epic Name field ID:', error);
+        return null;
+    }
+  }
+
 
   export async function bulkCreateIssues(
     formData: FormData,
@@ -334,7 +350,12 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      const issueTypesResult = await getIssueTypesForProject(projectId, credentials);
+      // Pre-fetch project configuration in parallel
+      const [issueTypesResult, epicNameFieldId] = await Promise.all([
+        getIssueTypesForProject(projectId, credentials),
+        findEpicNameFieldId(domain, encodedCredentials)
+      ]);
+
       if (issueTypesResult.error || !issueTypesResult.issueTypes) {
         throw new Error(issueTypesResult.error || 'Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
@@ -346,17 +367,18 @@ export async function getIssueTypesForProject(
       const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
         const rowNum = index + 2;
         const summary = row.Summary;
-        const issueTypeName = String(row['Issue Type'] || '').trim().toLowerCase();
+        const issueTypeNameRaw = String(row['Issue Type'] || '').trim();
+        const issueTypeName = issueTypeNameRaw.toLowerCase();
         
         if (!summary || !issueTypeName) {
-          return null; 
+            return null; // Skip empty rows
         }
 
         const issueType = validIssueTypesMap.get(issueTypeName);
         
         if (!issueType) {
           const validNames = Array.from(validIssueTypesMap.keys()).join(', ');
-          issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${row['Issue Type']}". Valid types for this project are: ${validNames}.`);
+          issueCreationFailures.push(`Row ${rowNum}: Invalid issue type "${issueTypeNameRaw}". Valid types for this project are: ${validNames}.`);
           return null;
         }
         
@@ -395,13 +417,19 @@ export async function getIssueTypesForProject(
             fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
+            // Note: This assumes the Story Points field ID is customfield_10016
             fields.customfield_10016 = storyPoints;
         }
         if (issueType.subtask && parentKey) {
             fields.parent = { key: parentKey };
         }
-        if (issueType.name.toLowerCase() === 'epic') {
-            fields.customfield_10011 = summary;
+        if (issueTypeName === 'epic') {
+            if (epicNameFieldId) {
+                fields[epicNameFieldId] = summary;
+            } else {
+                 issueCreationFailures.push(`Row ${rowNum}: Could not find the 'Epic Name' custom field in your Jira instance. Cannot create Epic "${summary}".`);
+                 return null;
+            }
         }
 
         return { fields };
@@ -438,19 +466,23 @@ export async function getIssueTypesForProject(
         return { success: false, error: `${errorMessage} ${specificErrors}`.trim() };
       }
 
-      const failedCount = (result.errors?.length || 0) + issueCreationFailures.length;
+      let apiErrorDetails: string[] = [];
+      if (result.errors?.length > 0) {
+          apiErrorDetails = (result.errors || []).map((e: any, i: number) => {
+              const failedIssueIndex = e.failedElementNumber;
+              const failedSummary = validPayloads[failedIssueIndex]?.fields?.summary || `Row ${failedIssueIndex + 2}`;
+              const elementErrors = e.elementErrors?.errorMessages?.join(', ') || "An unspecified error occurred.";
+              const fieldErrors = Object.entries(e.elementErrors?.errors || {}).map(([key, value]) => `${key}: ${value}`).join('; ');
+              return `Issue "${failedSummary}": ${elementErrors} ${fieldErrors}`;
+          });
+      }
+
+      const allFailures = [...issueCreationFailures, ...apiErrorDetails];
+      const failedCount = allFailures.length;
       const createdCount = result.issues?.length || 0;
 
       if (failedCount > 0) {
-        const apiErrorDetails = (result.errors || []).map((e:any, i: number) => {
-            const failedIssueIndex = e.failedElementNumber;
-            const failedSummary = validPayloads[failedIssueIndex]?.fields?.summary || `Row ${failedIssueIndex + 2}`;
-            const elementErrors = e.elementErrors?.errorMessages?.join(', ') || "An unspecified error occurred.";
-             const fieldErrors = Object.entries(e.elementErrors?.errors || {}).map(([key, value]) => `${key}: ${value}`).join('; ');
-            return `Issue "${failedSummary}": ${elementErrors} ${fieldErrors}`;
-        }).join('; ');
-        
-        const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join('; ');
+        const failureSummary = allFailures.filter(Boolean).join('; ');
         const errorMessage = `Import complete. ${createdCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
         return { success: false, error: errorMessage, details: result };
       }
