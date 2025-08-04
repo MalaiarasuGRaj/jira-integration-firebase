@@ -375,7 +375,7 @@ export async function getIssueTypesForProject(
 
         const issueData: any = {
           fields: {
-            project: { key: projectKey },
+            project: { id: projectId },
             summary: row.Summary,
             description: {
               type: 'doc',
@@ -387,7 +387,7 @@ export async function getIssueTypesForProject(
         };
         
         if (issueType.name.toLowerCase() === 'epic') {
-            issueData.fields['customfield_10011'] = row.Summary; 
+            issueData.fields.customfield_10011 = row.Summary;
         }
 
         if (assignee?.accountId) {
@@ -792,20 +792,25 @@ export async function generateDynamicCsvTemplate(
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
     
     const exampleRows = issueTypesResult.issueTypes
-    .filter(it => !it.subtask) // Exclude sub-task types from generating top-level examples
     .map(issueType => {
         let storyPoints = '';
         if (issueType.name.toLowerCase() === 'story') {
             storyPoints = '5';
         }
+        
+        let parentKey = '';
+        if(issueType.subtask) {
+            parentKey = 'PROJ-123'; // Placeholder
+        }
+
         return [
             `Example ${issueType.name} Summary`,
             `A description for the ${issueType.name}.`,
             `user@example.com`,
             `reporter@example.com`,
             issueType.name,
-            storyPoints, // Story points
-            '' // Parent key
+            storyPoints,
+            parentKey
         ];
     });
 
@@ -816,12 +821,12 @@ export async function generateDynamicCsvTemplate(
         }
         return strCell;
     };
-
-    const allRows = [headers, ...exampleRows];
+    
+    let allRows = [headers, ...exampleRows];
     
     if (issueTypesResult.issueTypes.some(it => it.subtask)) {
       allRows.push([]); 
-      const subtaskNote = `NOTE for Sub-tasks: To create a sub-task, use one of the available sub-task issue types and provide the key of an *existing* parent issue (e.g., 'PROJ-123') in the 'Parent Key' column. A sub-task cannot be created in the same import file as its parent.`;
+      const subtaskNote = `NOTE for Sub-tasks: To create a sub-task, replace the placeholder 'PROJ-123' in the 'Parent Key' column with the key of an *existing* parent issue. A sub-task cannot be created in the same import file as its parent.`;
       const noteRow = [subtaskNote];
       allRows.push(noteRow);
     }
