@@ -385,6 +385,10 @@ export async function getIssueTypesForProject(
             issuetype: { id: issueType.id },
           }
         };
+        
+        if (issueType.name.toLowerCase() === 'epic') {
+            issueData.fields.customfield_10011 = row.Summary; 
+        }
 
         if (assignee?.accountId) {
           issueData.fields.assignee = { accountId: assignee.accountId };
@@ -395,11 +399,7 @@ export async function getIssueTypesForProject(
         if (storyPoints && !isNaN(storyPoints)) {
           issueData.fields.customfield_10016 = storyPoints;
         }
-        
-        if (issueType.name.toLowerCase() === 'epic') {
-          issueData.fields.customfield_10011 = row.Summary; 
-        }
-        
+                
         if (issueType.subtask && parentKey) {
             issueData.fields.parent = { key: parentKey };
         }
@@ -442,7 +442,7 @@ export async function getIssueTypesForProject(
             return `Issue "${failedIssueSummary}": ${errorMessages}`;
         }).join('; ');
         
-        const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join(' ');
+        const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join('; ');
         const errorMessage = `Import complete. ${createdCount} issues created, ${failedCount} failed. Failures: ${failureSummary}`;
         return { success: false, error: errorMessage, details: result };
       }
@@ -791,7 +791,7 @@ export async function generateDynamicCsvTemplate(
 
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
     const exampleRows = issueTypesResult.issueTypes
-        .filter(it => !it.subtask) // Don't include sub-tasks as top-level examples
+        .filter(it => !it.subtask)
         .map(issueType => {
             const row = [
                 `Example ${issueType.name} Summary`,
@@ -818,12 +818,10 @@ export async function generateDynamicCsvTemplate(
 
     const allRows = [headers, ...exampleRows];
     
-    // Add a note about sub-tasks
     if (issueTypesResult.issueTypes.some(it => it.subtask)) {
-      allRows.push([]); // Add an empty line for separation
-      const note = `NOTE: To create a sub-task, use one of the available sub-task types (e.g., 'Subtask') and provide the key of the parent issue (e.g., 'PROJ-123') in the 'Parent Key' column. A sub-task cannot be created in the same import as its parent.`;
-      // Create a note row that spans all columns
-      const noteRow = [note];
+      allRows.push([]); 
+      const subtaskNote = `NOTE for Sub-tasks: To create a sub-task, use one of the available sub-task issue types and provide the key of an *existing* parent issue (e.g., 'PROJ-123') in the 'Parent Key' column. A sub-task cannot be created in the same import file as its parent.`;
+      const noteRow = [subtaskNote];
       allRows.push(noteRow);
     }
     
