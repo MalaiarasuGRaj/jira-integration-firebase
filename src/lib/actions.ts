@@ -373,7 +373,8 @@ export async function getIssueTypesForProject(
         
         const storyPoints = row['Story Points'] ? parseFloat(row['Story Points']) : null;
 
-        const baseFields: any = {
+        // --- REWRITTEN EPIC LOGIC ---
+        const fields: any = {
             project: { id: projectId },
             summary: row.Summary,
             description: {
@@ -385,27 +386,28 @@ export async function getIssueTypesForProject(
         };
 
         if (assignee?.accountId) {
-            baseFields.assignee = { accountId: assignee.accountId };
+            fields.assignee = { accountId: assignee.accountId };
         }
         if (reporter?.accountId) {
-            baseFields.reporter = { accountId: reporter.accountId };
+            fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-            baseFields.customfield_10016 = storyPoints;
-        }
-                
-        if (issueType.subtask && parentKey) {
-            baseFields.parent = { key: parentKey };
+            // Standard ID for Story Points field
+            fields.customfield_10016 = storyPoints;
         }
         
-        // This is the rewritten Epic handling logic.
-        if (issueType.name.toLowerCase() === 'epic') {
-            // Jira requires the "Epic Name" custom field to be set.
-            // The standard ID for this field is 'customfield_10011'.
-            baseFields.customfield_10011 = row.Summary;
+        if (issueType.subtask && parentKey) {
+            fields.parent = { key: parentKey };
         }
+        
+        // Explicitly handle Epic Name for Epic issue types
+        if (issueType.name.toLowerCase() === 'epic') {
+            // Standard ID for Epic Name field
+            fields.customfield_10011 = row.Summary;
+        }
+        // --- END OF REWRITTEN LOGIC ---
 
-        return { fields: baseFields };
+        return { fields };
       }));
       
       const validPayloads = issuePayloads.filter(p => p !== null);
@@ -853,4 +855,5 @@ export type State = {
     };
     message?: string | null;
   };
+
 
