@@ -342,13 +342,16 @@ export async function getIssueTypesForProject(
       const validIssueTypesMap = new Map(projectIssueTypes.map(it => [it.name.toLowerCase(), it]));
 
       const issueCreationFailures: string[] = [];
+      
       const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
         const rowNum = index + 2;
-        if (!row.Summary || !row['Issue Type']) {
+        const summary = row.Summary;
+        const issueTypeName = String(row['Issue Type'] || '').trim().toLowerCase();
+        
+        if (!summary || !issueTypeName) {
           return null; 
         }
 
-        const issueTypeName = String(row['Issue Type']).trim().toLowerCase();
         const issueType = validIssueTypesMap.get(issueTypeName);
         
         if (!issueType) {
@@ -359,7 +362,7 @@ export async function getIssueTypesForProject(
         
         const parentKey = row['Parent Key'];
         if (issueType.subtask && !parentKey) {
-            issueCreationFailures.push(`Row ${rowNum}: Sub-task "${row.Summary}" is missing a 'Parent Key'.`);
+            issueCreationFailures.push(`Row ${rowNum}: Sub-task "${summary}" is missing a 'Parent Key'.`);
             return null;
         }
         
@@ -372,17 +375,17 @@ export async function getIssueTypesForProject(
         ]);
         
         const storyPoints = row['Story Points'] ? parseFloat(row['Story Points']) : null;
+        const descriptionText = row.Description || '';
 
-        // --- REWRITTEN EPIC LOGIC ---
         const fields: any = {
             project: { id: projectId },
-            summary: row.Summary,
-            description: {
-              type: 'doc',
-              version: 1,
-              content: row.Description ? [{ type: 'paragraph', content: [{ type: 'text', text: row.Description }] }] : [],
-            },
+            summary: summary,
             issuetype: { id: issueType.id },
+            description: {
+                type: 'doc',
+                version: 1,
+                content: descriptionText ? [{ type: 'paragraph', content: [{ type: 'text', text: descriptionText }] }] : [],
+            },
         };
 
         if (assignee?.accountId) {
@@ -392,18 +395,15 @@ export async function getIssueTypesForProject(
             fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-            // Standard ID for Story Points field
+            // Standard ID for Story Points field in many Jira Cloud instances
             fields.customfield_10016 = storyPoints;
         }
-        
         if (issueType.subtask && parentKey) {
             fields.parent = { key: parentKey };
         }
-        
-        // Explicitly handle Epic Name for Epic issue types
         if (issueType.name.toLowerCase() === 'epic') {
-            // Standard ID for Epic Name field
-            fields.customfield_10011 = row.Summary;
+            // Standard ID for Epic Name field in many Jira Cloud instances
+            fields.customfield_10011 = summary;
         }
 
         return { fields };
@@ -425,23 +425,31 @@ export async function getIssueTypesForProject(
         body: JSON.stringify({ issueUpdates: validPayloads }),
       });
   
-      if (!response.ok) {
-        const errorBody = await response.json();
-        const errorMessage = errorBody?.errorMessages?.join(' ') || 'An unknown error occurred during bulk creation.';
-        const specificErrors = (errorBody?.errors || []).map((e: any) => e.elementErrors?.errorMessages?.join(' ')).filter(Boolean).join('; ');
-        return { success: false, error: `${errorMessage} ${specificErrors}`.trim() };
-      }
-  
       const result = await response.json();
       
+      if (!response.ok) {
+        const errorMessage = result?.errorMessages?.join(' ') || 'An unknown error occurred during bulk creation.';
+        const specificErrors = (result?.errors || []).map((e: any) => {
+             const failedIssueIndex = e.failedElementNumber;
+             const failedSummary = validPayloads[failedIssueIndex]?.fields?.summary || `Row ${failedIssueIndex + 2}`;
+             const elementErrors = e.elementErrors?.errorMessages?.join(' ') || 'Unknown error.';
+             const fieldErrors = Object.entries(e.elementErrors?.errors || {}).map(([key, value]) => `${key}: ${value}`).join('; ');
+             return `Issue "${failedSummary}": ${elementErrors} ${fieldErrors}`;
+        }).filter(Boolean).join('; ');
+        
+        return { success: false, error: `${errorMessage} ${specificErrors}`.trim() };
+      }
+
       const failedCount = (result.errors?.length || 0) + issueCreationFailures.length;
       const createdCount = result.issues?.length || 0;
 
       if (failedCount > 0) {
         const apiErrorDetails = (result.errors || []).map((e:any, i: number) => {
-            const failedIssueSummary = validPayloads[e.failedElementNumber]?.fields?.summary;
-            const errorMessages = e.elementErrors?.errorMessages?.join(', ') || "An unspecified error occurred.";
-            return `Issue "${failedIssueSummary}": ${errorMessages}`;
+            const failedIssueIndex = e.failedElementNumber;
+            const failedSummary = validPayloads[failedIssueIndex]?.fields?.summary || `Row ${failedIssueIndex + 2}`;
+            const elementErrors = e.elementErrors?.errorMessages?.join(', ') || "An unspecified error occurred.";
+             const fieldErrors = Object.entries(e.elementErrors?.errors || {}).map(([key, value]) => `${key}: ${value}`).join('; ');
+            return `Issue "${failedSummary}": ${elementErrors} ${fieldErrors}`;
         }).join('; ');
         
         const failureSummary = [...issueCreationFailures, apiErrorDetails].filter(Boolean).join('; ');
@@ -456,6 +464,7 @@ export async function getIssueTypesForProject(
       return { success: false, error: error instanceof Error ? error.message : 'An unexpected server error occurred.' };
     }
   }
+
 
 export async function getUsersForProject(
     projectKey: string,
