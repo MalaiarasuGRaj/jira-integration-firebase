@@ -94,7 +94,7 @@ export async function logout() {
 
 
 export async function getIssueTypesForProject(
-    projectId: string,
+    projectIdOrKey: string,
     credentials: Credentials
   ): Promise<{ issueTypes?: JiraIssueType[]; error?: string }> {
   
@@ -109,7 +109,7 @@ export async function getIssueTypesForProject(
   
     try {
       const response = await fetch(
-        `https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`,
+        `https://${domain}/rest/api/3/issuetype/project?projectId=${projectIdOrKey}`,
         {
           headers: { Authorization: `Basic ${encodedCredentials}` },
           cache: 'no-store',
@@ -150,7 +150,7 @@ export async function getIssueTypesForProject(
     const jql = `project = "${projectKey}" AND issuetype = ${issueTypeId} ORDER BY created DESC`;
     const encodedJql = encodeURIComponent(jql);
     const fields =
-      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,description,customfield_10020';
+      'summary,status,assignee,reporter,priority,created,updated,labels,parent,issuetype,description,customfield_10020,customfield_10011,customfield_10016';
   
     try {
       const response = await fetch(
@@ -184,6 +184,7 @@ export async function getIssueTypesForProject(
         labels: issue.fields.labels,
         parent: issue.fields.parent,
         issueType: issue.fields.issuetype,
+        storyPoints: issue.fields.customfield_10016,
         customfield_10020: issue.fields.customfield_10020 || [],
       }));
   
@@ -333,25 +334,18 @@ export async function getIssueTypesForProject(
     }
   
     try {
-      // Fetch project details to get issue types
-      const issueTypesResponse = await fetch(`https://${domain}/rest/api/3/issuetype/project?projectId=${projectId}`, {
-        headers: { Authorization: `Basic ${encodedCredentials}` },
-      });
-      if (!issueTypesResponse.ok) {
-        throw new Error('Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
+      const issueTypesResult = await getIssueTypesForProject(projectId, credentials);
+      if (issueTypesResult.error || !issueTypesResult.issueTypes) {
+        throw new Error(issueTypesResult.error || 'Could not fetch project configuration (issue types). Please ensure the project exists and you have permissions.');
       }
-      const projectIssueTypes: JiraIssueType[] = await issueTypesResponse.json();
+      const projectIssueTypes = issueTypesResult.issueTypes;
       const validIssueTypesMap = new Map(projectIssueTypes.map(it => [it.name.toLowerCase(), it]));
-
-      if (!projectIssueTypes || projectIssueTypes.length === 0) {
-        throw new Error('Could not fetch project configuration (issue types). Please ensure the selected project is correct, that you have permissions to view it, and that you are using the template file.');
-      }
 
       const issueCreationFailures: string[] = [];
       const issuePayloads = await Promise.all(data.map(async (row: any, index: number) => {
-        const rowNum = index + 2; // Account for header row
+        const rowNum = index + 2;
         if (!row.Summary || !row['Issue Type']) {
-          return null; // Skip empty rows
+          return null; 
         }
 
         const issueTypeName = String(row['Issue Type']).trim().toLowerCase();
@@ -399,17 +393,16 @@ export async function getIssueTypesForProject(
           issueData.fields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-          // This is the default field for Story Points in many Jira Cloud instances
           issueData.fields.customfield_10016 = storyPoints;
         }
         
-        if (issueTypeName === 'epic') {
-          // 'customfield_10011' is the default field for Epic Name in many Jira Cloud instances.
+        // This is the correct way to set the Epic Name field.
+        if (issueType.name.toLowerCase() === 'epic') {
           issueData.fields.customfield_10011 = row.Summary; 
         }
         
-        if (issueType.subtask) {
-            issueData.fields.parent = { key: row['Parent Key'] };
+        if (issueType.subtask && parentKey) {
+            issueData.fields.parent = { key: parentKey };
         }
 
         return issueData;
@@ -784,6 +777,62 @@ export async function createIssue(
     }
 }
   
+export async function generateDynamicCsvTemplate(
+    projectId: string,
+    credentials: Credentials,
+): Promise<{ success: boolean; csvContent?: string; error?: string; }> {
+    if (!credentials) {
+        return { success: false, error: 'Authentication required.' };
+    }
+
+    const issueTypesResult = await getIssueTypesForProject(projectId, credentials);
+    if (issueTypesResult.error || !issueTypesResult.issueTypes) {
+        return { success: false, error: issueTypesResult.error || "Could not fetch issue types for the selected project." };
+    }
+
+    const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
+    const exampleRows = issueTypesResult.issueTypes
+        .filter(it => !it.subtask) // Don't include sub-tasks as top-level examples
+        .map(issueType => [
+            `Example ${issueType.name} Summary`,
+            `A description for the ${issueType.name}.`,
+            `user@example.com`,
+            `reporter@example.com`,
+            issueType.name,
+            issueType.name.toLowerCase() === 'story' ? '5' : '',
+            '' // Parent key is for sub-tasks, which are not in the main examples
+        ]);
+        
+     // Add a sub-task example if sub-task types exist
+    if (issueTypesResult.issueTypes.some(it => it.subtask)) {
+        const subtaskExample = issueTypesResult.issueTypes.find(it => it.subtask);
+        if (subtaskExample) {
+            exampleRows.push([
+                `Example ${subtaskExample.name}`,
+                `A description for the ${subtaskExample.name}.`,
+                `user@example.com`,
+                `reporter@example.com`,
+                subtaskExample.name,
+                '', // Sub-tasks don't typically have story points
+                'PROJ-123' // Add a placeholder parent key
+            ]);
+        }
+    }
+
+
+    const formatCell = (cell: string) => {
+        const strCell = String(cell ?? '');
+        if (strCell.includes(',') || strCell.includes('"') || strCell.includes('\n')) {
+            return `"${strCell.replace(/"/g, '""')}"`;
+        }
+        return strCell;
+    };
+
+    const allRows = [headers, ...exampleRows];
+    const csvContent = allRows.map(row => row.map(formatCell).join(',')).join('\n');
+
+    return { success: true, csvContent };
+}
 
 export type State = {
     errors?: {
@@ -795,5 +844,7 @@ export type State = {
     message?: string | null;
   };
 
+
+    
 
     

@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { type JiraProject } from '@/lib/types';
-import { type Credentials, bulkCreateIssues } from '@/lib/actions';
+import { type Credentials, bulkCreateIssues, generateDynamicCsvTemplate } from '@/lib/actions';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle, Download, Loader2, UploadCloud } from 'lucide-react';
 
@@ -43,13 +43,13 @@ export function ImportIssuesDialog({
   const [selectedProject, setSelectedProject] = useState<JiraProject | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isImporting, setIsImporting] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
         const fileType = selectedFile.type;
-        // Broader check for excel and csv mimetypes
         const validTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
         if (validTypes.includes(fileType) || selectedFile.name.endsWith('.csv') || selectedFile.name.endsWith('.xlsx') || selectedFile.name.endsWith('.xls')) {
             setFile(selectedFile);
@@ -61,67 +61,46 @@ export function ImportIssuesDialog({
     }
   };
 
-  const handleDownloadTemplate = () => {
-    const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
+  const handleDownloadTemplate = async () => {
+    if (!selectedProject || !credentials) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please select a project first."
+      });
+      return;
+    }
+    setIsDownloading(true);
+    toast({
+      title: "Generating Template...",
+      description: `Fetching configuration for ${selectedProject.name}.`
+    });
+
+    const result = await generateDynamicCsvTemplate(selectedProject.id, credentials);
     
-    const rows = [
-      headers,
-      [
-        'Plan Q4 Marketing Campaign',
-        'High-level planning epic for all Q4 marketing activities. This includes social media, content, and paid advertising.',
-        'assignee@example.com',
-        'reporter@example.com',
-        'Epic',
-        '', // Story points are not typical for Epics
-        '', // Epics do not have parents
-      ],
-      [
-        'Develop new landing page design',
-        'Create a modern and responsive design for the new product landing page. Should include wireframes and mockups.',
-        'assignee@example.com',
-        'reporter@example.com',
-        'Story',
-        '5',
-        '', // This will be a parent issue, so it has no parent itself
-      ],
-      [
-        'Fix login button alignment on mobile',
-        'The login button is misaligned on screens smaller than 375px.',
-        'assignee@example.com',
-        'reporter@example.com',
-        'Task',
-        '1',
-        '',
-      ],
-      [
-        'Write documentation for new feature',
-        'Create user-facing documentation for the new landing page feature.',
-        'assignee@example.com',
-        'reporter@example.com',
-        'Task',
-        '2',
-        '',
-      ]
-    ];
+    setIsDownloading(false);
 
-    const formatCell = (cell: string) => {
-        const strCell = String(cell ?? '');
-        if (strCell.includes(',') || strCell.includes('"') || strCell.includes('\n')) {
-            return `"${strCell.replace(/"/g, '""')}"`;
-        }
-        return strCell;
-    };
-
-    const csvContent = rows.map(row => row.map(formatCell).join(',')).join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'jira-import-example.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (result.success && result.csvContent) {
+      const blob = new Blob([result.csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${selectedProject.key}-import-template.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({
+        title: "Template Downloaded",
+        description: "Your project-specific template is ready."
+      })
+    } else {
+      setError(result.error || "Failed to generate the CSV template.");
+      toast({
+        variant: "destructive",
+        title: "Failed to Generate Template",
+        description: result.error || "An unknown error occurred."
+      })
+    }
   };
   
   const resetState = () => {
@@ -179,11 +158,13 @@ export function ImportIssuesDialog({
         </DialogHeader>
         <div className="grid gap-6 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="project">Select Project</Label>
+            <Label htmlFor="project">1. Select Project</Label>
             <Select onValueChange={(value) => {
               const project = projects.find(p => p.id === value);
               setSelectedProject(project || null);
-            }}>
+            }}
+            value={selectedProject?.id || ''}
+            >
               <SelectTrigger id="project">
                 <SelectValue placeholder="Choose a project..." />
               </SelectTrigger>
@@ -196,13 +177,17 @@ export function ImportIssuesDialog({
               </SelectContent>
             </Select>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="upload-file">Upload CSV or Excel File</Label>
-            <Input id="upload-file" type="file" accept=".csv, .xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={handleFileChange} />
-             <Button variant="link" size="sm" className="justify-start p-0 h-auto" onClick={handleDownloadTemplate}>
-                <Download className="mr-2 h-3 w-3" />
-                Download Example CSV
+           <div className="grid gap-2">
+            <Label htmlFor="download-template">2. Download Template</Label>
+            <Button id="download-template" variant="outline" className="justify-start" onClick={handleDownloadTemplate} disabled={!selectedProject || isDownloading}>
+                {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
+                {isDownloading ? "Generating..." : "Download Project-Specific Template"}
             </Button>
+            <p className='text-xs text-muted-foreground'>Download a CSV template customized for the issue types available in your selected project.</p>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="upload-file">3. Upload File</Label>
+            <Input id="upload-file" type="file" accept=".csv, .xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={handleFileChange} disabled={!selectedProject}/>
           </div>
           {error && (
              <Alert variant="destructive">
@@ -225,3 +210,5 @@ export function ImportIssuesDialog({
     </Dialog>
   );
 }
+
+    
