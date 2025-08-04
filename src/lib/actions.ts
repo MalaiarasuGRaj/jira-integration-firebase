@@ -373,8 +373,7 @@ export async function getIssueTypesForProject(
         
         const storyPoints = row['Story Points'] ? parseFloat(row['Story Points']) : null;
 
-        const issueData: any = {
-          fields: {
+        const baseFields: any = {
             project: { id: projectId },
             summary: row.Summary,
             description: {
@@ -383,28 +382,30 @@ export async function getIssueTypesForProject(
               content: row.Description ? [{ type: 'paragraph', content: [{ type: 'text', text: row.Description }] }] : [],
             },
             issuetype: { id: issueType.id },
-          }
         };
 
-        if (issueType.name.toLowerCase() === 'epic') {
-            issueData.fields.customfield_10011 = row.Summary;
-        }
-
         if (assignee?.accountId) {
-          issueData.fields.assignee = { accountId: assignee.accountId };
+            baseFields.assignee = { accountId: assignee.accountId };
         }
         if (reporter?.accountId) {
-          issueData.fields.reporter = { accountId: reporter.accountId };
+            baseFields.reporter = { accountId: reporter.accountId };
         }
         if (storyPoints && !isNaN(storyPoints)) {
-          issueData.fields.customfield_10016 = storyPoints;
+            baseFields.customfield_10016 = storyPoints;
         }
                 
         if (issueType.subtask && parentKey) {
-            issueData.fields.parent = { key: parentKey };
+            baseFields.parent = { key: parentKey };
+        }
+        
+        // This is the rewritten Epic handling logic.
+        if (issueType.name.toLowerCase() === 'epic') {
+            // Jira requires the "Epic Name" custom field to be set.
+            // The standard ID for this field is 'customfield_10011'.
+            baseFields['customfield_10011'] = row.Summary;
         }
 
-        return issueData;
+        return { fields: baseFields };
       }));
       
       const validPayloads = issuePayloads.filter(p => p !== null);
@@ -792,15 +793,11 @@ export async function generateDynamicCsvTemplate(
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
     
     const exampleRows = issueTypesResult.issueTypes
+    .filter(it => !it.subtask) // Don't include sub-tasks in the main example rows
     .map(issueType => {
         let storyPoints = '';
         if (issueType.name.toLowerCase() === 'story') {
             storyPoints = '5';
-        }
-        
-        let parentKey = '';
-        if(issueType.subtask) {
-            parentKey = 'PROJ-123'; // Placeholder
         }
 
         return [
@@ -810,7 +807,7 @@ export async function generateDynamicCsvTemplate(
             `reporter@example.com`,
             issueType.name,
             storyPoints,
-            parentKey
+            '' // Parent Key is empty for non-subtasks
         ];
     });
 
@@ -824,7 +821,18 @@ export async function generateDynamicCsvTemplate(
     
     let allRows = [headers, ...exampleRows];
     
-    if (issueTypesResult.issueTypes.some(it => it.subtask)) {
+    const subtaskType = issueTypesResult.issueTypes.find(it => it.subtask);
+    if (subtaskType) {
+      // Add an example row for a subtask
+      allRows.push([
+        'Example Subtask',
+        'This is a subtask and needs a parent.',
+        'user@example.com',
+        'reporter@example.com',
+        subtaskType.name,
+        '',
+        'PROJ-123' // Placeholder parent key
+      ]);
       allRows.push([]); 
       const subtaskNote = `NOTE for Sub-tasks: To create a sub-task, replace the placeholder 'PROJ-123' in the 'Parent Key' column with the key of an *existing* parent issue. A sub-task cannot be created in the same import file as its parent.`;
       const noteRow = [subtaskNote];
@@ -845,7 +853,3 @@ export type State = {
     };
     message?: string | null;
   };
-
-    
-
-    
