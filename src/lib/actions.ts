@@ -396,7 +396,6 @@ export async function getIssueTypesForProject(
           issueData.fields.customfield_10016 = storyPoints;
         }
         
-        // This is the correct way to set the Epic Name field.
         if (issueType.name.toLowerCase() === 'epic') {
           issueData.fields.customfield_10011 = row.Summary; 
         }
@@ -793,32 +792,21 @@ export async function generateDynamicCsvTemplate(
     const headers = ['Summary', 'Description', 'Assignee (Email)', 'Reporter (Email)', 'Issue Type', 'Story Points', 'Parent Key'];
     const exampleRows = issueTypesResult.issueTypes
         .filter(it => !it.subtask) // Don't include sub-tasks as top-level examples
-        .map(issueType => [
-            `Example ${issueType.name} Summary`,
-            `A description for the ${issueType.name}.`,
-            `user@example.com`,
-            `reporter@example.com`,
-            issueType.name,
-            issueType.name.toLowerCase() === 'story' ? '5' : '',
-            '' // Parent key is for sub-tasks, which are not in the main examples
-        ]);
-        
-     // Add a sub-task example if sub-task types exist
-    if (issueTypesResult.issueTypes.some(it => it.subtask)) {
-        const subtaskExample = issueTypesResult.issueTypes.find(it => it.subtask);
-        if (subtaskExample) {
-            exampleRows.push([
-                `Example ${subtaskExample.name}`,
-                `A description for the ${subtaskExample.name}.`,
+        .map(issueType => {
+            const row = [
+                `Example ${issueType.name} Summary`,
+                `A description for the ${issueType.name}.`,
                 `user@example.com`,
                 `reporter@example.com`,
-                subtaskExample.name,
-                '', // Sub-tasks don't typically have story points
-                'PROJ-123' // Add a placeholder parent key
-            ]);
-        }
-    }
-
+                issueType.name,
+                '', // Story points
+                '' // Parent key
+            ];
+            if (issueType.name.toLowerCase() === 'story') {
+                row[5] = '5'; // Story points
+            }
+            return row;
+        });
 
     const formatCell = (cell: string) => {
         const strCell = String(cell ?? '');
@@ -829,6 +817,16 @@ export async function generateDynamicCsvTemplate(
     };
 
     const allRows = [headers, ...exampleRows];
+    
+    // Add a note about sub-tasks
+    if (issueTypesResult.issueTypes.some(it => it.subtask)) {
+      allRows.push([]); // Add an empty line for separation
+      const note = `NOTE: To create a sub-task, use one of the available sub-task types (e.g., 'Subtask') and provide the key of the parent issue (e.g., 'PROJ-123') in the 'Parent Key' column. A sub-task cannot be created in the same import as its parent.`;
+      // Create a note row that spans all columns
+      const noteRow = [note];
+      allRows.push(noteRow);
+    }
+    
     const csvContent = allRows.map(row => row.map(formatCell).join(',')).join('\n');
 
     return { success: true, csvContent };
@@ -843,8 +841,3 @@ export type State = {
     };
     message?: string | null;
   };
-
-
-    
-
-    
