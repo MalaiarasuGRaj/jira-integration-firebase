@@ -1,0 +1,1008 @@
+2025-08-07 09:55:02,260 - Knowledge - INFO - Redis support added with prefix knowledge:b7514x8:
+2025-08-07 09:55:02,518 - Knowledge - INFO - load persisted knowledge: begin
+2025-08-07 09:55:02,611 - Knowledge - INFO - load persisted knowledge: end
+2025-08-07 09:55:02,689 - Knowledge - INFO - load persisted docinfo: begin
+2025-08-07 09:55:02,773 - Knowledge - INFO - load persisted docinfo: end
+2025-08-07 09:55:02,879 - Knowledge - INFO - worker kw1 created with dedicated MongoDB connection (total: 1)
+2025-08-07 09:55:02,993 - Knowledge - INFO - knowledge worker kw1 start
+2025-08-07 09:55:02,996 - Knowledge - INFO - worker kw2 created with dedicated MongoDB connection (total: 2)
+2025-08-07 09:55:03,078 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts from ingest queue
+2025-08-07 09:55:03,171 - Knowledge - INFO - knowledge worker kw2 start
+2025-08-07 09:55:03,176 - Knowledge - INFO - worker kw3 created with dedicated MongoDB connection (total: 3)
+2025-08-07 09:55:03,284 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:03,347 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx from ingest queue
+2025-08-07 09:55:03,438 - Knowledge - INFO - knowledge worker kw3 start
+2025-08-07 09:55:03,441 - Knowledge - INFO - worker kw4 created with dedicated MongoDB connection (total: 4)
+2025-08-07 09:55:03,538 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:03,679 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:03,721 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts from ingest queue
+2025-08-07 09:55:03,807 - Knowledge - INFO - knowledge worker kw4 start
+2025-08-07 09:55:03,929 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:04,013 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:03,810 - Knowledge - INFO - worker kw5 created with dedicated MongoDB connection (total: 5)
+2025-08-07 09:55:04,148 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:04,207 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts from ingest queue
+2025-08-07 09:55:04,290 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:04,374 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:04,462 - Knowledge - INFO - knowledge worker kw5 start
+2025-08-07 09:55:04,464 - Knowledge - INFO - worker kw6 created with dedicated MongoDB connection (total: 6)
+2025-08-07 09:55:04,550 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:05,122 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:05,203 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:04,810 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:04,996 - Knowledge - INFO - knowledge worker kw6 start
+2025-08-07 09:55:04,998 - Knowledge - INFO - worker kw7 created with dedicated MongoDB connection (total: 7)
+2025-08-07 09:55:04,680 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:04,793 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts to ingest queue
+2025-08-07 09:55:05,584 - Knowledge - INFO - knowledge worker kw7 start
+2025-08-07 09:55:05,587 - Knowledge - INFO - worker kw8 created with dedicated MongoDB connection (total: 8)
+2025-08-07 09:55:05,780 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx from ingest queue
+2025-08-07 09:55:05,859 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx from ingest queue
+2025-08-07 09:55:05,859 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:05,927 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts to ingest queue
+2025-08-07 09:55:05,976 - Knowledge - INFO - knowledge worker kw8 start
+2025-08-07 09:55:06,115 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:05,977 - Knowledge - INFO - worker kw9 created with dedicated MongoDB connection (total: 9)
+2025-08-07 09:55:06,175 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:06,246 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:06,831 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:06,624 - Knowledge - INFO - knowledge worker kw9 start
+2025-08-07 09:55:06,627 - Knowledge - INFO - worker kw10 created with dedicated MongoDB connection (total: 10)
+2025-08-07 09:55:06,334 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx to ingest queue
+2025-08-07 09:55:07,108 - Knowledge - INFO - knowledge worker kw10 start
+2025-08-07 09:55:07,109 - Knowledge - INFO - worker kw11 created with dedicated MongoDB connection (total: 11)
+2025-08-07 09:55:07,199 - Knowledge - INFO - worker kw7 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx from ingest queue
+2025-08-07 09:55:07,200 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx from ingest queue
+2025-08-07 09:55:07,200 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx from ingest queue
+2025-08-07 09:55:07,201 - Knowledge - INFO - worker kw8 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx from ingest queue
+2025-08-07 09:55:07,201 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:07,261 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts to ingest queue
+2025-08-07 09:55:07,373 - Knowledge - INFO - knowledge worker kw11 start
+2025-08-07 09:55:07,374 - Knowledge - INFO - worker kw12 created with dedicated MongoDB connection (total: 12)
+2025-08-07 09:55:07,508 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:07,662 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:55:07,731 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:07,836 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:55:07,855 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:07,930 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:07,932 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx from ingest queue
+2025-08-07 09:55:07,932 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx from ingest queue
+2025-08-07 09:55:07,932 - Knowledge - INFO - worker kw10 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx from ingest queue
+2025-08-07 09:55:07,932 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx from ingest queue
+2025-08-07 09:55:08,035 - Knowledge - INFO - worker kw11 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx from ingest queue
+2025-08-07 09:55:08,119 - Knowledge - INFO - knowledge worker kw12 start
+2025-08-07 09:55:08,122 - Knowledge - INFO - worker kw13 created with dedicated MongoDB connection (total: 13)
+2025-08-07 09:55:08,243 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:08,319 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:08,393 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:08,477 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:08,567 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:08,657 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:09,825 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:08,890 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:55:08,976 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:55:09,043 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:55:09,152 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:09,195 - Knowledge - INFO - worker kw12 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx from ingest queue
+2025-08-07 09:55:09,306 - Knowledge - INFO - knowledge worker kw13 start
+2025-08-07 09:55:09,308 - Knowledge - INFO - worker kw14 created with dedicated MongoDB connection (total: 14)
+2025-08-07 09:55:09,380 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:09,462 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:09,577 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:09,648 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:09,816 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx to ingest queue
+2025-08-07 09:55:08,778 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:55:10,443 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:55:10,536 - Knowledge - INFO - knowledge worker kw14 start
+2025-08-07 09:55:10,538 - Knowledge - INFO - worker kw15 created with dedicated MongoDB connection (total: 15)
+2025-08-07 09:55:10,658 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:10,755 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:55:10,831 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:10,934 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:55:11,027 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx from ingest queue
+2025-08-07 09:55:11,030 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:11,030 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:11,030 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:11,030 - Knowledge - INFO - worker kw13 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx from ingest queue
+2025-08-07 09:55:11,111 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:11,111 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx to ingest queue
+2025-08-07 09:55:11,416 - Knowledge - INFO - knowledge worker kw15 start
+2025-08-07 09:55:11,419 - Knowledge - INFO - worker kw16 created with dedicated MongoDB connection (total: 16)
+2025-08-07 09:55:11,965 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:12,019 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,115 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,221 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,996 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:12,378 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,470 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:12,473 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:13,345 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,541 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx to ingest queue
+2025-08-07 09:55:12,624 - Knowledge - INFO - knowledge worker kw16 start
+2025-08-07 09:55:12,626 - Knowledge - INFO - worker kw17 created with dedicated MongoDB connection (total: 17)
+2025-08-07 09:55:13,687 - Knowledge - INFO - knowledge worker kw17 start
+2025-08-07 09:55:12,883 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:55:12,352 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:55:13,167 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:55:13,245 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:12,473 - Knowledge - INFO - worker kw14 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx from ingest queue
+2025-08-07 09:55:13,455 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:55:13,625 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx to ingest queue
+2025-08-07 09:55:12,797 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:55:13,689 - Knowledge - INFO - worker kw18 created with dedicated MongoDB connection (total: 18)
+2025-08-07 09:55:14,103 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:55:14,226 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:55:14,417 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx from ingest queue
+2025-08-07 09:55:14,545 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:14,572 - Knowledge - INFO - knowledge worker kw18 start
+2025-08-07 09:55:14,575 - Knowledge - INFO - worker kw19 created with dedicated MongoDB connection (total: 19)
+2025-08-07 09:55:15,154 - Knowledge - INFO - knowledge worker kw19 start
+2025-08-07 09:55:14,887 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:55:14,970 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:14,630 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx to ingest queue
+2025-08-07 09:55:15,156 - Knowledge - INFO - worker kw20 created with dedicated MongoDB connection (total: 20)
+2025-08-07 09:55:15,426 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:15,530 - Knowledge - INFO - worker kw11 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx from ingest queue
+2025-08-07 09:55:15,606 - Knowledge - INFO - knowledge worker kw20 start
+2025-08-07 09:55:15,608 - Knowledge - WARNING - High connection count: 21 connections active
+2025-08-07 09:55:15,648 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:15,757 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx from ingest queue
+2025-08-07 09:55:15,811 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx to ingest queue
+2025-08-07 09:55:15,842 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:55:16,075 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:15,969 - Knowledge - INFO - worker kw21 created with dedicated MongoDB connection (total: 21)
+2025-08-07 09:55:16,223 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:55:16,271 - Knowledge - INFO - worker kw7 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx from ingest queue
+2025-08-07 09:55:16,338 - Knowledge - INFO - worker kw18 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx from ingest queue
+2025-08-07 09:55:16,338 - Knowledge - INFO - worker kw19 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx from ingest queue
+2025-08-07 09:55:16,338 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:17,093 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:16,338 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx from ingest queue
+2025-08-07 09:55:16,338 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx to ingest queue
+2025-08-07 09:55:16,483 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:55:16,584 - Knowledge - INFO - knowledge worker kw21 start
+2025-08-07 09:55:16,587 - Knowledge - WARNING - High connection count: 22 connections active
+2025-08-07 09:55:17,651 - Knowledge - INFO - worker kw22 created with dedicated MongoDB connection (total: 22)
+2025-08-07 09:55:16,915 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:55:17,031 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:55:16,338 - Knowledge - INFO - worker kw16 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx from ingest queue
+2025-08-07 09:55:17,189 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:55:17,292 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:55:17,358 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx to ingest queue
+2025-08-07 09:55:16,835 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:55:17,728 - Knowledge - INFO - knowledge worker kw22 start
+2025-08-07 09:55:17,732 - Knowledge - WARNING - High connection count: 23 connections active
+2025-08-07 09:55:18,015 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:55:18,321 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx to ingest queue
+2025-08-07 09:55:18,531 - Knowledge - INFO - worker kw23 created with dedicated MongoDB connection (total: 23)
+2025-08-07 09:55:18,695 - Knowledge - INFO - worker kw15 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx from ingest queue
+2025-08-07 09:55:18,695 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx to ingest queue
+2025-08-07 09:55:18,788 - Knowledge - INFO - knowledge worker kw23 start
+2025-08-07 09:55:18,789 - Knowledge - WARNING - High connection count: 24 connections active
+2025-08-07 09:55:19,155 - Knowledge - INFO - worker kw24 created with dedicated MongoDB connection (total: 24)
+2025-08-07 09:55:18,967 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx to ingest queue
+2025-08-07 09:55:18,918 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:55:19,272 - Knowledge - INFO - knowledge worker kw24 start
+2025-08-07 09:55:19,274 - Knowledge - WARNING - High connection count: 25 connections active
+2025-08-07 09:55:19,357 - Knowledge - INFO - worker kw20 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx from ingest queue
+2025-08-07 09:55:19,358 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,358 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx from ingest queue
+2025-08-07 09:55:19,359 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,359 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,359 - Knowledge - INFO - worker kw8 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx from ingest queue
+2025-08-07 09:55:19,417 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,418 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,470 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:19,470 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx from ingest queue
+2025-08-07 09:55:19,471 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx to ingest queue
+2025-08-07 09:55:19,633 - Knowledge - INFO - worker kw25 created with dedicated MongoDB connection (total: 25)
+2025-08-07 09:55:19,760 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:55:19,802 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:19,917 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:55:19,986 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:20,066 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:20,195 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:55:20,224 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:20,296 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:20,380 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:20,517 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:55:20,548 - Knowledge - INFO - worker kw22 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx from ingest queue
+2025-08-07 09:55:20,548 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:20,550 - Knowledge - INFO - worker kw10 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx from ingest queue
+2025-08-07 09:55:20,550 - Knowledge - INFO - worker kw12 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx from ingest queue
+2025-08-07 09:55:20,550 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx from ingest queue
+2025-08-07 09:55:20,550 - Knowledge - INFO - worker kw21 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx from ingest queue
+2025-08-07 09:55:20,551 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx to ingest queue
+2025-08-07 09:55:20,551 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:20,632 - Knowledge - INFO - knowledge worker kw25 start
+2025-08-07 09:55:20,805 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:55:21,028 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:55:21,119 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:55:21,277 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:55:21,358 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:55:21,450 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:55:21,643 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:55:21,716 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:21,826 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:55:21,906 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:21,968 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:55:22,068 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:55:22,132 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:22,134 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx from ingest queue
+2025-08-07 09:55:22,134 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx from ingest queue
+2025-08-07 09:55:22,134 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx to ingest queue
+2025-08-07 09:55:22,216 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:23,034 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:55:23,474 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:23,635 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:55:23,724 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:55:23,792 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:24,247 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:23,794 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:23,794 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:23,794 - Knowledge - INFO - worker kw24 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx from ingest queue
+2025-08-07 09:55:23,794 - Knowledge - INFO - worker kw23 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx from ingest queue
+2025-08-07 09:55:23,794 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx to ingest queue
+2025-08-07 09:55:23,862 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:55:24,025 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:55:23,794 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:24,322 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:55:24,406 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:24,522 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:24,633 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:55:24,765 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:55:24,823 - Knowledge - INFO - worker kw25 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx from ingest queue
+2025-08-07 09:55:25,113 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:25,144 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:25,144 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:25,144 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:26,166 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:25,145 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:25,145 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx from ingest queue
+2025-08-07 09:55:25,199 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:25,200 - Knowledge - INFO - worker kw13 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx from ingest queue
+2025-08-07 09:55:25,200 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx to ingest queue
+2025-08-07 09:55:25,320 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:55:25,432 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:55:25,764 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:55:25,848 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:55:25,958 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:26,071 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:25,145 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:26,250 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:26,332 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:26,458 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:55:26,508 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:26,625 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:55:26,749 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx to ingest queue
+2025-08-07 09:55:27,173 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:55:27,258 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:55:27,339 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:27,488 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:55:27,659 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:55:27,852 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx to ingest queue
+2025-08-07 09:55:28,150 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:55:28,480 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx to ingest queue
+2025-08-07 09:55:28,616 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx to ingest queue
+2025-08-07 09:55:28,687 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:28,688 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx to ingest queue
+2025-08-07 09:55:28,803 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:28,931 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx to ingest queue
+2025-08-07 09:55:29,032 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:55:29,206 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:29,206 - Knowledge - INFO - worker kw14 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx from ingest queue
+2025-08-07 09:55:29,318 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:29,320 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:29,569 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:55:29,430 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx to ingest queue
+2025-08-07 09:55:29,433 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:55:29,478 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:29,430 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:29,811 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx from ingest queue
+2025-08-07 09:55:29,967 - Knowledge - INFO - worker kw18 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx from ingest queue
+2025-08-07 09:55:29,968 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx to ingest queue
+2025-08-07 09:55:29,985 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:55:30,072 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:30,198 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:55:30,294 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:55:30,341 - Knowledge - INFO - worker kw19 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx from ingest queue
+2025-08-07 09:55:30,341 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css from ingest queue
+2025-08-07 09:55:30,341 - Knowledge - INFO - worker kw11 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx from ingest queue
+2025-08-07 09:55:30,341 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx to ingest queue
+2025-08-07 09:55:30,522 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:55:30,816 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:55:30,879 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:55:30,972 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:55:31,028 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx to ingest queue
+2025-08-07 09:55:31,461 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx to ingest queue
+2025-08-07 09:55:31,545 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx to ingest queue
+2025-08-07 09:55:31,632 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx to ingest queue
+2025-08-07 09:55:31,739 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:31,813 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:31,817 - Knowledge - INFO - worker kw12 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts from ingest queue
+2025-08-07 09:55:31,869 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:31,869 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx to ingest queue
+2025-08-07 09:55:31,919 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:55:32,061 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:55:32,132 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:32,458 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:55:32,261 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx to ingest queue
+2025-08-07 09:55:32,627 - Knowledge - INFO - worker kw7 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts from ingest queue
+2025-08-07 09:55:32,627 - Knowledge - INFO - worker kw16 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts from ingest queue
+2025-08-07 09:55:32,699 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:32,699 - Knowledge - INFO - worker kw20 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts from ingest queue
+2025-08-07 09:55:32,771 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:55:32,776 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:32,776 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:32,776 - Knowledge - INFO - worker kw15 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json from ingest queue
+2025-08-07 09:55:32,776 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx to ingest queue
+2025-08-07 09:55:32,853 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:55:32,888 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:33,016 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:55:33,116 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:33,230 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:33,853 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:55:33,422 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml from ingest queue
+2025-08-07 09:55:33,423 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json from ingest queue
+2025-08-07 09:55:33,424 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx to ingest queue
+2025-08-07 09:55:33,589 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:55:33,774 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:55:33,355 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:55:34,072 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:55:34,177 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:55:34,220 - Knowledge - INFO - worker kw22 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md from ingest queue
+2025-08-07 09:55:34,222 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx to ingest queue
+2025-08-07 09:55:34,863 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:55:34,955 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,014 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,014 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,014 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json from ingest queue
+2025-08-07 09:55:35,015 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,015 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx to ingest queue
+2025-08-07 09:55:35,123 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:35,207 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:35,290 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:35,431 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:55:35,492 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:35,970 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:55:35,579 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,580 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md from ingest queue
+2025-08-07 09:55:35,581 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,581 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,646 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:55:35,695 - Knowledge - INFO - worker kw23 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts from ingest queue
+2025-08-07 09:55:35,732 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:55:35,742 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,742 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,742 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:35,742 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs from ingest queue
+2025-08-07 09:55:35,742 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx to ingest queue
+2025-08-07 09:55:35,800 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:55:35,579 - Knowledge - INFO - worker kw8 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts from ingest queue
+2025-08-07 09:55:36,170 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:36,275 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:55:36,335 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:36,418 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:37,696 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:55:36,764 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:36,830 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:36,910 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:37,010 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:55:37,089 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:37,090 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx to ingest queue
+2025-08-07 09:55:37,342 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:55:37,437 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:55:37,607 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:55:36,626 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:55:37,893 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:55:37,990 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:55:38,091 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:55:38,287 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:39,061 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:55:38,376 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx to ingest queue
+2025-08-07 09:55:38,374 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts from ingest queue
+2025-08-07 09:55:39,255 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx to ingest queue
+2025-08-07 09:55:39,350 - Knowledge - INFO - Thread kw2 - File use-toast.ts - Remaining files in queue: 41
+2025-08-07 09:55:39,491 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx to ingest queue
+2025-08-07 09:55:39,505 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:39,599 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx to ingest queue
+2025-08-07 09:55:39,802 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:39,890 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:39,981 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:55:39,987 - Knowledge - INFO - worker kw25 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts from ingest queue
+2025-08-07 09:55:40,120 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:40,120 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx to ingest queue
+2025-08-07 09:55:40,170 - Knowledge - INFO - Thread kw25 - File dev.ts - Remaining files in queue: 43
+2025-08-07 09:55:40,448 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:40,358 - Knowledge - INFO - worker kw10 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx from ingest queue
+2025-08-07 09:55:40,360 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:40,442 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:40,288 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:40,527 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:40,600 - Knowledge - INFO - Thread kw10 - File use-mobile.tsx - Remaining files in queue: 43
+2025-08-07 09:55:40,707 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:40,717 - Knowledge - INFO - worker kw21 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts from ingest queue
+2025-08-07 09:55:40,722 - Knowledge - INFO - worker kw13 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx from ingest queue
+2025-08-07 09:55:40,723 - Knowledge - INFO - worker kw14 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx from ingest queue
+2025-08-07 09:55:40,723 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx to ingest queue
+2025-08-07 09:55:40,837 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:41,124 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:55:41,195 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:41,266 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:41,345 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:55:41,418 - Knowledge - INFO - Thread kw21 - File genkit.ts - Remaining files in queue: 40
+2025-08-07 09:55:41,497 - Knowledge - INFO - Thread kw13 - File edit-issue-dialog.tsx - Remaining files in queue: 40
+2025-08-07 09:55:41,597 - Knowledge - INFO - Thread kw14 - File create-issue-dialog.tsx - Remaining files in queue: 40
+2025-08-07 09:55:41,703 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:41,704 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx to ingest queue
+2025-08-07 09:55:41,822 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:55:42,004 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:42,244 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:42,337 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:42,438 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:42,519 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:42,630 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx to ingest queue
+2025-08-07 09:55:42,919 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:43,240 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:55:43,318 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx from ingest queue
+2025-08-07 09:55:43,319 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts to ingest queue
+2025-08-07 09:55:43,399 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:43,609 - Knowledge - INFO - Thread kw3 - File issues-dialog.tsx - Remaining files in queue: 42
+2025-08-07 09:55:43,713 - Knowledge - INFO - worker kw11 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx from ingest queue
+2025-08-07 09:55:43,716 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts to ingest queue
+2025-08-07 09:55:43,906 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:43,915 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:44,016 - Knowledge - INFO - Thread kw11 - File slider.tsx - Remaining files in queue: 42
+2025-08-07 09:55:44,104 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml to ingest queue
+2025-08-07 09:55:44,379 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:44,462 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json to ingest queue
+2025-08-07 09:55:44,661 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css to ingest queue
+2025-08-07 09:55:44,737 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md to ingest queue
+2025-08-07 09:55:44,823 - Knowledge - INFO - worker kw18 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx from ingest queue
+2025-08-07 09:55:44,823 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts to ingest queue
+2025-08-07 09:55:44,938 - Knowledge - INFO - Thread kw18 - File avatar.tsx - Remaining files in queue: 46
+2025-08-07 09:55:45,185 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:45,453 - Knowledge - INFO - worker kw24 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx from ingest queue
+2025-08-07 09:55:45,568 - Knowledge - INFO - Thread kw24 - File login-image.tsx - Remaining files in queue: 46
+2025-08-07 09:55:45,684 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:55:45,701 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:45,830 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:46,021 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:46,114 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:46,122 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json to ingest queue
+2025-08-07 09:55:46,380 - Knowledge - INFO - worker kw16 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx from ingest queue
+2025-08-07 09:55:46,381 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:46,382 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx from ingest queue
+2025-08-07 09:55:46,712 - Knowledge - INFO - Thread kw1 - File checkbox.tsx - Remaining files in queue: 43
+2025-08-07 09:55:46,383 - Knowledge - INFO - worker kw12 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx from ingest queue
+2025-08-07 09:55:46,383 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts to ingest queue
+2025-08-07 09:55:46,493 - Knowledge - INFO - Thread kw16 - File badge.tsx - Remaining files in queue: 43
+2025-08-07 09:55:46,600 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:47,174 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/genkit.ts
+2025-08-07 09:55:46,813 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:55:46,911 - Knowledge - INFO - Thread kw12 - File dropdown-menu.tsx - Remaining files in queue: 43
+2025-08-07 09:55:46,993 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts to ingest queue
+2025-08-07 09:55:47,088 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:55:46,383 - Knowledge - INFO - worker kw19 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx from ingest queue
+2025-08-07 09:55:47,756 - Knowledge - INFO - Thread kw19 - File popover.tsx - Remaining files in queue: 45
+2025-08-07 09:55:47,585 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json to ingest queue
+2025-08-07 09:55:47,481 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:55:47,832 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:55:47,906 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts to ingest queue
+2025-08-07 09:55:48,226 - Knowledge - INFO - worker kw20 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx from ingest queue
+2025-08-07 09:55:48,226 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md to ingest queue
+2025-08-07 09:55:48,325 - Knowledge - INFO - Thread kw20 - File toast.tsx - Remaining files in queue: 46
+2025-08-07 09:55:48,438 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:48,439 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:48,439 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx from ingest queue
+2025-08-07 09:55:48,857 - Knowledge - INFO - Thread kw4 - File skeleton.tsx - Remaining files in queue: 45
+2025-08-07 09:55:48,454 - Knowledge - INFO - adding /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs to ingest queue
+2025-08-07 09:55:48,547 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:55:48,631 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:48,754 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:48,440 - Knowledge - INFO - worker kw22 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx from ingest queue
+2025-08-07 09:55:48,931 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:49,046 - Knowledge - INFO - worker kw8 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx from ingest queue
+2025-08-07 09:55:49,233 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx from ingest queue
+2025-08-07 09:55:49,235 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx from ingest queue
+2025-08-07 09:55:49,244 - Knowledge - INFO - worker kw15 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx from ingest queue
+2025-08-07 09:55:49,247 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx from ingest queue
+2025-08-07 09:55:49,257 - Knowledge - INFO - worker kw23 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx from ingest queue
+2025-08-07 09:55:49,276 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-toast.ts
+2025-08-07 09:55:49,296 - Knowledge - INFO - worker kw7 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx from ingest queue
+2025-08-07 09:55:49,307 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:49,322 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx from ingest queue
+2025-08-07 09:55:49,325 - Knowledge - INFO - worker kw21 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx from ingest queue
+2025-08-07 09:55:49,376 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/hooks/use-mobile.tsx
+2025-08-07 09:55:49,519 - Knowledge - INFO - Thread kw22 - File progress.tsx - Remaining files in queue: 37
+2025-08-07 09:55:51,122 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:55:49,727 - Knowledge - INFO - Thread kw8 - File tooltip.tsx - Remaining files in queue: 37
+2025-08-07 09:55:49,875 - Knowledge - INFO - Thread kw6 - File alert-dialog.tsx - Remaining files in queue: 37
+2025-08-07 09:55:49,958 - Knowledge - INFO - Thread kw5 - File scroll-area.tsx - Remaining files in queue: 37
+2025-08-07 09:55:50,076 - Knowledge - INFO - Thread kw15 - File sheet.tsx - Remaining files in queue: 37
+2025-08-07 09:55:51,882 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:55:50,294 - Knowledge - INFO - Thread kw23 - File button.tsx - Remaining files in queue: 37
+2025-08-07 09:55:50,588 - Knowledge - INFO - Thread kw7 - File alert.tsx - Remaining files in queue: 37
+2025-08-07 09:55:50,678 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:50,788 - Knowledge - INFO - Thread kw9 - File table.tsx - Remaining files in queue: 37
+2025-08-07 09:55:50,868 - Knowledge - INFO - Thread kw21 - File radio-group.tsx - Remaining files in queue: 37
+2025-08-07 09:55:51,076 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:49,652 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:51,376 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:55:51,543 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:55:51,576 - Knowledge - INFO - persist search terms embedding for src/hooks/use-toast.ts
+2025-08-07 09:55:51,683 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:55:50,180 - Knowledge - INFO - Thread kw17 - File form.tsx - Remaining files in queue: 37
+2025-08-07 09:55:52,114 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:55:52,219 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:55:52,361 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/ai/dev.ts
+2025-08-07 09:55:52,501 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:55:52,589 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:55:52,722 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:52,752 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:53,223 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:55:53,471 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:53,526 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:53,916 - Knowledge - INFO - persist search terms embedding for src/hooks/use-mobile.tsx
+2025-08-07 09:55:54,300 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:54,542 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:54,603 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:54,685 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx from ingest queue
+2025-08-07 09:55:54,702 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:55,380 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:55,483 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:55,262 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:55,263 - Knowledge - INFO - Thread kw2 - File collapsible.tsx - Remaining files in queue: 35
+2025-08-07 09:55:55,267 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:55,268 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:55,283 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:55,309 - Knowledge - INFO - worker kw25 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx from ingest queue
+2025-08-07 09:55:54,704 - Knowledge - INFO - worker kw10 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx from ingest queue
+2025-08-07 09:55:56,278 - Knowledge - INFO - Thread kw10 - File separator.tsx - Remaining files in queue: 34
+2025-08-07 09:55:55,699 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:55,798 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:55,993 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:56,022 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:56,099 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:56,191 - Knowledge - INFO - Thread kw25 - File label.tsx - Remaining files in queue: 34
+2025-08-07 09:55:55,149 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:55:56,313 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:56,367 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:55:56,413 - Knowledge - INFO - persist search terms embedding for src/components/edit-issue-dialog.tsx
+2025-08-07 09:55:56,484 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/skeleton.tsx
+2025-08-07 09:55:56,666 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:56,869 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/create-issue-dialog.tsx
+2025-08-07 09:55:56,983 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/slider.tsx
+2025-08-07 09:55:57,101 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:55:57,281 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:55:57,329 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:57,463 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:57,464 - Knowledge - INFO - worker kw13 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx from ingest queue
+2025-08-07 09:55:57,682 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:58,045 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:55:58,156 - Knowledge - INFO - persist search terms embedding for src/components/create-issue-dialog.tsx
+2025-08-07 09:55:58,228 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:58,743 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/issues-dialog.tsx
+2025-08-07 09:55:58,452 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:55:58,566 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:55:58,646 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx from ingest queue
+2025-08-07 09:55:59,147 - Knowledge - INFO - Thread kw4 - File input.tsx - Remaining files in queue: 32
+2025-08-07 09:55:58,647 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:58,319 - Knowledge - INFO - Thread kw13 - File dialog.tsx - Remaining files in queue: 33
+2025-08-07 09:55:59,460 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:55:59,220 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:55:59,236 - Knowledge - INFO - persist search terms embedding for src/components/ui/slider.tsx
+2025-08-07 09:55:59,325 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:55:58,647 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:55:59,838 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/avatar.tsx
+2025-08-07 09:55:59,943 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:55:59,947 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:00,183 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:56:00,205 - Knowledge - INFO - persist search terms embedding for src/components/issues-dialog.tsx
+2025-08-07 09:56:00,234 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-image.tsx
+2025-08-07 09:56:00,414 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:00,414 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:00,664 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:00,417 - Knowledge - INFO - worker kw11 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx from ingest queue
+2025-08-07 09:56:00,848 - Knowledge - INFO - Thread kw11 - File select.tsx - Remaining files in queue: 30
+2025-08-07 09:56:00,417 - Knowledge - INFO - worker kw14 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx from ingest queue
+2025-08-07 09:56:00,752 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/popover.tsx
+2025-08-07 09:56:00,771 - Knowledge - INFO - persist search terms embedding for src/components/ui/avatar.tsx
+2025-08-07 09:56:00,563 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:00,925 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:56:01,001 - Knowledge - INFO - Thread kw14 - File carousel.tsx - Remaining files in queue: 30
+2025-08-07 09:56:01,198 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx from ingest queue
+2025-08-07 09:56:01,228 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:01,330 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/collapsible.tsx
+2025-08-07 09:56:01,634 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:56:01,728 - Knowledge - INFO - Thread kw3 - File textarea.tsx - Remaining files in queue: 29
+2025-08-07 09:56:01,825 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:02,048 - Knowledge - INFO - persist search terms embedding for src/components/ui/popover.tsx
+2025-08-07 09:56:02,189 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:56:02,304 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:56:02,440 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/badge.tsx
+2025-08-07 09:56:02,843 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:56:03,399 - Knowledge - INFO - persist search terms embedding for src/components/login-image.tsx
+2025-08-07 09:56:03,470 - Knowledge - INFO - worker kw18 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx from ingest queue
+2025-08-07 09:56:03,537 - Knowledge - INFO - Thread kw18 - File calendar.tsx - Remaining files in queue: 28
+2025-08-07 09:56:03,647 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:56:03,992 - Knowledge - INFO - persist search terms embedding for src/components/ui/badge.tsx
+2025-08-07 09:56:04,100 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:04,102 - Knowledge - INFO - worker kw19 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx from ingest queue
+2025-08-07 09:56:04,356 - Knowledge - INFO - Thread kw19 - File menubar.tsx - Remaining files in queue: 24
+2025-08-07 09:56:04,103 - Knowledge - INFO - worker kw16 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx from ingest queue
+2025-08-07 09:56:04,103 - Knowledge - INFO - worker kw2 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx from ingest queue
+2025-08-07 09:56:04,186 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:04,102 - Knowledge - INFO - worker kw24 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx from ingest queue
+2025-08-07 09:56:04,475 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:56:04,553 - Knowledge - INFO - Thread kw16 - File card.tsx - Remaining files in queue: 24
+2025-08-07 09:56:04,649 - Knowledge - INFO - Thread kw2 - File accordion.tsx - Remaining files in queue: 24
+2025-08-07 09:56:04,756 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/checkbox.tsx
+2025-08-07 09:56:04,840 - Knowledge - INFO - Thread kw24 - File chart.tsx - Remaining files in queue: 24
+2025-08-07 09:56:05,044 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:56:05,139 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:56:05,293 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:56:05,734 - Knowledge - INFO - persist search terms embedding for src/components/ui/checkbox.tsx
+2025-08-07 09:56:05,853 - Knowledge - INFO - worker kw1 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx from ingest queue
+2025-08-07 09:56:05,931 - Knowledge - INFO - Thread kw1 - File switch.tsx - Remaining files in queue: 23
+2025-08-07 09:56:06,030 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:56:07,035 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:56:07,196 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:56:07,280 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:07,372 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:07,462 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dropdown-menu.tsx
+2025-08-07 09:56:07,944 - Knowledge - INFO - persist search terms embedding for src/components/ui/dropdown-menu.tsx
+2025-08-07 09:56:08,073 - Knowledge - INFO - worker kw12 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx from ingest queue
+2025-08-07 09:56:08,170 - Knowledge - INFO - Thread kw12 - File tabs.tsx - Remaining files in queue: 22
+2025-08-07 09:56:08,242 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:56:10,034 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:56:10,292 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:56:10,344 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:56:10,380 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:10,562 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:56:10,606 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:10,742 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:10,871 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sheet.tsx
+2025-08-07 09:56:11,034 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:11,121 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:56:11,215 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toast.tsx
+2025-08-07 09:56:11,502 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:56:11,917 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:56:11,954 - Knowledge - INFO - persist search terms embedding for src/components/ui/sheet.tsx
+2025-08-07 09:56:12,088 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:56:13,072 - Knowledge - INFO - persist search terms embedding for src/components/ui/toast.tsx
+2025-08-07 09:56:13,215 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:13,223 - Knowledge - INFO - worker kw15 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx from ingest queue
+2025-08-07 09:56:13,228 - Knowledge - INFO - worker kw20 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx from ingest queue
+2025-08-07 09:56:13,238 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:13,320 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:13,488 - Knowledge - INFO - Thread kw15 - File sidebar.tsx - Remaining files in queue: 20
+2025-08-07 09:56:13,686 - Knowledge - INFO - Thread kw20 - File import-issues-dialog.tsx - Remaining files in queue: 20
+2025-08-07 09:56:13,731 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:56:13,851 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:13,948 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/radio-group.tsx
+2025-08-07 09:56:14,069 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:56:14,200 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:56:14,490 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:56:14,544 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/progress.tsx
+2025-08-07 09:56:15,387 - Knowledge - INFO - persist search terms embedding for src/components/ui/radio-group.tsx
+2025-08-07 09:56:15,516 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:15,647 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:15,731 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:56:15,767 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/button.tsx
+2025-08-07 09:56:15,950 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:56:16,169 - Knowledge - INFO - persist search terms embedding for src/components/ui/progress.tsx
+2025-08-07 09:56:16,825 - Knowledge - INFO - persist search terms embedding for src/components/ui/button.tsx
+2025-08-07 09:56:16,943 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:16,944 - Knowledge - INFO - worker kw22 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx from ingest queue
+2025-08-07 09:56:16,951 - Knowledge - INFO - worker kw21 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx from ingest queue
+2025-08-07 09:56:16,951 - Knowledge - INFO - worker kw23 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx from ingest queue
+2025-08-07 09:56:17,385 - Knowledge - INFO - Thread kw23 - File layout.tsx - Remaining files in queue: 17
+2025-08-07 09:56:17,070 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:17,176 - Knowledge - INFO - Thread kw22 - File dashboard-client.tsx - Remaining files in queue: 17
+2025-08-07 09:56:17,269 - Knowledge - INFO - Thread kw21 - File page.tsx - Remaining files in queue: 17
+2025-08-07 09:56:17,011 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:56:17,516 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:56:17,602 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/scroll-area.tsx
+2025-08-07 09:56:17,708 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:56:17,806 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:56:17,974 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:56:18,748 - Knowledge - INFO - persist search terms embedding for src/components/ui/scroll-area.tsx
+2025-08-07 09:56:18,836 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:18,837 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx from ingest queue
+2025-08-07 09:56:18,922 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:19,040 - Knowledge - INFO - Thread kw5 - File page.tsx - Remaining files in queue: 16
+2025-08-07 09:56:19,158 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert-dialog.tsx
+2025-08-07 09:56:19,246 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:56:19,378 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:56:19,933 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:56:20,096 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:56:20,158 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:56:20,428 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:56:20,525 - Knowledge - INFO - persist search terms embedding for src/components/ui/alert-dialog.tsx
+2025-08-07 09:56:20,664 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:20,682 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:20,685 - Knowledge - INFO - worker kw6 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx from ingest queue
+2025-08-07 09:56:20,761 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:20,831 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:56:20,843 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:20,958 - Knowledge - INFO - Thread kw6 - File toaster.tsx - Remaining files in queue: 15
+2025-08-07 09:56:21,070 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/alert.tsx
+2025-08-07 09:56:21,193 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:56:21,268 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/page.tsx
+2025-08-07 09:56:21,375 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:56:22,012 - Knowledge - INFO - persist search terms embedding for src/components/ui/alert.tsx
+2025-08-07 09:56:22,100 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:22,217 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:22,334 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tooltip.tsx
+2025-08-07 09:56:22,380 - Knowledge - INFO - worker kw7 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx from ingest queue
+2025-08-07 09:56:22,380 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts from ingest queue
+2025-08-07 09:56:22,553 - Knowledge - INFO - Thread kw7 - File login-form.tsx - Remaining files in queue: 13
+2025-08-07 09:56:22,672 - Knowledge - INFO - Thread kw5 - File next.config.ts - Remaining files in queue: 13
+2025-08-07 09:56:22,773 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:56:22,862 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:56:22,889 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:56:23,073 - Knowledge - INFO - persist search terms embedding for src/components/ui/tooltip.tsx
+2025-08-07 09:56:23,170 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:56:23,355 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:56:23,357 - Knowledge - INFO - worker kw8 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts from ingest queue
+2025-08-07 09:56:23,451 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:56:23,550 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:23,679 - Knowledge - INFO - Thread kw8 - File actions.ts - Remaining files in queue: 12
+2025-08-07 09:56:23,835 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:56:23,890 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:23,976 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:56:24,063 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:24,163 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/form.tsx
+2025-08-07 09:56:24,362 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:24,567 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/next.config.ts
+2025-08-07 09:56:25,203 - Knowledge - INFO - persist search terms embedding for src/components/ui/form.tsx
+2025-08-07 09:56:25,525 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml from ingest queue
+2025-08-07 09:56:25,619 - Knowledge - INFO - Thread kw17 - File apphosting.yaml - Remaining files in queue: 10
+2025-08-07 09:56:25,527 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json from ingest queue
+2025-08-07 09:56:25,707 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:56:25,793 - Knowledge - INFO - Thread kw5 - File components.json - Remaining files in queue: 10
+2025-08-07 09:56:26,018 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:56:25,982 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:56:26,179 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:56:26,346 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:56:26,253 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:56:26,458 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:56:26,539 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:56:26,560 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:56:26,637 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:26,764 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:26,780 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:56:26,965 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:56:26,998 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:27,107 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:27,280 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:56:27,324 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:27,460 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/components.json
+2025-08-07 09:56:27,574 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/apphosting.yaml
+2025-08-07 09:56:27,718 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:27,797 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:28,064 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:28,147 - Knowledge - INFO - worker kw5 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css from ingest queue
+2025-08-07 09:56:28,177 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/dialog.tsx
+2025-08-07 09:56:28,284 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/table.tsx
+2025-08-07 09:56:28,382 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md from ingest queue
+2025-08-07 09:56:28,398 - Knowledge - INFO - Thread kw5 - File globals.css - Remaining files in queue: 8
+2025-08-07 09:56:28,701 - Knowledge - INFO - Thread kw17 - File blueprint.md - Remaining files in queue: 8
+2025-08-07 09:56:28,823 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:56:28,926 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:56:29,064 - Knowledge - INFO - persist search terms embedding for src/components/ui/dialog.tsx
+2025-08-07 09:56:29,148 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:56:29,296 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:56:29,428 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:56:29,871 - Knowledge - INFO - persist search terms embedding for src/components/ui/table.tsx
+2025-08-07 09:56:29,980 - Knowledge - INFO - worker kw13 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts from ingest queue
+2025-08-07 09:56:29,988 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:29,992 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json from ingest queue
+2025-08-07 09:56:30,302 - Knowledge - INFO - Thread kw9 - File package.json - Remaining files in queue: 6
+2025-08-07 09:56:30,434 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:56:30,187 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:30,101 - Knowledge - INFO - Thread kw13 - File types.ts - Remaining files in queue: 6
+2025-08-07 09:56:30,347 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:56:30,157 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:56:30,608 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:56:30,685 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/docs/blueprint.md
+2025-08-07 09:56:30,743 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:56:30,816 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:56:30,972 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:56:31,083 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:56:31,097 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:56:31,326 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:56:31,780 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:31,491 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:31,575 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:56:31,687 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:31,398 - Knowledge - INFO - worker kw17 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts from ingest queue
+2025-08-07 09:56:31,934 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:31,979 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:56:32,031 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:32,158 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:32,261 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:32,368 - Knowledge - INFO - Thread kw17 - File tailwind.config.ts - Remaining files in queue: 5
+2025-08-07 09:56:32,463 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/textarea.tsx
+2025-08-07 09:56:32,694 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:56:32,737 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/label.tsx
+2025-08-07 09:56:32,854 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:33,031 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/input.tsx
+2025-08-07 09:56:33,119 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:56:33,550 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/package.json
+2025-08-07 09:56:33,825 - Knowledge - INFO - persist search terms embedding for src/components/ui/textarea.tsx
+2025-08-07 09:56:33,909 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:34,012 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:34,121 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/separator.tsx
+2025-08-07 09:56:34,440 - Knowledge - INFO - persist search terms embedding for src/components/ui/label.tsx
+2025-08-07 09:56:35,093 - Knowledge - INFO - persist search terms embedding for src/components/ui/input.tsx
+2025-08-07 09:56:35,473 - Knowledge - INFO - worker kw3 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts from ingest queue
+2025-08-07 09:56:35,548 - Knowledge - INFO - Thread kw3 - File middleware.ts - Remaining files in queue: 4
+2025-08-07 09:56:35,622 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:56:36,044 - Knowledge - INFO - persist search terms embedding for src/components/ui/separator.tsx
+2025-08-07 09:56:36,145 - Knowledge - INFO - worker kw4 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json from ingest queue
+2025-08-07 09:56:36,151 - Knowledge - INFO - worker kw9 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts from ingest queue
+2025-08-07 09:56:36,157 - Knowledge - INFO - worker kw25 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md from ingest queue
+2025-08-07 09:56:36,159 - Knowledge - INFO - worker kw10 pull /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs from ingest queue
+2025-08-07 09:56:36,224 - Knowledge - INFO - Thread kw4 - File tsconfig.json - Remaining files in queue: 0
+2025-08-07 09:56:36,311 - Knowledge - INFO - Thread kw9 - File utils.ts - Remaining files in queue: 0
+2025-08-07 09:56:36,382 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:56:36,407 - Knowledge - INFO - Thread kw25 - File README.md - Remaining files in queue: 0
+2025-08-07 09:56:36,502 - Knowledge - INFO - Thread kw10 - File postcss.config.mjs - Remaining files in queue: 0
+2025-08-07 09:56:36,600 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:56:36,680 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:56:36,884 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:56:36,935 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:56:37,090 - Knowledge - INFO - start ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:56:37,240 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:56:37,787 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:56:37,503 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:37,646 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:56:37,761 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:56:37,386 - Knowledge - INFO - Fast-track processing for simple file: /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:56:37,874 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:56:37,974 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:38,050 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:56:38,165 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:56:38,288 - Knowledge - INFO - done fast ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:56:38,383 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:38,488 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/carousel.tsx
+2025-08-07 09:56:38,595 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:56:38,708 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:56:38,967 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:56:38,982 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:39,505 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tsconfig.json
+2025-08-07 09:56:39,635 - Knowledge - INFO - persist search terms embedding for src/components/ui/carousel.tsx
+2025-08-07 09:56:39,717 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:39,719 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:39,719 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:39,771 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:56:39,836 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:39,960 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:40,045 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:40,463 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/utils.ts
+2025-08-07 09:56:40,271 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/README.md
+2025-08-07 09:56:40,369 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/postcss.config.mjs
+2025-08-07 09:56:40,185 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:56:40,813 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:56:41,015 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:56:41,029 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:56:41,083 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:41,127 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:56:41,337 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:41,361 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:41,453 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:41,482 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:56:41,543 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/card.tsx
+2025-08-07 09:56:41,659 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:41,772 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:41,922 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:56:42,070 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/select.tsx
+2025-08-07 09:56:42,175 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/globals.css
+2025-08-07 09:56:42,709 - Knowledge - INFO - persist search terms embedding for src/components/ui/card.tsx
+2025-08-07 09:56:42,842 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:42,938 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:43,018 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/tabs.tsx
+2025-08-07 09:56:43,626 - Knowledge - INFO - persist search terms embedding for src/components/ui/select.tsx
+2025-08-07 09:56:44,035 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:56:44,195 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:56:44,456 - Knowledge - INFO - persist search terms embedding for src/components/ui/tabs.tsx
+2025-08-07 09:56:44,599 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:44,718 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:44,787 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/calendar.tsx
+2025-08-07 09:56:45,071 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:56:45,214 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:56:45,461 - Knowledge - INFO - persist search terms embedding for src/components/ui/calendar.tsx
+2025-08-07 09:56:45,682 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:45,787 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:45,897 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/switch.tsx
+2025-08-07 09:56:46,474 - Knowledge - INFO - persist search terms embedding for src/components/ui/switch.tsx
+2025-08-07 09:56:46,749 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:56:46,879 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:56:47,003 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:47,138 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:47,228 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/layout.tsx
+2025-08-07 09:56:47,824 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:56:47,915 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:56:47,943 - Knowledge - INFO - persist search terms embedding for src/app/layout.tsx
+2025-08-07 09:56:48,001 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:56:48,129 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:56:48,162 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:56:48,406 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:48,412 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:48,543 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:56:48,621 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:48,705 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:48,878 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:48,900 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:56:48,932 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/tailwind.config.ts
+2025-08-07 09:56:49,034 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/accordion.tsx
+2025-08-07 09:56:49,166 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:49,355 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:56:49,393 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:56:49,509 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/toaster.tsx
+2025-08-07 09:56:49,812 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:56:49,876 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:56:49,991 - Knowledge - INFO - persist search terms embedding for tailwind.config.ts
+2025-08-07 09:56:50,171 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:56:50,259 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:50,438 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:56:50,443 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:50,613 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:56:50,680 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/types.ts
+2025-08-07 09:56:50,821 - Knowledge - INFO - persist search terms embedding for src/components/ui/toaster.tsx
+2025-08-07 09:56:51,029 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:51,060 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:51,113 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:51,251 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:51,346 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/chart.tsx
+2025-08-07 09:56:51,448 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/app/dashboard/page.tsx
+2025-08-07 09:56:51,848 - Knowledge - INFO - persist search terms embedding for src/lib/types.ts
+2025-08-07 09:56:51,957 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:52,083 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:52,195 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/middleware.ts
+2025-08-07 09:56:52,567 - Knowledge - INFO - persist search terms embedding for src/app/dashboard/page.tsx
+2025-08-07 09:56:52,703 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:56:52,864 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:56:53,154 - Knowledge - INFO - persist search terms embedding for src/components/ui/chart.tsx
+2025-08-07 09:56:53,300 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:53,425 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:53,877 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/login-form.tsx
+2025-08-07 09:56:53,973 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:56:54,134 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:56:54,528 - Knowledge - INFO - persist search terms embedding for middleware.ts
+2025-08-07 09:56:54,688 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:54,779 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:54,907 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/import-issues-dialog.tsx
+2025-08-07 09:56:55,239 - Knowledge - INFO - persist search terms embedding for src/components/ui/accordion.tsx
+2025-08-07 09:56:55,858 - Knowledge - INFO - persist search terms embedding for src/components/import-issues-dialog.tsx
+2025-08-07 09:56:56,561 - Knowledge - INFO - persist search terms embedding for src/components/login-form.tsx
+2025-08-07 09:56:56,567 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:56:56,887 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:56:57,161 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:56:57,281 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:56:57,393 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/dashboard-client.tsx
+2025-08-07 09:56:58,368 - Knowledge - INFO - persist search terms embedding for src/components/dashboard-client.tsx
+2025-08-07 09:56:59,060 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:56:59,294 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:56:59,897 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:57:00,002 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:57:00,119 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/menubar.tsx
+2025-08-07 09:57:00,216 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:57:00,331 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:57:00,649 - Knowledge - INFO - persist search terms embedding for src/components/ui/menubar.tsx
+2025-08-07 09:57:00,743 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:57:00,848 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:57:00,923 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/components/ui/sidebar.tsx
+2025-08-07 09:57:01,475 - Knowledge - INFO - persist search terms embedding for src/components/ui/sidebar.tsx
+2025-08-07 09:57:05,937 - Knowledge - INFO - done ingest for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:57:06,040 - Knowledge - INFO - process ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:57:06,136 - Knowledge - INFO - Found code-base-name: https://github.com/MalaiarasuGRaj/jira-integration-firebase.git:main
+2025-08-07 09:57:06,231 - Knowledge - INFO - Found code_base: <app.utils.kg_build.knowledge.KnowledgeCodeBase object at 0x7f9f41631190>
+2025-08-07 09:57:06,305 - Knowledge - INFO - persist ingested knowledge for /app/data/b2c/147381/b7514x8/jira-integration-firebase/src/lib/actions.ts
+2025-08-07 09:57:06,996 - Knowledge - INFO - persist search terms embedding for src/lib/actions.ts
+2025-08-07 09:57:07,096 - Knowledge - INFO - Knowledge creation complete
+2025-08-07 09:57:07,193 - Knowledge - INFO - Updating org costs, total cost: 0.021865400000000004
+2025-08-07 09:57:07,912 - Knowledge - INFO - Saving knowledge to Redis...
+2025-08-07 09:57:08,076 - Knowledge - INFO - Knowledge saved to Redis successfully
