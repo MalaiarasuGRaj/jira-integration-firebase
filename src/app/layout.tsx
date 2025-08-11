@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Jira-Integration',
-  description: 'View your Jira projects in a dashboard.',
+  title: 'Agile Copilot',
+  description: 'Your AI-powered partner for seamless Jira workflows.',
 };
 
 export default function RootLayout({

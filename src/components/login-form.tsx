@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, LinkIcon } from 'lucide-react';
+import { Loader2, Bot } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 function LoginButton() {
@@ -45,19 +45,16 @@ export function LoginForm() {
   return (
     <form action={dispatch}>
       <Card className="border-0 shadow-none sm:border sm:shadow-sm">
-        <CardHeader>
-          <div className="flex justify-start items-center mb-2">
-            <LinkIcon className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold ml-2 tracking-tight">
-              Jira-Integration
-            </h1>
+        <CardHeader className='items-center text-center'>
+          <div className="flex justify-center items-center mb-2 bg-primary/10 p-3 rounded-full">
+            <Bot className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle>Secure Login</CardTitle>
+          <CardTitle className='text-3xl'>Agile Copilot</CardTitle>
           <CardDescription>
-            Enter your Jira credentials to connect your account.
+            Your AI-powered partner for seamless Jira workflows.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 text-left">
           <div className="space-y-2">
             <Label htmlFor="email">Jira Email</Label>
             <Input
